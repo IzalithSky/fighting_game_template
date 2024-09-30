@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://62t2005fchbn"]
+[gd_scene load_steps=35 format=3 uid="uid://62t2005fchbn"]
 
 [ext_resource type="Script" path="res://scripts/character.gd" id="1_t3rb3"]
 [ext_resource type="Texture2D" uid="uid://6xh8lkvaqr83" path="res://sprites/Zidane Final Spritesheet copy.png" id="5_cgt00"]
@@ -64,6 +64,38 @@ atlas = ExtResource("5_cgt00")
 region = Rect2(320, 480, 160, 160)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_h8yk8"]
+atlas = ExtResource("5_cgt00")
+region = Rect2(480, 480, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q8wcp"]
+atlas = ExtResource("5_cgt00")
+region = Rect2(0, 480, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kdfl0"]
+atlas = ExtResource("5_cgt00")
+region = Rect2(160, 480, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bmcxh"]
+atlas = ExtResource("5_cgt00")
+region = Rect2(320, 480, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5qu8o"]
+atlas = ExtResource("5_cgt00")
+region = Rect2(480, 480, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n58pw"]
+atlas = ExtResource("5_cgt00")
+region = Rect2(0, 480, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rlxhv"]
+atlas = ExtResource("5_cgt00")
+region = Rect2(160, 480, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bhnbf"]
+atlas = ExtResource("5_cgt00")
+region = Rect2(320, 480, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qhwd5"]
 atlas = ExtResource("5_cgt00")
 region = Rect2(480, 480, 160, 160)
 
@@ -150,6 +182,40 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_q8wcp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kdfl0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bmcxh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5qu8o")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n58pw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rlxhv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bhnbf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qhwd5")
+}],
+"loop": true,
+"name": &"stunned",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_f84u0")
 }, {
 "duration": 1.0,
@@ -181,7 +247,7 @@ script = ExtResource("1_t3rb3")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"walk"
+animation = &"stunned"
 autoplay = "idle"
 
 [node name="collider" type="CollisionShape2D" parent="."]
