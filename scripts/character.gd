@@ -199,14 +199,21 @@ func on_animation_finished() -> void:
 		"stunned":
 			pass  # Automatically transition in handle_stunned_state()
 
+# --- Animation Callbacks ---
 func on_animation_frame_changed() -> void:
 	var current_animation = anim.animation
 	var current_frame = anim.frame
+	
 	if hitbox_activation_frames.has(current_animation):
 		var attack_info = hitbox_activation_frames[current_animation]
 		var hitbox = attack_info["hitbox"]
 		var active_frames = attack_info["active_frames"]
-		hitbox.disabled = current_frame not in active_frames
+
+		# Check if the current frame is within the active frames
+		if current_frame in active_frames and hitbox.disabled:
+			hitbox.disabled = false  # Activate hitbox once
+		elif current_frame > active_frames[-1] and not hitbox.disabled:
+			hitbox.disabled = true  # Deactivate hitbox after the active frame window
 
 # --- Collision Handling ---
 func on_hitbox_body_entered(body: Node) -> void:
