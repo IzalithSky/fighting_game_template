@@ -150,7 +150,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"attack",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -173,7 +173,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"attack2",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -199,7 +199,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"block",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -242,7 +242,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"walk",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hch7y"]
@@ -252,7 +252,7 @@ size = Vector2(28, 63)
 size = Vector2(28, 63)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xotkn"]
-size = Vector2(46, 39)
+size = Vector2(49, 29)
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
 script = ExtResource("1_je61o")
@@ -261,7 +261,6 @@ script = ExtResource("1_je61o")
 sprite_frames = SubResource("SpriteFrames_jhcdv")
 animation = &"attack2"
 autoplay = "idle"
-frame = 4
 
 [node name="collider" type="CollisionShape2D" parent="."]
 position = Vector2(1, 0.5)
@@ -274,13 +273,11 @@ position = Vector2(1, 0.5)
 shape = SubResource("RectangleShape2D_j4y4m")
 
 [node name="hitboxes" type="Area2D" parent="."]
-position = Vector2(37, 8)
 
 [node name="slash_hitbox" type="CollisionShape2D" parent="hitboxes"]
+position = Vector2(37.5, 8)
 shape = SubResource("RectangleShape2D_xotkn")
 
 [node name="slash_hitbox2" type="CollisionShape2D" parent="hitboxes"]
-position = Vector2(-10, -18.5)
+position = Vector2(25.5, -17.5)
 shape = SubResource("RectangleShape2D_xotkn")
-
-[connection signal="body_entered" from="hitboxes" to="." method="_on_area_2d_body_entered"]

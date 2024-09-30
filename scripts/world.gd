@@ -13,14 +13,12 @@ var score_p2 = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	_reset_players()
+	
 	hpbar1.init_hp(player1.max_hp)
 	hpbar2.init_hp(player2.max_hp)
 	score.text = "0 : 0"
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
+	
 # Update player 1's HP bar when damaged
 func _on_player_1_damaged(amount: Variant) -> void:
 	hpbar1.hp = player1.current_hp
@@ -51,26 +49,11 @@ func _on_player_2_died() -> void:
 func _update_score() -> void:
 	score.text = str(score_p1) + " : " + str(score_p2)
 
-# Reset players' health and positions
+# Reset players by calling their reset function
 func _reset_players() -> void:
-	# Reset health
-	player1.current_hp = player1.max_hp
-	player2.current_hp = player2.max_hp
-
+	player1.reset(Vector2(100, 420))  # Example position for player 1
+	player2.reset(Vector2(500, 380))  # Example position for player 2
+	
 	# Update HP bars
 	hpbar1.hp = player1.max_hp
 	hpbar2.hp = player2.max_hp
-
-	# Reset positions (you can adjust these positions)
-	player1.position = Vector2(100, 500)  # Example position
-	player2.position = Vector2(700, 500)  # Example position
-
-	# Reset player states (optional if needed)
-	player1.velocity = Vector2.ZERO
-	player2.velocity = Vector2.ZERO
-
-	# Optionally stop any ongoing attacks or animations
-	player1.is_attacking = false
-	player2.is_attacking = false
-	player1.anim.play("idle")
-	player2.anim.play("idle")
