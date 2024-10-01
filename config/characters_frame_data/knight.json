@@ -1,0 +1,14 @@
+{
+	"attack1": {
+		"damage": 10,
+		"stun_duration": 0.5,
+		"active_frames": [1, 2],
+		"hitbox_path": "hitboxes/slash_hitbox1"
+	},
+	"attack2": {
+		"damage": 20,
+		"stun_duration": 1.0,
+		"active_frames": [3, 4],
+		"hitbox_path": "hitboxes/slash_hitbox2"
+	}
+}

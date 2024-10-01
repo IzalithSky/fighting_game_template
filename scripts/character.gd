@@ -5,13 +5,9 @@ extends CharacterBody2D
 @export var jump_velocity: float = 400.0
 @export var max_hp: int = 100
 
-@export var attack1_dmg: int = 10
-@export var attack1_stun_duration: float = 0.5  # Stun duration for attack 1 in seconds
-@export var attack2_dmg: int = 20
-@export var attack2_stun_duration: float = 1.0  # Stun duration for attack 2 in seconds
-
 @export var input_prefix: String = "p1_"  # To switch between p1_ and p2_
 @export var gravity: float = 1200.0  # Gravity strength
+@export var attack_data_file: String = "res://attack_data.json"  # Path to the JSON file
 
 # --- Signals ---
 signal damaged(amount: int)
@@ -31,45 +27,60 @@ var current_hp: int = max_hp
 var current_state: State = State.IDLE
 var facing_right: bool = true  # Direction the character is facing
 var stun_timer: float = 0.0  # Timer for stun duration
-var attack_stun_duration: float = 0.0  # Duration of stun after attack
 var current_attack_damage: int = 0  # Damage of current attack
-var hitbox_activation_frames: Dictionary = {}
+var attack_stun_duration: float = 0.0  # Stun duration of current attack
+var current_attack_data: Dictionary = {}  # Dictionary to hold data for the current attack
 
 # --- Node References ---
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hurtbox = $hurtbox/collider
 @onready var slash_attack = $hitboxes
-@onready var slash_hitbox = $hitboxes/slash_hitbox  # Hitbox for attack 1
-@onready var slash_hitbox2 = $hitboxes/slash_hitbox2  # Hitbox for attack 2
+@onready var slash_hitbox1 = $hitboxes/slash_hitbox1  # Adjust this to the correct node path
+@onready var slash_hitbox2 = $hitboxes/slash_hitbox2  # Adjust this to the correct node path
+
+# --- Attack Data ---
+var attack_data: Dictionary = {}
 
 # --- Lifecycle Methods ---
 func _ready() -> void:
-	# Initialize hitboxes and activation frames
+	# Load the attack data from the JSON file
+	load_attack_data()
+
+	# Initialize hitboxes and disable them
 	disable_hitboxes()
-	initialize_hitbox_frames()
 
 	# Connect signals
 	anim.connect("animation_finished", on_animation_finished)
 	anim.connect("frame_changed", on_animation_frame_changed)
 	slash_attack.connect("body_entered", on_hitbox_body_entered)
 
+func load_attack_data() -> void:
+	# Load the JSON file
+	var file = FileAccess.open(attack_data_file, FileAccess.READ)
+	if file:
+		var json_data = file.get_as_text()
+		var json = JSON.new()
+		var error = json.parse(json_data)  # Parse returns an integer (OK or error code)
+
+		# Check if parsing was successful
+		if error == OK:
+			attack_data = json.get_data()  # Use get_data() to access the parsed JSON data
+			# Set up hitbox paths to nodes based on the strings from JSON
+			for attack_name in attack_data.keys():
+				var hitbox_path = attack_data[attack_name]["hitbox_path"]  # Get the hitbox path string
+				var hitbox_node = get_node(hitbox_path)  # Use get_node() to find the node by path
+				if hitbox_node:
+					attack_data[attack_name]["hitbox"] = hitbox_node  # Store the node reference
+		else:
+			# Print detailed error message
+			print("Error parsing JSON at line", json.get_error_line(), ":", json.get_error_message())
+	else:
+		print("Failed to load file:", attack_data_file)
+
 func _physics_process(delta: float) -> void:
 	apply_gravity(delta)
 	handle_state(delta)
 	move_and_slide()
-
-# --- Initialization ---
-func initialize_hitbox_frames() -> void:
-	hitbox_activation_frames = {
-		"attack": {
-			"hitbox": slash_hitbox,
-			"active_frames": [2, 3]  # Adjust these frames to match your actual animation
-		},
-		"attack2": {
-			"hitbox": slash_hitbox2,
-			"active_frames": [3, 4]  # Adjust these frames to match your actual animation
-		}
-	}
 
 # --- State Handling ---
 func handle_state(delta: float) -> void:
@@ -85,6 +96,7 @@ func handle_state(delta: float) -> void:
 		State.STUNNED:
 			handle_stunned_state(delta)
 
+# --- Idle State Handling ---
 func handle_idle_state(delta: float) -> void:
 	var direction = Input.get_axis(input_prefix + "left", input_prefix + "right")
 	if Input.is_action_just_pressed(input_prefix + "jump"):
@@ -97,13 +109,14 @@ func handle_idle_state(delta: float) -> void:
 	elif direction != 0:
 		transition_to_state(State.WALKING, direction)
 	elif Input.is_action_just_pressed(input_prefix + "attack"):
-		initiate_attack(1)
+		initiate_attack("attack1")
 	elif Input.is_action_just_pressed(input_prefix + "attack2"):
-		initiate_attack(2)
+		initiate_attack("attack2")
 	else:
 		velocity.x = 0
 		anim.play("idle")
 
+# --- Walking State Handling ---
 func handle_walking_state(delta: float) -> void:
 	var direction = Input.get_axis(input_prefix + "left", input_prefix + "right")
 	if Input.is_action_just_pressed(input_prefix + "jump"):
@@ -118,27 +131,29 @@ func handle_walking_state(delta: float) -> void:
 		anim.play("walk")
 		flip_sprite(direction)
 	elif Input.is_action_just_pressed(input_prefix + "attack"):
-		initiate_attack(1)
+		initiate_attack("attack1")
 	elif Input.is_action_just_pressed(input_prefix + "attack2"):
-		initiate_attack(2)
+		initiate_attack("attack2")
 	else:
 		transition_to_state(State.IDLE)
 
+# --- Jumping State Handling ---
 func handle_jumping_state(delta: float) -> void:
 	if is_on_floor():
 		velocity.y = 0
 		transition_to_state(State.IDLE)
 	
-	# Remove air control by not processing horizontal input
 	if Input.is_action_just_pressed(input_prefix + "attack"):
-		initiate_attack(1)
+		initiate_attack("attack1")
 	elif Input.is_action_just_pressed(input_prefix + "attack2"):
-		initiate_attack(2)
+		initiate_attack("attack2")
 
+# --- Attacking State Handling ---
 func handle_attacking_state(delta: float) -> void:
 	if is_on_floor():
 		velocity.x = 0  # Lock movement on the ground
 
+# --- Stunned State Handling ---
 func handle_stunned_state(delta: float) -> void:
 	stun_timer -= delta
 	if stun_timer <= 0.0:
@@ -176,36 +191,30 @@ func initiate_jump(direction: int) -> void:
 	# Transition to jumping state
 	transition_to_state(State.JUMPING)
 
-func initiate_attack(attack_type: int) -> void:
-	if attack_type == 1:
-		current_attack_damage = attack1_dmg
-		attack_stun_duration = attack1_stun_duration
-		anim.play("attack")
-		enable_hitbox("attack")
-	elif attack_type == 2:
-		current_attack_damage = attack2_dmg
-		attack_stun_duration = attack2_stun_duration
-		anim.play("attack2")
-		enable_hitbox("attack2")
+func initiate_attack(attack_name: String) -> void:
+	current_attack_data = attack_data[attack_name]
+	current_attack_damage = current_attack_data["damage"]
+	attack_stun_duration = current_attack_data["stun_duration"]
+	anim.play(attack_name)
+	enable_hitbox(attack_name)
 	current_state = State.ATTACKING
 
 # --- Animation Callbacks ---
 func on_animation_finished() -> void:
 	match anim.animation:
-		"attack", "attack2":
+		"attack1", "attack2":
 			disable_hitboxes()
 			current_state = State.IDLE  # Transition back to idle state
 			anim.play("idle")
 		"stunned":
 			pass  # Automatically transition in handle_stunned_state()
 
-# --- Animation Callbacks ---
 func on_animation_frame_changed() -> void:
 	var current_animation = anim.animation
 	var current_frame = anim.frame
 	
-	if hitbox_activation_frames.has(current_animation):
-		var attack_info = hitbox_activation_frames[current_animation]
+	if attack_data.has(current_animation):
+		var attack_info = attack_data[current_animation]
 		var hitbox = attack_info["hitbox"]
 		var active_frames = attack_info["active_frames"]
 
@@ -257,11 +266,11 @@ func flip_hitbox() -> void:
 	slash_attack.scale.x = 1 if facing_right else -1
 
 func enable_hitbox(attack_name: String) -> void:
-	var hitbox = hitbox_activation_frames[attack_name]["hitbox"]
+	var hitbox = attack_data[attack_name]["hitbox"]
 	hitbox.disabled = false
 
 func disable_hitboxes() -> void:
-	slash_hitbox.call_deferred("set_disabled", true)
+	slash_hitbox1.call_deferred("set_disabled", true)
 	slash_hitbox2.call_deferred("set_disabled", true)
 
 # --- Reset Function ---
