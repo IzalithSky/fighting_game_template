@@ -29,6 +29,8 @@ var facing_right: bool = true  # Direction the character is facing
 var stun_timer: float = 0.0  # Timer for stun duration
 var current_attack_damage: int = 0  # Damage of current attack
 var attack_stun_duration: float = 0.0  # Stun duration of current attack
+var current_pushback_force: float = 0.0  # Pushback force of current attack
+var current_vertical_pushback_force: float = 0.0  # Vertical pushback force of current attack
 var current_attack_data: Dictionary = {}  # Dictionary to hold data for the current attack
 
 # --- Node References ---
@@ -195,6 +197,8 @@ func initiate_attack(attack_name: String) -> void:
 	current_attack_data = attack_data[attack_name]
 	current_attack_damage = current_attack_data["damage"]
 	attack_stun_duration = current_attack_data["stun_duration"]
+	current_pushback_force = current_attack_data.get("pushback_force", 0)  # Default to 0 if not defined
+	current_vertical_pushback_force = current_attack_data.get("vertical_pushback_force", 0)  # Default to 0 if not defined
 	anim.play(attack_name)
 	enable_hitbox(attack_name)
 	current_state = State.ATTACKING
@@ -227,7 +231,20 @@ func on_animation_frame_changed() -> void:
 # --- Collision Handling ---
 func on_hitbox_body_entered(body: Node) -> void:
 	if body != self and body.has_method("take_damage"):
-		body.take_damage(current_attack_damage, attack_stun_duration)  # Pass stun duration
+		# Apply damage and stun to the target
+		body.take_damage(current_attack_damage, attack_stun_duration)
+		
+		# Apply pushback to the target
+		apply_pushback(body)
+
+func apply_pushback(body: Node) -> void:
+	# Calculate pushback direction based on which side of the player the opponent is
+	var pushback_direction = 1 if facing_right else -1
+	
+	# Apply pushback force to the target's velocity
+	if body is CharacterBody2D:
+		body.velocity.x = pushback_direction * current_pushback_force
+		body.velocity.y = -current_vertical_pushback_force
 
 # --- Damage Handling ---
 func take_damage(amount: int, stun_duration: float = 0.0) -> void:

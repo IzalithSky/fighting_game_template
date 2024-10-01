@@ -3,12 +3,16 @@
 		"damage": 10,
 		"stun_duration": 0.5,
 		"active_frames": [2, 3],
-		"hitbox_path": "hitboxes/slash_hitbox1"
+		"hitbox_path": "hitboxes/slash_hitbox1",
+		"pushback_force": 80,
+		"vertical_pushback_force": 80
 	},
 	"attack2": {
 		"damage": 20,
 		"stun_duration": 1.0,
 		"active_frames": [1, 2],
-		"hitbox_path": "hitboxes/slash_hitbox2"
+		"hitbox_path": "hitboxes/slash_hitbox2",
+		"pushback_force": 40,
+		"vertical_pushback_force": 80
 	}
 }
