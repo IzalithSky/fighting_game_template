@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cbbfxf83lknfq" path="res://scenes/character.tscn" id="1_gdyuf"]
 [ext_resource type="Script" path="res://scripts/world.gd" id="1_o1srd"]
-[ext_resource type="Texture2D" uid="uid://dfu67hanocx7y" path="res://sprites/Dungeon Tile Set.png" id="2_0ryg2"]
+[ext_resource type="Texture2D" uid="uid://dfu67hanocx7y" path="res://sprites/locations/dungeon/Dungeon Tile Set.png" id="2_0ryg2"]
 [ext_resource type="PackedScene" uid="uid://62t2005fchbn" path="res://scenes/zidane.tscn" id="3_qb37m"]
 [ext_resource type="PackedScene" uid="uid://diksjuhs82jqo" path="res://scenes/hpbar.tscn" id="4_sblbn"]
 

@@ -13,7 +13,7 @@ config_version=5
 config/name="fighting_game_template"
 run/main_scene="res://scenes/world.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
-config/icon="res://sprites/icon.svg"
+config/icon="res://sprites/misc/icon.svg"
 
 [display]
 
