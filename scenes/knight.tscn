@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://cbbfxf83lknfq"]
+[gd_scene load_steps=48 format=3 uid="uid://cbbfxf83lknfq"]
 
 [ext_resource type="Script" path="res://scripts/character.gd" id="1_je61o"]
 [ext_resource type="Texture2D" uid="uid://dajq780bxf8av" path="res://sprites/characters/Knight_player/Idle_KG_2.png" id="1_okya6"]
@@ -56,18 +56,6 @@ region = Rect2(400, 0, 100, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_dikod"]
 atlas = ExtResource("3_4ve8t")
 region = Rect2(500, 0, 100, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_sn8ng"]
-atlas = ExtResource("3_o32m5")
-region = Rect2(0, 0, 100, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_yaj5o"]
-atlas = ExtResource("3_o32m5")
-region = Rect2(100, 0, 100, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_obnxu"]
-atlas = ExtResource("3_o32m5")
-region = Rect2(200, 0, 100, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_oyjvk"]
 atlas = ExtResource("3_o32m5")
@@ -211,15 +199,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_sn8ng")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_yaj5o")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_obnxu")
-}, {
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_oyjvk")
 }, {
 "duration": 1.0,
@@ -233,7 +212,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"block",
-"speed": 10.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -328,8 +307,10 @@ attack_data_file = "res://config/characters_frame_data/knight.json"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"attack2"
+animation = &"block"
 autoplay = "idle"
+frame = 1
+frame_progress = 0.877983
 
 [node name="collider" type="CollisionShape2D" parent="."]
 position = Vector2(1, 0.5)

@@ -19,7 +19,8 @@ enum State {
 	WALKING,
 	JUMPING,
 	ATTACKING,
-	STUNNED
+	STUNNED,
+	BLOCKING  # New blocking state
 }
 
 # --- Internal Variables ---
@@ -97,11 +98,19 @@ func handle_state(delta: float) -> void:
 			handle_attacking_state(delta)
 		State.STUNNED:
 			handle_stunned_state(delta)
+		State.BLOCKING:
+			handle_blocking_state(delta)
 
 # --- Idle State Handling ---
 func handle_idle_state(delta: float) -> void:
 	var direction = Input.get_axis(input_prefix + "left", input_prefix + "right")
-	if Input.is_action_just_pressed(input_prefix + "jump"):
+	if Input.is_action_just_pressed(input_prefix + "attack"):
+		initiate_attack("attack1")
+	elif Input.is_action_just_pressed(input_prefix + "attack2"):
+		initiate_attack("attack2")
+	elif Input.is_action_just_pressed(input_prefix + "block") and is_on_floor():
+		transition_to_state(State.BLOCKING)
+	elif Input.is_action_just_pressed(input_prefix + "jump"):
 		var jump_direction = 0
 		if Input.is_action_pressed(input_prefix + "left") and not Input.is_action_pressed(input_prefix + "right"):
 			jump_direction = -1
@@ -110,10 +119,6 @@ func handle_idle_state(delta: float) -> void:
 		initiate_jump(jump_direction)
 	elif direction != 0:
 		transition_to_state(State.WALKING, direction)
-	elif Input.is_action_just_pressed(input_prefix + "attack"):
-		initiate_attack("attack1")
-	elif Input.is_action_just_pressed(input_prefix + "attack2"):
-		initiate_attack("attack2")
 	else:
 		velocity.x = 0
 		anim.play("idle")
@@ -121,7 +126,13 @@ func handle_idle_state(delta: float) -> void:
 # --- Walking State Handling ---
 func handle_walking_state(delta: float) -> void:
 	var direction = Input.get_axis(input_prefix + "left", input_prefix + "right")
-	if Input.is_action_just_pressed(input_prefix + "jump"):
+	if Input.is_action_just_pressed(input_prefix + "attack"):
+		initiate_attack("attack1")
+	elif Input.is_action_just_pressed(input_prefix + "attack2"):
+		initiate_attack("attack2")
+	elif Input.is_action_just_pressed(input_prefix + "block") and is_on_floor():
+		transition_to_state(State.BLOCKING)
+	elif Input.is_action_just_pressed(input_prefix + "jump"):
 		var jump_direction = 0
 		if Input.is_action_pressed(input_prefix + "left") and not Input.is_action_pressed(input_prefix + "right"):
 			jump_direction = -1
@@ -132,10 +143,6 @@ func handle_walking_state(delta: float) -> void:
 		velocity.x = direction * speed
 		anim.play("walk")
 		flip_sprite(direction)
-	elif Input.is_action_just_pressed(input_prefix + "attack"):
-		initiate_attack("attack1")
-	elif Input.is_action_just_pressed(input_prefix + "attack2"):
-		initiate_attack("attack2")
 	else:
 		transition_to_state(State.IDLE)
 
@@ -161,6 +168,15 @@ func handle_stunned_state(delta: float) -> void:
 	if stun_timer <= 0.0:
 		transition_to_state(State.IDLE)
 
+# --- Blocking State Handling ---
+func handle_blocking_state(delta: float) -> void:
+	# Remain in blocking state as long as the block input is held and the player is on the ground
+	if Input.is_action_pressed(input_prefix + "block") and is_on_floor():
+		velocity.x = 0  # Character should not move while blocking
+		anim.play("block")  # Play blocking animation
+	else:
+		transition_to_state(State.IDLE)  # Stop blocking if block input is released or player is airborne
+
 # --- State Transitions ---
 func transition_to_state(new_state: State, direction: float = 0) -> void:
 	current_state = new_state
@@ -175,6 +191,8 @@ func transition_to_state(new_state: State, direction: float = 0) -> void:
 			anim.play("jump")
 		State.STUNNED:
 			anim.play("stunned")
+		State.BLOCKING:
+			anim.play("block")
 
 func initiate_jump(direction: int) -> void:
 	# Set vertical velocity for the jump
@@ -248,12 +266,22 @@ func apply_pushback(body: Node) -> void:
 
 # --- Damage Handling ---
 func take_damage(amount: int, stun_duration: float = 0.0) -> void:
-	current_hp -= amount
-	emit_signal("damaged", amount)
+	var actual_damage = amount
+	var actual_stun_duration = stun_duration
+	
+	if current_state == State.BLOCKING:
+		# Reduce damage by 80%, but minimum damage should be 1
+		actual_damage = max(1, int(amount * 0.2))
+		# Reduce stun duration by 60%
+		actual_stun_duration = stun_duration * 0.6
+	
+	current_hp -= actual_damage
+	emit_signal("damaged", actual_damage)
+
 	if current_hp <= 0:
 		die()
-	elif stun_duration > 0.0:
-		initiate_stun(stun_duration)  # Apply stun if duration is greater than zero
+	elif actual_stun_duration > 0.0:
+		initiate_stun(actual_stun_duration)  # Apply reduced stun if blocking
 
 func die() -> void:
 	emit_signal("died")
