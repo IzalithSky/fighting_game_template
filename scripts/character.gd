@@ -9,6 +9,10 @@ extends CharacterBody2D
 @export var gravity: float = 1200.0  # Gravity strength
 @export var attack_data_file: String = "res://attack_data.json"  # Path to the JSON file
 
+# New optional variables
+@export var opponent: NodePath  # Pointer to the opponent
+@export var always_face_opponent: bool = true  # Whether to always face the opponent
+
 # --- Signals ---
 signal damaged(amount: int)
 signal died()
@@ -20,7 +24,7 @@ enum State {
 	JUMPING,
 	ATTACKING,
 	STUNNED,
-	BLOCKING  # New blocking state
+	BLOCKING
 }
 
 # --- Internal Variables ---
@@ -33,6 +37,7 @@ var attack_stun_duration: float = 0.0  # Stun duration of current attack
 var current_pushback_force: float = 0.0  # Pushback force of current attack
 var current_vertical_pushback_force: float = 0.0  # Vertical pushback force of current attack
 var current_attack_data: Dictionary = {}  # Dictionary to hold data for the current attack
+var opponent_instance: Node = null  # Reference to the opponent node
 
 # --- Node References ---
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
@@ -57,6 +62,21 @@ func _ready() -> void:
 	anim.connect("frame_changed", on_animation_frame_changed)
 	slash_attack.connect("body_entered", on_hitbox_body_entered)
 
+	# Load opponent reference if provided
+	if opponent != null:
+		opponent_instance = get_node(opponent)
+
+func _physics_process(delta: float) -> void:
+	apply_gravity(delta)
+	handle_state(delta)
+	
+	# Make sure the player faces the opponent if required
+	if always_face_opponent and opponent_instance:
+		face_opponent()
+	
+	move_and_slide()
+
+# --- Load Attack Data ---
 func load_attack_data() -> void:
 	# Load the JSON file
 	var file = FileAccess.open(attack_data_file, FileAccess.READ)
@@ -80,11 +100,6 @@ func load_attack_data() -> void:
 	else:
 		print("Failed to load file:", attack_data_file)
 
-func _physics_process(delta: float) -> void:
-	apply_gravity(delta)
-	handle_state(delta)
-	move_and_slide()
-
 # --- State Handling ---
 func handle_state(delta: float) -> void:
 	match current_state:
@@ -101,15 +116,17 @@ func handle_state(delta: float) -> void:
 		State.BLOCKING:
 			handle_blocking_state(delta)
 
-# --- Idle State Handling ---
-func handle_idle_state(delta: float) -> void:
-	var direction = Input.get_axis(input_prefix + "left", input_prefix + "right")
+# --- Input Handling (Prioritize Attack) ---
+func handle_input(delta: float) -> bool:
 	if Input.is_action_just_pressed(input_prefix + "attack"):
 		initiate_attack("attack1")
+		return true
 	elif Input.is_action_just_pressed(input_prefix + "attack2"):
 		initiate_attack("attack2")
+		return true
 	elif Input.is_action_just_pressed(input_prefix + "block") and is_on_floor():
 		transition_to_state(State.BLOCKING)
+		return true
 	elif Input.is_action_just_pressed(input_prefix + "jump"):
 		var jump_direction = 0
 		if Input.is_action_pressed(input_prefix + "left") and not Input.is_action_pressed(input_prefix + "right"):
@@ -117,7 +134,16 @@ func handle_idle_state(delta: float) -> void:
 		elif Input.is_action_pressed(input_prefix + "right") and not Input.is_action_pressed(input_prefix + "left"):
 			jump_direction = 1
 		initiate_jump(jump_direction)
-	elif direction != 0:
+		return true
+	return false
+
+# --- Idle State Handling ---
+func handle_idle_state(delta: float) -> void:
+	if handle_input(delta):
+		return  # Exit early if an input is handled
+
+	var direction = Input.get_axis(input_prefix + "left", input_prefix + "right")
+	if direction != 0:
 		transition_to_state(State.WALKING, direction)
 	else:
 		velocity.x = 0
@@ -125,21 +151,11 @@ func handle_idle_state(delta: float) -> void:
 
 # --- Walking State Handling ---
 func handle_walking_state(delta: float) -> void:
+	if handle_input(delta):
+		return  # Exit early if an input is handled
+
 	var direction = Input.get_axis(input_prefix + "left", input_prefix + "right")
-	if Input.is_action_just_pressed(input_prefix + "attack"):
-		initiate_attack("attack1")
-	elif Input.is_action_just_pressed(input_prefix + "attack2"):
-		initiate_attack("attack2")
-	elif Input.is_action_just_pressed(input_prefix + "block") and is_on_floor():
-		transition_to_state(State.BLOCKING)
-	elif Input.is_action_just_pressed(input_prefix + "jump"):
-		var jump_direction = 0
-		if Input.is_action_pressed(input_prefix + "left") and not Input.is_action_pressed(input_prefix + "right"):
-			jump_direction = -1
-		elif Input.is_action_pressed(input_prefix + "right") and not Input.is_action_pressed(input_prefix + "left"):
-			jump_direction = 1
-		initiate_jump(jump_direction)
-	elif direction != 0:
+	if direction != 0:
 		velocity.x = direction * speed
 		anim.play("walk")
 		flip_sprite(direction)
@@ -148,14 +164,12 @@ func handle_walking_state(delta: float) -> void:
 
 # --- Jumping State Handling ---
 func handle_jumping_state(delta: float) -> void:
+	if handle_input(delta):
+		return  # Exit early if an input is handled
+
 	if is_on_floor():
 		velocity.y = 0
 		transition_to_state(State.IDLE)
-	
-	if Input.is_action_just_pressed(input_prefix + "attack"):
-		initiate_attack("attack1")
-	elif Input.is_action_just_pressed(input_prefix + "attack2"):
-		initiate_attack("attack2")
 
 # --- Attacking State Handling ---
 func handle_attacking_state(delta: float) -> void:
@@ -170,10 +184,20 @@ func handle_stunned_state(delta: float) -> void:
 
 # --- Blocking State Handling ---
 func handle_blocking_state(delta: float) -> void:
+	if handle_input(delta):
+		return  # Exit early if an input is handled
+
 	# Remain in blocking state as long as the block input is held and the player is on the ground
 	if Input.is_action_pressed(input_prefix + "block") and is_on_floor():
 		velocity.x = 0  # Character should not move while blocking
 		anim.play("block")  # Play blocking animation
+
+		# Allow movement (walking) while blocking
+		var direction = Input.get_axis(input_prefix + "left", input_prefix + "right")
+		if direction != 0:
+			velocity.x = direction * speed * 0.5  # Move at reduced speed while blocking
+			flip_sprite(direction)
+		
 	else:
 		transition_to_state(State.IDLE)  # Stop blocking if block input is released or player is airborne
 
@@ -220,6 +244,15 @@ func initiate_attack(attack_name: String) -> void:
 	anim.play(attack_name)
 	enable_hitbox(attack_name)
 	current_state = State.ATTACKING
+
+# --- Face Opponent Logic ---
+func face_opponent() -> void:
+	if opponent_instance != null:
+		var opponent_pos = opponent_instance.global_position
+		if opponent_pos.x > global_position.x and not facing_right:
+			flip_sprite(1)
+		elif opponent_pos.x < global_position.x and facing_right:
+			flip_sprite(-1)
 
 # --- Animation Callbacks ---
 func on_animation_finished() -> void:

@@ -190,10 +190,12 @@ tile_set = SubResource("TileSet_2gpjr")
 
 [node name="player1" parent="." instance=ExtResource("3_qb37m")]
 position = Vector2(100, 420)
+opponent = NodePath("../player2")
 
 [node name="player2" parent="." instance=ExtResource("1_gdyuf")]
 position = Vector2(500, 380)
 input_prefix = "p2_"
+opponent = NodePath("../player1")
 
 [node name="hpbar1" parent="." instance=ExtResource("4_sblbn")]
 offset_left = 280.0
