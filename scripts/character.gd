@@ -45,6 +45,7 @@ var opponent_instance: Node = null  # Reference to the opponent node
 @onready var slash_attack = $hitboxes
 @onready var slash_hitbox1 = $hitboxes/slash_hitbox1  # Adjust this to the correct node path
 @onready var slash_hitbox2 = $hitboxes/slash_hitbox2  # Adjust this to the correct node path
+@onready var hit_sound = $AudioStreamPlayer2D  # Reference to the AudioStreamPlayer for hit sounds
 
 # --- Attack Data ---
 var attack_data: Dictionary = {}
@@ -282,6 +283,10 @@ func on_animation_frame_changed() -> void:
 # --- Collision Handling ---
 func on_hitbox_body_entered(body: Node) -> void:
 	if body != self and body.has_method("take_damage"):
+		# Play the hit sound
+		if hit_sound:
+			hit_sound.play()
+
 		# Apply damage and stun to the target
 		body.take_damage(current_attack_damage, attack_stun_duration)
 		
