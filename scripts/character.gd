@@ -45,7 +45,10 @@ var opponent_instance: Node = null  # Reference to the opponent node
 @onready var slash_attack = $hitboxes
 @onready var slash_hitbox1 = $hitboxes/slash_hitbox1  # Adjust this to the correct node path
 @onready var slash_hitbox2 = $hitboxes/slash_hitbox2  # Adjust this to the correct node path
-@onready var hit_sound = $AudioStreamPlayer2D  # Reference to the AudioStreamPlayer for hit sounds
+@onready var sound_hit1 = $sound/hit1
+@onready var sound_hit2 = $sound/hit2
+@onready var sound_swing = $sound/swing
+@onready var sound_block = $sound/block
 
 # --- Attack Data ---
 var attack_data: Dictionary = {}
@@ -242,6 +245,10 @@ func initiate_attack(attack_name: String) -> void:
 	attack_stun_duration = current_attack_data["stun_duration"]
 	current_pushback_force = current_attack_data.get("pushback_force", 0)  # Default to 0 if not defined
 	current_vertical_pushback_force = current_attack_data.get("vertical_pushback_force", 0)  # Default to 0 if not defined
+
+	# Play the swing sound for any attack
+	sound_swing.play()
+
 	anim.play(attack_name)
 	enable_hitbox(attack_name)
 	current_state = State.ATTACKING
@@ -283,15 +290,19 @@ func on_animation_frame_changed() -> void:
 # --- Collision Handling ---
 func on_hitbox_body_entered(body: Node) -> void:
 	if body != self and body.has_method("take_damage"):
-		# Play the hit sound
-		if hit_sound:
-			hit_sound.play()
-
+		var is_blocking = body.get("current_state") == State.BLOCKING
+		if not is_blocking:
+			# Play hit sound based on the attack
+			if anim.animation == "attack1":
+				sound_hit1.play()
+			elif anim.animation == "attack2":
+				sound_hit2.play()
+		
 		# Apply damage and stun to the target
 		body.take_damage(current_attack_damage, attack_stun_duration)
 		
 		# Apply pushback to the target
-		apply_pushback(body)
+	apply_pushback(body)
 
 func apply_pushback(body: Node) -> void:
 	# Calculate pushback direction based on which side of the player the opponent is
@@ -308,6 +319,7 @@ func take_damage(amount: int, stun_duration: float = 0.0) -> void:
 	var actual_stun_duration = stun_duration
 	
 	if current_state == State.BLOCKING:
+		sound_block.play()
 		# Reduce damage by 80%, but minimum damage should be 1
 		actual_damage = max(1, int(amount * 0.2))
 		# Reduce stun duration by 60%

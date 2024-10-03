@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://cbbfxf83lknfq"]
+[gd_scene load_steps=52 format=3 uid="uid://cbbfxf83lknfq"]
 
 [ext_resource type="Script" path="res://scripts/character.gd" id="1_je61o"]
 [ext_resource type="Texture2D" uid="uid://dajq780bxf8av" path="res://sprites/characters/Knight_player/Idle_KG_2.png" id="1_okya6"]
@@ -8,7 +8,10 @@
 [ext_resource type="Texture2D" uid="uid://cw7kxwou0xh83" path="res://sprites/characters/Knight_player/Shield_Up_KG_1.png" id="3_o32m5"]
 [ext_resource type="Texture2D" uid="uid://55no5d7a6fl5" path="res://sprites/characters/Knight_player/Landing_KG_2.png" id="6_bvqnp"]
 [ext_resource type="Texture2D" uid="uid://c314iueirxsvv" path="res://sprites/characters/Knight_player/Hurt_KG_2.png" id="7_0bih1"]
-[ext_resource type="AudioStream" uid="uid://ntkd0x2cjdm" path="res://audio/hit.wav" id="9_fvhyq"]
+[ext_resource type="AudioStream" uid="uid://c3seaau4f0sdo" path="res://audio/hit1.wav" id="9_b2t3y"]
+[ext_resource type="AudioStream" uid="uid://d3ewpmd067n2e" path="res://audio/swing1.wav" id="10_prmwa"]
+[ext_resource type="AudioStream" uid="uid://h5bj5a04vj5d" path="res://audio/block1.wav" id="11_0e7jf"]
+[ext_resource type="AudioStream" uid="uid://dlw2cg3qghboe" path="res://audio/hit2.wav" id="12_25yp3"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_37uav"]
 atlas = ExtResource("1_wgnkk")
@@ -314,16 +317,19 @@ frame = 1
 frame_progress = 0.877983
 
 [node name="collider" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(1, 0.5)
 shape = SubResource("RectangleShape2D_hch7y")
 
 [node name="hurtbox" type="Area2D" parent="."]
+visible = false
 
 [node name="collider" type="CollisionShape2D" parent="hurtbox"]
 position = Vector2(1, 0.5)
 shape = SubResource("RectangleShape2D_j4y4m")
 
 [node name="hitboxes" type="Area2D" parent="."]
+visible = false
 
 [node name="slash_hitbox1" type="CollisionShape2D" parent="hitboxes"]
 position = Vector2(37.5, 8)
@@ -333,5 +339,16 @@ shape = SubResource("RectangleShape2D_xotkn")
 position = Vector2(25.5, -17.5)
 shape = SubResource("RectangleShape2D_xotkn")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("9_fvhyq")
+[node name="sound" type="Node" parent="."]
+
+[node name="hit1" type="AudioStreamPlayer2D" parent="sound"]
+stream = ExtResource("9_b2t3y")
+
+[node name="swing" type="AudioStreamPlayer2D" parent="sound"]
+stream = ExtResource("10_prmwa")
+
+[node name="block" type="AudioStreamPlayer2D" parent="sound"]
+stream = ExtResource("11_0e7jf")
+
+[node name="hit2" type="AudioStreamPlayer2D" parent="sound"]
+stream = ExtResource("12_25yp3")

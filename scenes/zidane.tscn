@@ -1,9 +1,12 @@
-[gd_scene load_steps=49 format=3 uid="uid://62t2005fchbn"]
+[gd_scene load_steps=52 format=3 uid="uid://62t2005fchbn"]
 
 [ext_resource type="Script" path="res://scripts/character.gd" id="1_t3rb3"]
 [ext_resource type="Texture2D" uid="uid://b253el4yq1vy8" path="res://sprites/characters/zidane/entrance.png" id="3_wseqo"]
-[ext_resource type="AudioStream" uid="uid://ntkd0x2cjdm" path="res://audio/hit.wav" id="4_y27dx"]
+[ext_resource type="AudioStream" uid="uid://c3seaau4f0sdo" path="res://audio/hit1.wav" id="4_7ve4u"]
 [ext_resource type="Texture2D" uid="uid://6xh8lkvaqr83" path="res://sprites/characters/zidane/Zidane Final Spritesheet copy.png" id="5_cgt00"]
+[ext_resource type="AudioStream" uid="uid://d3ewpmd067n2e" path="res://audio/swing1.wav" id="5_huqtv"]
+[ext_resource type="AudioStream" uid="uid://b2ja84lka7c00" path="res://audio/block2.wav" id="6_wpehk"]
+[ext_resource type="AudioStream" uid="uid://dlw2cg3qghboe" path="res://audio/hit2.wav" id="7_7aj4a"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2op1a"]
 atlas = ExtResource("5_cgt00")
@@ -339,7 +342,7 @@ attack_data_file = "res://config/characters_frame_data/zidane.json"
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"block"
+animation = &"attack2"
 autoplay = "idle"
 
 [node name="collider" type="CollisionShape2D" parent="."]
@@ -365,7 +368,18 @@ shape = SubResource("RectangleShape2D_xotkn")
 position = Vector2(40, -46)
 shape = SubResource("RectangleShape2D_xotkn")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("4_y27dx")
+[node name="sound" type="Node" parent="."]
+
+[node name="hit1" type="AudioStreamPlayer2D" parent="sound"]
+stream = ExtResource("7_7aj4a")
+
+[node name="swing" type="AudioStreamPlayer2D" parent="sound"]
+stream = ExtResource("5_huqtv")
+
+[node name="block" type="AudioStreamPlayer2D" parent="sound"]
+stream = ExtResource("6_wpehk")
+
+[node name="hit2" type="AudioStreamPlayer2D" parent="sound"]
+stream = ExtResource("4_7ve4u")
 
 [connection signal="body_entered" from="hitboxes" to="." method="_on_area_2d_body_entered"]
