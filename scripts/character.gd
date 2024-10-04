@@ -71,13 +71,11 @@ func _ready() -> void:
 		opponent_instance = get_node(opponent)
 
 func _physics_process(delta: float) -> void:
-	apply_gravity(delta)
-	handle_state(delta)
-	
 	# Make sure the player faces the opponent if required
 	if always_face_opponent and opponent_instance:
 		face_opponent()
-	
+	apply_gravity(delta)
+	handle_state(delta)	
 	move_and_slide()
 
 # --- Load Attack Data ---
@@ -137,7 +135,8 @@ func handle_input(delta: float) -> bool:
 			jump_direction = -1
 		elif Input.is_action_pressed(input_prefix + "right") and not Input.is_action_pressed(input_prefix + "left"):
 			jump_direction = 1
-		initiate_jump(jump_direction)
+		if is_on_floor():
+			initiate_jump(jump_direction)
 		return true
 	return false
 
@@ -161,8 +160,6 @@ func handle_walking_state(delta: float) -> void:
 	var direction = Input.get_axis(input_prefix + "left", input_prefix + "right")
 	if direction != 0:
 		velocity.x = direction * speed
-		anim.play("walk")
-		flip_sprite(direction)
 	else:
 		transition_to_state(State.IDLE)
 
@@ -194,14 +191,11 @@ func handle_blocking_state(delta: float) -> void:
 	# Remain in blocking state as long as the block input is held and the player is on the ground
 	if Input.is_action_pressed(input_prefix + "block") and is_on_floor():
 		velocity.x = 0  # Character should not move while blocking
-		anim.play("block")  # Play blocking animation
 
 		# Allow movement (walking) while blocking
 		var direction = Input.get_axis(input_prefix + "left", input_prefix + "right")
 		if direction != 0:
 			velocity.x = direction * speed * 0.5  # Move at reduced speed while blocking
-			flip_sprite(direction)
-		
 	else:
 		transition_to_state(State.IDLE)  # Stop blocking if block input is released or player is airborne
 
@@ -212,32 +206,38 @@ func transition_to_state(new_state: State, direction: float = 0) -> void:
 		State.IDLE:
 			anim.play("idle")
 		State.WALKING:
-			velocity.x = direction * speed
 			anim.play("walk")
-			flip_sprite(direction)
 		State.JUMPING:
-			anim.play("jump")
+			var is_towards_opponent = (direction == 1 and facing_right) or (direction == -1 and not facing_right)
+			if direction == -1:
+				if is_towards_opponent:
+					anim.play("flip_right")  # Play flip right if jumping towards opponent
+				else:
+					anim.play("flip_left")  # Play flip left if jumping away from opponent
+			elif direction == 1:
+				if is_towards_opponent:
+					anim.play("flip_right")  # Play flip right if jumping towards opponent
+				else:
+					anim.play("flip_left")  # Play flip left if jumping away from opponent
+			else:
+				anim.play("jump")  # Play neutral jump
 		State.STUNNED:
 			anim.play("stunned")
 		State.BLOCKING:
 			anim.play("block")
 
-func initiate_jump(direction: int) -> void:
+func initiate_jump(direction: int) -> void:    
 	# Set vertical velocity for the jump
 	velocity.y = -jump_velocity
-
-	# Set horizontal velocity based on the direction parameter
+	# Set horizontal velocity and play the appropriate flip animation
 	if direction == -1:
 		velocity.x = -speed  # Diagonal jump left
-		flip_sprite(-1)
 	elif direction == 1:
 		velocity.x = speed  # Diagonal jump right
-		flip_sprite(1)
 	else:
 		velocity.x = 0  # Neutral jump
-
 	# Transition to jumping state
-	transition_to_state(State.JUMPING)
+	transition_to_state(State.JUMPING, direction)
 
 func initiate_attack(attack_name: String) -> void:
 	current_attack_data = attack_data[attack_name]
@@ -375,5 +375,4 @@ func reset(new_position: Vector2) -> void:
 	velocity = Vector2.ZERO
 	current_state = State.IDLE
 	stun_timer = 0.0
-	anim.play("idle")
 	disable_hitboxes()
