@@ -10,6 +10,7 @@ extends CharacterBody2D
 @export var attack_data_file: String = "res://attack_data.json"  # Path to the JSON file
 @export var opponent: Character
 @export var always_face_opponent: bool = true
+@export var frame_data_bar: FrameDataBar
 
 signal damaged(amount: int)
 signal died()
@@ -26,6 +27,10 @@ var is_opponent_right: bool = true
 var is_attacking: bool = false
 var is_blocking: bool = false
 var is_stunned: bool = false
+
+var is_winding_up: bool = false
+var is_hitting: bool = false
+var is_recovering: bool = false
 
 @onready var fsm: StateMachine = $StateMachine
 @onready var anim: AnimatedSprite2D = $Animations
@@ -56,6 +61,30 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	fsm.process_physics(delta)
+	if is_stunned:
+		is_hitting = false
+		is_winding_up = false
+		is_recovering = false
+		
+		if input_prefix == "p1_":
+			frame_data_bar.update_top_block_color(Color(1, 1, 0))
+		else:
+			frame_data_bar.update_bot_block_color(Color(1, 1, 0))
+
+	elif is_hitting or is_winding_up or is_recovering:
+		var color
+		if is_winding_up:
+			color = Color(0, 1, 0)
+		elif is_hitting:
+			color = Color(1, 0, 0)
+		elif is_recovering:
+			color = Color(0, 0, 1)
+		else:
+			color = Color(0, 0, 0)
+		if input_prefix == "p1_":
+			frame_data_bar.update_top_block_color(color)
+		else:
+			frame_data_bar.update_bot_block_color(color)
 
 
 func _input(event: InputEvent) -> void:
@@ -104,6 +133,10 @@ func on_animation_finished() -> void:
 	match anim.animation:
 		"attack1", "attack2":
 			is_attacking = false
+			
+			is_hitting = false
+			is_winding_up = false
+			is_recovering = false
 
 
 func on_animation_frame_changed() -> void:
@@ -120,8 +153,20 @@ func on_animation_frame_changed() -> void:
 
 		if current_frame in active_frames:
 			hitbox.disabled = false
+			
+			is_hitting = true
+			is_winding_up = false
+			is_recovering = false
 		else:
 			hitbox.disabled = true
+			
+			is_hitting = false
+			if current_frame > active_frames.max():
+				is_winding_up = false
+				is_recovering = true
+			else:
+				is_winding_up = true
+				is_recovering = false
 
 
 func on_hitbox_body_entered(body: Node) -> void:
@@ -198,3 +243,7 @@ func reset(new_position: Vector2) -> void:
 	stun_timer = 0.0
 	is_attacking = false
 	disable_hitboxes()
+	
+	is_hitting = false
+	is_winding_up = false
+	is_recovering = false

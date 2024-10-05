@@ -450,7 +450,7 @@ attack_data_file = "res://config/characters_frame_data/zidane.json"
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"stun"
+animation = &"attack1"
 autoplay = "idle"
 
 [node name="collider" type="CollisionShape2D" parent="."]
