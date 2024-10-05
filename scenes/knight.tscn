@@ -1,6 +1,6 @@
-[gd_scene load_steps=60 format=3 uid="uid://cbbfxf83lknfq"]
+[gd_scene load_steps=67 format=3 uid="uid://cbbfxf83lknfq"]
 
-[ext_resource type="Script" path="res://scripts/character.gd" id="1_je61o"]
+[ext_resource type="Script" path="res://scripts/character/character.gd" id="1_je61o"]
 [ext_resource type="Texture2D" uid="uid://dajq780bxf8av" path="res://sprites/characters/Knight_player/Idle_KG_2.png" id="1_okya6"]
 [ext_resource type="Texture2D" uid="uid://byjj4pc1k0gk5" path="res://sprites/characters/Knight_player/Attack_KG_1.png" id="1_wgnkk"]
 [ext_resource type="Texture2D" uid="uid://df7afclqmk6tu" path="res://sprites/characters/Knight_player/Walking_KG_2.png" id="2_liv6n"]
@@ -12,6 +12,13 @@
 [ext_resource type="AudioStream" uid="uid://d3ewpmd067n2e" path="res://audio/swing1.wav" id="10_prmwa"]
 [ext_resource type="AudioStream" uid="uid://h5bj5a04vj5d" path="res://audio/block1.wav" id="11_0e7jf"]
 [ext_resource type="AudioStream" uid="uid://dlw2cg3qghboe" path="res://audio/hit2.wav" id="12_25yp3"]
+[ext_resource type="Script" path="res://scripts/fsm/state_machine.gd" id="13_d6fpl"]
+[ext_resource type="Script" path="res://scripts/character/character_state_idle.gd" id="14_hthne"]
+[ext_resource type="Script" path="res://scripts/character/character_state_walk.gd" id="15_4qo12"]
+[ext_resource type="Script" path="res://scripts/character/character_state_jump.gd" id="16_e2qhs"]
+[ext_resource type="Script" path="res://scripts/character/character_state_block.gd" id="17_c5eq2"]
+[ext_resource type="Script" path="res://scripts/character/character_state_attack.gd" id="18_8ixl1"]
+[ext_resource type="Script" path="res://scripts/character/character_state_stun.gd" id="19_402f5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_37uav"]
 atlas = ExtResource("1_wgnkk")
@@ -332,7 +339,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_xaqw4")
 }],
 "loop": true,
-"name": &"stunned",
+"name": &"stun",
 "speed": 5.0
 }, {
 "frames": [{
@@ -369,38 +376,36 @@ size = Vector2(28, 63)
 size = Vector2(28, 63)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xotkn"]
-size = Vector2(49, 29)
+size = Vector2(41, 34.5)
 
-[node name="CharacterBody2D" type="CharacterBody2D"]
+[node name="Character" type="CharacterBody2D"]
 script = ExtResource("1_je61o")
 attack_data_file = "res://config/characters_frame_data/knight.json"
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="Animations" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"jump"
+animation = &"attack2"
 autoplay = "idle"
 
 [node name="collider" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2(1, 0.5)
+position = Vector2(0, -40)
 shape = SubResource("RectangleShape2D_hch7y")
 
 [node name="hurtbox" type="Area2D" parent="."]
-visible = false
 
 [node name="collider" type="CollisionShape2D" parent="hurtbox"]
-position = Vector2(1, 0.5)
+position = Vector2(0, -40)
 shape = SubResource("RectangleShape2D_j4y4m")
 
 [node name="hitboxes" type="Area2D" parent="."]
-visible = false
 
 [node name="slash_hitbox1" type="CollisionShape2D" parent="hitboxes"]
-position = Vector2(37.5, 8)
+position = Vector2(36, -27.25)
 shape = SubResource("RectangleShape2D_xotkn")
 
 [node name="slash_hitbox2" type="CollisionShape2D" parent="hitboxes"]
-position = Vector2(25.5, -17.5)
+position = Vector2(29.5, -46)
 shape = SubResource("RectangleShape2D_xotkn")
 
 [node name="sound" type="Node" parent="."]
@@ -416,3 +421,25 @@ stream = ExtResource("11_0e7jf")
 
 [node name="hit2" type="AudioStreamPlayer2D" parent="sound"]
 stream = ExtResource("12_25yp3")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
+script = ExtResource("13_d6fpl")
+starting_state = NodePath("CharacterStateIdle")
+
+[node name="CharacterStateIdle" type="Node" parent="StateMachine"]
+script = ExtResource("14_hthne")
+
+[node name="CharacterStateWalk" type="Node" parent="StateMachine"]
+script = ExtResource("15_4qo12")
+
+[node name="CharacterStateJump" type="Node" parent="StateMachine"]
+script = ExtResource("16_e2qhs")
+
+[node name="CharacterStateBlock" type="Node" parent="StateMachine"]
+script = ExtResource("17_c5eq2")
+
+[node name="CharacterStateAttack" type="Node" parent="StateMachine"]
+script = ExtResource("18_8ixl1")
+
+[node name="CharacterStateStun" type="Node" parent="StateMachine"]
+script = ExtResource("19_402f5")
