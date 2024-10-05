@@ -9,6 +9,8 @@ extends CharacterState
 func enter() -> void:
 	print(character.input_prefix + "stun")
 	character.anim.play("stun")
+	character.is_attacking = false
+	character.is_blocking = false
 
 
 func process_frame(delta: float) -> State:

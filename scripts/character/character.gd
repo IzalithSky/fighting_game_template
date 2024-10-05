@@ -111,6 +111,9 @@ func on_animation_frame_changed() -> void:
 	var current_frame = anim.frame
 	
 	if attack_data.has(current_animation):
+		if not is_attacking:
+			return
+		
 		var attack_info = attack_data[current_animation]
 		var hitbox = attack_info["hitbox"]
 		var active_frames = attack_info["active_frames"]
@@ -123,7 +126,7 @@ func on_animation_frame_changed() -> void:
 
 func on_hitbox_body_entered(body: Node) -> void:
 	if body != self and body.has_method("take_damage"):
-		if not is_blocking:
+		if not body.is_blocking:
 			if anim.animation == "attack1":
 				sound_hit1.play()
 			elif anim.animation == "attack2":
