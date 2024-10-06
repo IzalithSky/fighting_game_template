@@ -3,9 +3,9 @@ class_name StateMachine
 extends Node
 
 
-var current_state: State
-
 @export var starting_state: State
+
+var current_state: State
 
 
 func init() -> void:

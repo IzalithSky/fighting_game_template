@@ -47,8 +47,8 @@ func _update_score() -> void:
 
 
 func _reset_players() -> void:
-	player1.reset(Vector2(100, 420))
-	player2.reset(Vector2(500, 420))
+	player1.reset(Vector2(100, 320))
+	player2.reset(Vector2(500, 320))
 	
 	hpbar1.hp = player1.max_hp
 	hpbar2.hp = player2.max_hp
