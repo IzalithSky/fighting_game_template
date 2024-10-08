@@ -10,12 +10,12 @@
 [ext_resource type="AudioStream" uid="uid://b2ja84lka7c00" path="res://audio/block2.wav" id="6_wpehk"]
 [ext_resource type="AudioStream" uid="uid://dlw2cg3qghboe" path="res://audio/hit2.wav" id="7_7aj4a"]
 [ext_resource type="Script" path="res://scripts/fsm/state_machine.gd" id="8_plq82"]
-[ext_resource type="Script" path="res://scripts/character/character_state_idle.gd" id="9_kp4xi"]
-[ext_resource type="Script" path="res://scripts/character/character_state_walk.gd" id="10_c1ka5"]
-[ext_resource type="Script" path="res://scripts/character/character_state_jump.gd" id="11_2r3eh"]
-[ext_resource type="Script" path="res://scripts/character/character_state_block.gd" id="12_4nn4g"]
-[ext_resource type="Script" path="res://scripts/character/character_state_attack.gd" id="13_1hpw7"]
 [ext_resource type="Script" path="res://scripts/character/character_state_stun.gd" id="14_iqjit"]
+[ext_resource type="Script" path="res://scripts/player/player_character_state_walk.gd" id="16_7rfw7"]
+[ext_resource type="Script" path="res://scripts/player/player_character_state_idle.gd" id="16_abk8o"]
+[ext_resource type="Script" path="res://scripts/player/player_character_state_jump.gd" id="16_bhqag"]
+[ext_resource type="Script" path="res://scripts/player/player_character_state_block.gd" id="16_fuxs5"]
+[ext_resource type="Script" path="res://scripts/player/player_character_state_attack.gd" id="16_o07er"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2op1a"]
 atlas = ExtResource("5_cgt00")
@@ -554,22 +554,29 @@ stream = ExtResource("4_7ve4u")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("8_plq82")
-starting_state = NodePath("CharacterStateIdle")
+starting_state = NodePath("Idle")
 
-[node name="CharacterStateIdle" type="Node" parent="StateMachine"]
-script = ExtResource("9_kp4xi")
-
-[node name="CharacterStateWalk" type="Node" parent="StateMachine"]
-script = ExtResource("10_c1ka5")
-
-[node name="CharacterStateJump" type="Node" parent="StateMachine"]
-script = ExtResource("11_2r3eh")
-
-[node name="CharacterStateBlock" type="Node" parent="StateMachine"]
-script = ExtResource("12_4nn4g")
-
-[node name="CharacterStateAttack" type="Node" parent="StateMachine"]
-script = ExtResource("13_1hpw7")
-
-[node name="CharacterStateStun" type="Node" parent="StateMachine"]
+[node name="Stun" type="Node" parent="StateMachine"]
 script = ExtResource("14_iqjit")
+
+[node name="Attack" type="Node" parent="StateMachine"]
+script = ExtResource("16_o07er")
+
+[node name="Block" type="Node" parent="StateMachine"]
+script = ExtResource("16_fuxs5")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("16_abk8o")
+
+[node name="Jump" type="Node" parent="StateMachine"]
+script = ExtResource("16_bhqag")
+
+[node name="Walk" type="Node" parent="StateMachine"]
+script = ExtResource("16_7rfw7")
+
+[node name="StateLabel" type="Label" parent="."]
+offset_left = -20.0
+offset_top = -99.0
+offset_right = 21.0
+offset_bottom = -76.0
+horizontal_alignment = 1

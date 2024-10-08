@@ -42,6 +42,7 @@ var is_recovering: bool = false
 @onready var sound_hit2 = $sound/hit2
 @onready var sound_swing = $sound/swing
 @onready var sound_block = $sound/block
+@onready var state_label = $StateLabel
 
 
 func _ready() -> void:
@@ -85,6 +86,8 @@ func _physics_process(delta: float) -> void:
 			frame_data_bar.update_top_block_color(color)
 		else:
 			frame_data_bar.update_bot_block_color(color)
+			
+	state_label.text = fsm.current_state.state_name
 
 
 func _input(event: InputEvent) -> void:

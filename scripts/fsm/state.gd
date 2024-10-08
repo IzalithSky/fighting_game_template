@@ -3,6 +3,9 @@ class_name State
 extends Node
 
 
+var state_name: String
+
+
 func enter() -> void:
 	pass
 

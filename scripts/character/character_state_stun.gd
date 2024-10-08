@@ -3,11 +3,12 @@ class_name CharacterStateStun
 extends CharacterState
 
 
-@onready var state_idle: CharacterStateIdle = get_parent().get_node("CharacterStateIdle") as CharacterStateIdle
+func _ready() -> void:
+	state_name = "stun"
 
 
 func enter() -> void:
-	print(character.input_prefix + "stun")
+	super()
 	character.anim.play("stun")
 	character.is_attacking = false
 	character.is_blocking = false
