@@ -152,6 +152,14 @@ offset_right = 632.0
 offset_bottom = 472.0
 script = ExtResource("6_lrnrk")
 
+[node name="LabelDistance" type="Label" parent="."]
+offset_left = 280.0
+offset_top = 80.0
+offset_right = 360.0
+offset_bottom = 103.0
+horizontal_alignment = 1
+vertical_alignment = 2
+
 [connection signal="damaged" from="player1" to="." method="_on_player_1_damaged"]
 [connection signal="died" from="player1" to="." method="_on_player_1_died"]
 [connection signal="damaged" from="player2" to="." method="_on_player_2_damaged"]

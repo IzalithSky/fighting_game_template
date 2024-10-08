@@ -10,6 +10,8 @@ extends Node2D
 
 @onready var score = $score
 
+@onready var label_distance = $LabelDistance
+
 var score_p1 = 0
 var score_p2 = 0
 
@@ -52,3 +54,8 @@ func _reset_players() -> void:
 	
 	hpbar1.hp = player1.max_hp
 	hpbar2.hp = player2.max_hp
+
+
+func _physics_process(delta: float) -> void:
+	var distance = abs(player1.position.x - player2.position.x)
+	label_distance.text = str(round(distance))

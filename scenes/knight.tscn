@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://cbbfxf83lknfq"]
+[gd_scene load_steps=68 format=3 uid="uid://cbbfxf83lknfq"]
 
 [ext_resource type="Script" path="res://scripts/character/character.gd" id="1_je61o"]
 [ext_resource type="Texture2D" uid="uid://dajq780bxf8av" path="res://sprites/characters/Knight_player/Idle_KG_2.png" id="1_okya6"]
@@ -13,12 +13,13 @@
 [ext_resource type="AudioStream" uid="uid://h5bj5a04vj5d" path="res://audio/block1.wav" id="11_0e7jf"]
 [ext_resource type="AudioStream" uid="uid://dlw2cg3qghboe" path="res://audio/hit2.wav" id="12_25yp3"]
 [ext_resource type="Script" path="res://scripts/fsm/state_machine.gd" id="13_d6fpl"]
-[ext_resource type="Script" path="res://scripts/player/player_character_state_jump.gd" id="19_25cfr"]
+[ext_resource type="Script" path="res://scripts/bot/bot_character_state_attack.gd" id="16_ugyue"]
+[ext_resource type="Script" path="res://scripts/bot/bot_character_state_walk.gd" id="18_ryk3x"]
+[ext_resource type="Script" path="res://scripts/bot/bot_character_state_jump.gd" id="19_27ewp"]
 [ext_resource type="Script" path="res://scripts/character/character_state_stun.gd" id="19_402f5"]
-[ext_resource type="Script" path="res://scripts/player/player_character_state_attack.gd" id="19_bhaig"]
-[ext_resource type="Script" path="res://scripts/player/player_character_state_idle.gd" id="19_cj0wi"]
-[ext_resource type="Script" path="res://scripts/player/player_character_state_block.gd" id="19_gh0ei"]
-[ext_resource type="Script" path="res://scripts/player/player_character_state_walk.gd" id="19_hct0t"]
+[ext_resource type="Script" path="res://scripts/bot/bot_character_state_idle.gd" id="19_o8y2x"]
+[ext_resource type="Script" path="res://scripts/bot/bot_character_state_block.gd" id="19_yihv2"]
+[ext_resource type="Script" path="res://scripts/bot/bot_parameters.gd" id="20_mraoc"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_37uav"]
 atlas = ExtResource("1_wgnkk")
@@ -426,23 +427,26 @@ stream = ExtResource("12_25yp3")
 script = ExtResource("13_d6fpl")
 starting_state = NodePath("Idle")
 
-[node name="Attack" type="Node" parent="StateMachine"]
-script = ExtResource("19_bhaig")
-
-[node name="Block" type="Node" parent="StateMachine"]
-script = ExtResource("19_gh0ei")
-
-[node name="Idle" type="Node" parent="StateMachine"]
-script = ExtResource("19_cj0wi")
-
-[node name="Jump" type="Node" parent="StateMachine"]
-script = ExtResource("19_25cfr")
-
 [node name="Stun" type="Node" parent="StateMachine"]
 script = ExtResource("19_402f5")
 
+[node name="Attack" type="Node" parent="StateMachine"]
+script = ExtResource("16_ugyue")
+
+[node name="Jump" type="Node" parent="StateMachine"]
+script = ExtResource("19_27ewp")
+
 [node name="Walk" type="Node" parent="StateMachine"]
-script = ExtResource("19_hct0t")
+script = ExtResource("18_ryk3x")
+
+[node name="Block" type="Node" parent="StateMachine"]
+script = ExtResource("19_yihv2")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("19_o8y2x")
+
+[node name="BotParameters" type="Node" parent="StateMachine"]
+script = ExtResource("20_mraoc")
 
 [node name="StateLabel" type="Label" parent="."]
 offset_left = -20.0
