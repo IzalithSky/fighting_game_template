@@ -8,6 +8,11 @@ extends CharacterStateIdle
 
 func process_physics(delta: float) -> State:
 	super(delta)
+	if params.idle_only:
+		if params.always_block:
+			return state_block
+		else:
+			return null
 	if params.is_in_jump_distance():
 		return state_jump
 	elif params.is_in_attack_distance():
