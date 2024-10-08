@@ -19,4 +19,7 @@ func process_frame(delta: float) -> State:
 	if not character.is_attacking:
 		character.disable_hitboxes()
 		return state_idle
+	if character.is_on_floor():
+		character.velocity.x = 0
+		character.velocity.y = 0
 	return null
