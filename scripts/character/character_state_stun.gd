@@ -14,7 +14,7 @@ func enter() -> void:
 	character.is_blocking = false
 
 
-func process_frame(delta: float) -> State:
+func process_physics(delta: float) -> State:
 	character.stun_timer -= delta
 	if character.stun_timer <= 0:
 		character.stun_timer = 0

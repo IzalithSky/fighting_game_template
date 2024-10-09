@@ -15,7 +15,7 @@ func enter() -> void:
 	character.anim.play("block")
 
 
-func process_frame(delta: float) -> State:
+func process_physics(delta: float) -> State:
 	super(delta)
 	if character.is_stunned:
 		return state_stun

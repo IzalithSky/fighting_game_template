@@ -24,19 +24,13 @@ func enter() -> void:
 	character.velocity.y = -character.jump_velocity
 
 
-func process_frame(delta: float) -> State:
+func process_physics(delta: float) -> State:
 	super(delta)
 	if character.is_stunned:
 		return state_stun
-	if Input.is_action_pressed(character.input_prefix + "attack1") or Input.is_action_pressed(character.input_prefix + "attack2"):
+	elif Input.is_action_pressed(character.input_prefix + "attack1") or Input.is_action_pressed(character.input_prefix + "attack2"):
 		return state_attack
-	return null
-
-
-func process_physics(delta: float) -> State:
-	super(delta)
-	if Input.is_action_pressed(character.input_prefix + "attack1") or Input.is_action_pressed(character.input_prefix + "attack2"):
-		return state_attack
-	if character.is_on_floor() and character.velocity.y >= 0:
+	elif character.is_on_floor() and character.velocity.y >= 0:
 		return state_idle
-	return null
+	else:
+		return null
