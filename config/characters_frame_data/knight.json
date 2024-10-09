@@ -1,7 +1,7 @@
 {
 	"attack1": {
 		"damage": 10,
-		"stun_duration": 0.4,
+		"stun_duration": 0.6,
 		"active_frames": [1, 2],
 		"hitbox_path": "hitboxes/slash_hitbox1",
 		"pushback_force": 40,
@@ -9,7 +9,7 @@
 	},
 	"attack2": {
 		"damage": 20,
-		"stun_duration": 0.8,
+		"stun_duration": 0.4,
 		"active_frames": [3, 4],
 		"hitbox_path": "hitboxes/slash_hitbox2",
 		"pushback_force": 80,
