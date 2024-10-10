@@ -14,7 +14,11 @@ func process_physics(delta: float) -> State:
 		if character.opponent.fsm.current_state.state_name == "attack":
 			return state_block
 		else:
-			return state_attack
+			if randf() < 0.5:
+				state_attack_startup.current_attack = character.attacks["attack1"]
+			else:
+				state_attack_startup.current_attack = character.attacks["attack2"]
+			return state_attack_startup
 	else:
 		do_move(get_move_dir())
 	return null

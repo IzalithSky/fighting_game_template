@@ -1,6 +1,6 @@
-[gd_scene load_steps=67 format=3 uid="uid://ckkbqrqtc0g77"]
+[gd_scene load_steps=70 format=3 uid="uid://ckkbqrqtc0g77"]
 
-[ext_resource type="Script" path="res://scripts/character/character.gd" id="1_je61o"]
+[ext_resource type="Script" path="res://scripts/character/character.gd" id="1_6l4u0"]
 [ext_resource type="Texture2D" uid="uid://dajq780bxf8av" path="res://sprites/characters/Knight_player/Idle_KG_2.png" id="1_okya6"]
 [ext_resource type="Texture2D" uid="uid://byjj4pc1k0gk5" path="res://sprites/characters/Knight_player/Attack_KG_1.png" id="1_wgnkk"]
 [ext_resource type="Texture2D" uid="uid://df7afclqmk6tu" path="res://sprites/characters/Knight_player/Walking_KG_2.png" id="2_liv6n"]
@@ -13,12 +13,15 @@
 [ext_resource type="AudioStream" uid="uid://h5bj5a04vj5d" path="res://audio/block1.wav" id="11_0e7jf"]
 [ext_resource type="AudioStream" uid="uid://dlw2cg3qghboe" path="res://audio/hit2.wav" id="12_25yp3"]
 [ext_resource type="Script" path="res://scripts/character/character_state_machine.gd" id="13_bohqj"]
+[ext_resource type="Script" path="res://scripts/character/character_state_stun.gd" id="14_8pydr"]
 [ext_resource type="Script" path="res://scripts/player/player_character_state_idle.gd" id="15_v5lbh"]
-[ext_resource type="Script" path="res://scripts/player/player_character_state_attack.gd" id="16_tnuuy"]
 [ext_resource type="Script" path="res://scripts/player/player_character_state_jump.gd" id="17_gabdw"]
 [ext_resource type="Script" path="res://scripts/player/player_character_state_walk.gd" id="18_rnqjj"]
-[ext_resource type="Script" path="res://scripts/character/character_state_stun.gd" id="19_402f5"]
+[ext_resource type="Script" path="res://scripts/character/character_state_attack_startup.gd" id="19_c7ror"]
+[ext_resource type="Script" path="res://scripts/attack/attack.gd" id="19_kgyee"]
 [ext_resource type="Script" path="res://scripts/player/player_character_state_block.gd" id="19_o8oww"]
+[ext_resource type="Script" path="res://scripts/character/character_state_attack_recovery.gd" id="19_s002s"]
+[ext_resource type="Script" path="res://scripts/character/character_state_attack_hit.gd" id="19_whrjr"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_37uav"]
 atlas = ExtResource("1_wgnkk")
@@ -379,8 +382,7 @@ size = Vector2(28, 63)
 size = Vector2(41, 34.5)
 
 [node name="Character" type="CharacterBody2D"]
-script = ExtResource("1_je61o")
-attack_data_file = "res://config/characters_frame_data/knight.json"
+script = ExtResource("1_6l4u0")
 
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
@@ -434,13 +436,10 @@ script = ExtResource("13_bohqj")
 starting_state = NodePath("Idle")
 
 [node name="Stun" type="Node" parent="CharacterStateMachine"]
-script = ExtResource("19_402f5")
+script = ExtResource("14_8pydr")
 
 [node name="Idle" type="Node" parent="CharacterStateMachine"]
 script = ExtResource("15_v5lbh")
-
-[node name="Attack" type="Node" parent="CharacterStateMachine"]
-script = ExtResource("16_tnuuy")
 
 [node name="Jump" type="Node" parent="CharacterStateMachine"]
 script = ExtResource("17_gabdw")
@@ -450,3 +449,36 @@ script = ExtResource("18_rnqjj")
 
 [node name="Block" type="Node" parent="CharacterStateMachine"]
 script = ExtResource("19_o8oww")
+
+[node name="AttackStartup" type="Node" parent="CharacterStateMachine"]
+script = ExtResource("19_c7ror")
+
+[node name="AttackHit" type="Node" parent="CharacterStateMachine"]
+script = ExtResource("19_whrjr")
+
+[node name="AttackRecovery" type="Node" parent="CharacterStateMachine"]
+script = ExtResource("19_s002s")
+
+[node name="Attacks" type="Node" parent="."]
+
+[node name="attack1" type="Node" parent="Attacks" node_paths=PackedStringArray("hitbox")]
+script = ExtResource("19_kgyee")
+damage = 10
+stun_duration = 0.6
+pushback = Vector2(40, 80)
+hitbox = NodePath("../../hitboxes/slash_hitbox1")
+animation_name = "attack1"
+duration_startup = 0.1
+duration_hit = 0.2
+duration_recovery = 0.3
+
+[node name="attack2" type="Node" parent="Attacks" node_paths=PackedStringArray("hitbox")]
+script = ExtResource("19_kgyee")
+damage = 20
+stun_duration = 0.4
+pushback = Vector2(80, 80)
+hitbox = NodePath("../../hitboxes/slash_hitbox2")
+animation_name = "attack2"
+duration_startup = 0.2
+duration_hit = 0.2
+duration_recovery = 0.2

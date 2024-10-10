@@ -1,32 +1,28 @@
-# character_state_stun.gd
-class_name CharacterStateStun
-extends CharacterState
-
-
-var stun_timer: float = 0
+# character_state_attack_recovery.gd
+class_name CharacterStateAttackRecovery
+extends CharacterStateAttack
 
 
 func _ready() -> void:
-	state_name = "stun"
+	state_name = "attack_recovery"
 
 
 func enter() -> void:
 	super()
-	character.anim.play("stun")
+	duration = current_attack.duration_recovery
 
 
 func process_physics(delta: float) -> State:
 	super(delta)
 	
-	var color = Color(1, 1, 0)
+	var color = Color(0, 0, 1)
 	if character.input_prefix == "p1_":
 		character.frame_data_bar.update_top_block_color(color)
 	else:
 		character.frame_data_bar.update_bot_block_color(color)
 	
-	if stun_timer <= 0:
-		stun_timer = 0
+	if duration <= 0:
 		return state_idle
 	else:
-		stun_timer -= delta
+		duration -= delta
 		return null

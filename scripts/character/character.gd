@@ -7,7 +7,6 @@ extends CharacterBody2D
 @export var move_speed: float = 275
 @export var jump_velocity: float = 400.0
 @export var input_prefix: String = "p1_"  # To switch between p1_ and p2_
-@export var attack_data_file: String = "res://attack_data.json"  # Path to the JSON file
 @export var opponent: Character
 @export var always_face_opponent: bool = true
 @export var frame_data_bar: FrameDataBar
@@ -16,19 +15,8 @@ signal damaged(amount: int)
 signal died()
 
 var current_hp: int = max_hp
-var stun_timer: float = 0.0  # Timer for stun durations
-var current_attack_damage: int = 0  # Damage of current attack
-var attack_stun_duration: float = 0.0  # Stun duration of current attack
-var current_pushback_force: float = 0.0  # Pushback force of current attack
-var current_vertical_pushback_force: float = 0.0  # Vertical pushback force of current attack
-var current_attack_data: Dictionary = {}  # Dictionary to hold data for the current attack
-var attack_data: Dictionary = {}
+var attacks: Dictionary = {}
 var is_opponent_right: bool = true
-var is_attacking: bool = false
-
-var is_winding_up: bool = false
-var is_hitting: bool = false
-var is_recovering: bool = false
 
 @onready var fsm: CharacterStateMachine = $CharacterStateMachine
 @onready var anim: AnimatedSprite2D = $Animations
@@ -44,8 +32,6 @@ var is_recovering: bool = false
 
 
 func _ready() -> void:
-	anim.connect("animation_finished", on_animation_finished)
-	anim.connect("frame_changed", on_animation_frame_changed)
 	slash_attack.connect("body_entered", on_hitbox_body_entered)
 	
 	load_attack_data()
@@ -54,37 +40,8 @@ func _ready() -> void:
 	fsm.init()
 
 
-func _process(delta: float) -> void:
-	fsm.process_frame(delta)
-
-
 func _physics_process(delta: float) -> void:
-	fsm.process_physics(delta)
-	if fsm.is_state("stun"):
-		is_hitting = false
-		is_winding_up = false
-		is_recovering = false
-		
-		if input_prefix == "p1_":
-			frame_data_bar.update_top_block_color(Color(1, 1, 0))
-		else:
-			frame_data_bar.update_bot_block_color(Color(1, 1, 0))
-
-	elif is_hitting or is_winding_up or is_recovering:
-		var color
-		if is_winding_up:
-			color = Color(0, 1, 0)
-		elif is_hitting:
-			color = Color(1, 0, 0)
-		elif is_recovering:
-			color = Color(0, 0, 1)
-		else:
-			color = Color(0, 0, 0)
-		if input_prefix == "p1_":
-			frame_data_bar.update_top_block_color(color)
-		else:
-			frame_data_bar.update_bot_block_color(color)
-			
+	fsm.process_physics(delta)			
 	state_label.text = fsm.state()
 
 
@@ -93,31 +50,20 @@ func _input(event: InputEvent) -> void:
 
 
 func load_attack_data() -> void:
-	# Load the JSON file
-	var file = FileAccess.open(attack_data_file, FileAccess.READ)
-	if file:
-		var json_data = file.get_as_text()
-		var json = JSON.new()
-		var error = json.parse(json_data)
-
-		if error == OK:
-			attack_data = json.get_data()
-			for attack_name in attack_data.keys():
-				var active_frames = attack_data[attack_name]["active_frames"]
-				if active_frames is Array:
-					attack_data[attack_name]["active_frames"] = active_frames.map(func(n):
-						return int(n)
-					)
-				
-				# Get the hitbox path string
-				var hitbox_path = attack_data[attack_name]["hitbox_path"]
-				var hitbox_node = get_node(hitbox_path)
-				if hitbox_node:
-					attack_data[attack_name]["hitbox"] = hitbox_node
-		else:
-			print("Error parsing JSON at line", json.get_error_line(), ":", json.get_error_message())
-	else:
-		print("Failed to load file:", attack_data_file)
+	var attacks_node = $Attacks
+	if not attacks_node:
+		printerr("Attacks node not found in the scene")
+		return
+	
+	for child in attacks_node.get_children():
+		if child is Attack:
+			var attack_name = child.name
+			if attack_name != "":
+				attacks[attack_name] = child
+			else:
+				printerr("Attack node has no name: ", child.name)
+	
+	print("Attacks loaded successfully. Total attacks: ", attacks.size())
 
 
 func face_opponent() -> void:
@@ -130,46 +76,6 @@ func face_opponent() -> void:
 		flip_sprite(-1)
 
 
-func on_animation_finished() -> void:
-	match anim.animation:
-		"attack1", "attack2":
-			is_attacking = false
-			
-			is_hitting = false
-			is_winding_up = false
-			is_recovering = false
-
-
-func on_animation_frame_changed() -> void:
-	var current_animation = anim.animation
-	var current_frame = anim.frame
-	
-	if attack_data.has(current_animation):
-		if not is_attacking:
-			return
-		
-		var attack_info = attack_data[current_animation]
-		var hitbox = attack_info["hitbox"]
-		var active_frames = attack_info["active_frames"]
-
-		if current_frame in active_frames:
-			hitbox.disabled = false
-			
-			is_hitting = true
-			is_winding_up = false
-			is_recovering = false
-		else:
-			hitbox.disabled = true
-			
-			is_hitting = false
-			if current_frame > active_frames.max():
-				is_winding_up = false
-				is_recovering = true
-			else:
-				is_winding_up = true
-				is_recovering = false
-
-
 func on_hitbox_body_entered(body: Node) -> void:
 	if body != self and body.has_method("take_damage"):
 		if not body.is_blocking():
@@ -178,22 +84,23 @@ func on_hitbox_body_entered(body: Node) -> void:
 			elif anim.animation == "attack2":
 				sound_hit2.play()
 		
-		body.take_damage(current_attack_damage, attack_stun_duration)
-		apply_pushback(body)
+		var attack: Attack = (fsm.current_state as CharacterStateAttack).current_attack
+		body.take_damage(attack.damage, attack.stun_duration)
+		apply_pushback(body, attack.pushback)
 
 
-func apply_pushback(body: Node) -> void:	
+func apply_pushback(body: Node, pushback_force: Vector2) -> void:	
 	var pushback_direction = 1 if is_opponent_right else -1
 	if body is CharacterBody2D:
-		body.velocity.x = pushback_direction * current_pushback_force
-		body.velocity.y = -current_vertical_pushback_force
+		body.velocity.x = pushback_direction * pushback_force.x
+		body.velocity.y = -pushback_force.y
 
 
 func take_damage(amount: int, stun_duration: float = 0.0) -> void:
 	var actual_damage = amount
 	var actual_stun_duration = stun_duration
 	
-	if fsm.current_state.state_name == "block":
+	if is_blocking():
 		sound_block.play()
 		actual_damage = max(1, int(amount * 0.2))
 		actual_stun_duration = stun_duration * 0.6
@@ -227,14 +134,6 @@ func flip_sprite(direction: float) -> void:
 	slash_attack.scale.x = direction
 
 
-func initiate_attack(attack_name: String) -> void:
-	current_attack_data = attack_data[attack_name]
-	current_attack_damage = current_attack_data["damage"]
-	attack_stun_duration = current_attack_data["stun_duration"]
-	current_pushback_force = current_attack_data.get("pushback_force", 0)  # Default to 0 if not defined
-	current_vertical_pushback_force = current_attack_data.get("vertical_pushback_force", 0)  # Default to 0 if not defined
-
-
 func disable_hitboxes() -> void:
 	slash_hitbox1.call_deferred("set_disabled", true)
 	slash_hitbox2.call_deferred("set_disabled", true)
@@ -244,10 +143,5 @@ func reset(new_position: Vector2) -> void:
 	current_hp = max_hp
 	position = new_position
 	velocity = Vector2.ZERO
-	stun_timer = 0.0
-	is_attacking = false
 	disable_hitboxes()
-	
-	is_hitting = false
-	is_winding_up = false
-	is_recovering = false
+	fsm.reset()

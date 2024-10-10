@@ -8,7 +8,9 @@ extends State
 @onready var fsm: StateMachine = get_parent() as StateMachine
 @onready var state_idle: CharacterStateIdle = get_parent().get_node("Idle") as CharacterStateIdle
 @onready var state_stun: CharacterStateStun = get_parent().get_node("Stun") as CharacterStateStun
-@onready var state_attack: CharacterStateAttack = get_parent().get_node("Attack") as CharacterStateAttack
+@onready var state_attack_startup: CharacterStateAttackStartup = get_parent().get_node("AttackStartup") as CharacterStateAttackStartup
+@onready var state_attack_hit: CharacterStateAttackHit = get_parent().get_node("AttackHit") as CharacterStateAttackHit
+@onready var state_attack_recovery: CharacterStateAttackRecovery = get_parent().get_node("AttackRecovery") as CharacterStateAttackRecovery
 @onready var state_walk: CharacterStateWalk = get_parent().get_node("Walk") as CharacterStateWalk
 @onready var state_jump: CharacterStateJump = get_parent().get_node("Jump") as CharacterStateJump
 @onready var state_block: CharacterStateBlock = get_parent().get_node("Block") as CharacterStateBlock
@@ -21,19 +23,14 @@ func enter() -> void:
 	print(character.input_prefix + state_name)
 
 
-func process_frame(delta: float) -> State:
+func process_physics(delta: float) -> State:
 	if character.always_face_opponent and character.opponent:
 		character.face_opponent()
-	return null
-
-
-func process_physics(delta: float) -> State:
 	character.velocity.y += gravity * delta
 	character.move_and_slide()
 	return null
 
 
 func apply_stun(duration: float) -> State:
-	character.stun_timer = duration
+	state_stun.stun_timer = duration
 	return state_stun
-	

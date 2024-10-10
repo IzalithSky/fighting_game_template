@@ -28,9 +28,17 @@ func process_physics(delta: float) -> State:
 	super(delta)
 	if character.fsm.is_state("block"):
 		return state_stun
-	elif Input.is_action_pressed(character.input_prefix + "attack1") or Input.is_action_pressed(character.input_prefix + "attack2"):
-		return state_attack
 	elif character.is_on_floor() and character.velocity.y >= 0:
 		return state_idle
 	else:
 		return null
+
+
+func process_input(event: InputEvent) -> State:
+	if event.is_action_pressed(character.input_prefix + "attack1"):
+		state_attack_startup.current_attack = character.attacks["attack1"]
+		return state_attack_startup
+	elif event.is_action_pressed(character.input_prefix + "attack2"):
+		state_attack_startup.current_attack = character.attacks["attack2"]
+		return state_attack_startup
+	return null
