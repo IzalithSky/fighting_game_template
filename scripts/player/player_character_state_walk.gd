@@ -5,7 +5,7 @@ extends CharacterStateWalk
 
 func process_physics(delta: float) -> State:
 	super(delta)
-	if character.is_stunned:
+	if character.fsm.is_state("block"):
 		return state_stun
 	elif Input.is_action_pressed(character.input_prefix + "attack1") or Input.is_action_pressed(character.input_prefix + "attack2"):
 		return state_attack

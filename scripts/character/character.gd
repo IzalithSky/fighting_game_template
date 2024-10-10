@@ -25,14 +25,12 @@ var current_attack_data: Dictionary = {}  # Dictionary to hold data for the curr
 var attack_data: Dictionary = {}
 var is_opponent_right: bool = true
 var is_attacking: bool = false
-var is_blocking: bool = false
-var is_stunned: bool = false
 
 var is_winding_up: bool = false
 var is_hitting: bool = false
 var is_recovering: bool = false
 
-@onready var fsm: StateMachine = $StateMachine
+@onready var fsm: CharacterStateMachine = $CharacterStateMachine
 @onready var anim: AnimatedSprite2D = $Animations
 @onready var hurtbox = $hurtbox/collider
 @onready var slash_attack = $hitboxes
@@ -62,7 +60,7 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	fsm.process_physics(delta)
-	if is_stunned:
+	if fsm.is_state("stun"):
 		is_hitting = false
 		is_winding_up = false
 		is_recovering = false
@@ -87,7 +85,7 @@ func _physics_process(delta: float) -> void:
 		else:
 			frame_data_bar.update_bot_block_color(color)
 			
-	state_label.text = fsm.current_state.state_name
+	state_label.text = fsm.state()
 
 
 func _input(event: InputEvent) -> void:
@@ -174,7 +172,7 @@ func on_animation_frame_changed() -> void:
 
 func on_hitbox_body_entered(body: Node) -> void:
 	if body != self and body.has_method("take_damage"):
-		if not body.is_blocking:
+		if not body.is_blocking():
 			if anim.animation == "attack1":
 				sound_hit1.play()
 			elif anim.animation == "attack2":
@@ -195,7 +193,7 @@ func take_damage(amount: int, stun_duration: float = 0.0) -> void:
 	var actual_damage = amount
 	var actual_stun_duration = stun_duration
 	
-	if is_blocking:
+	if fsm.current_state.state_name == "block":
 		sound_block.play()
 		actual_damage = max(1, int(amount * 0.2))
 		actual_stun_duration = stun_duration * 0.6
@@ -210,8 +208,11 @@ func take_damage(amount: int, stun_duration: float = 0.0) -> void:
 
 
 func initiate_stun(stun_duration: float) -> void:
-	is_stunned = true
-	stun_timer = stun_duration
+	fsm.apply_stun(stun_duration)
+
+
+func is_blocking() -> bool:
+	return fsm.is_state("block")
 
 
 func die() -> void:

@@ -14,8 +14,6 @@ func enter() -> void:
 
 func process_physics(delta: float) -> State:
 	super(delta)
-	if character.is_stunned:
-		return state_stun
 	if not character.is_attacking:
 		character.disable_hitboxes()
 		return state_idle

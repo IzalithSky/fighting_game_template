@@ -8,9 +8,7 @@ extends CharacterStateWalk
 
 func process_physics(delta: float) -> State:
 	super(delta)
-	if character.is_stunned:
-		return state_stun
-	elif params.is_in_jump_distance():
+	if params.is_in_jump_distance():
 		return state_jump
 	elif params.is_in_attack_distance():
 		if character.opponent.fsm.current_state.state_name == "attack":

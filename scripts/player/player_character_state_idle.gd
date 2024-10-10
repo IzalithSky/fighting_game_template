@@ -5,7 +5,7 @@ extends CharacterStateIdle
 
 func process_frame(delta: float) -> State:
 	super(delta)
-	if character.is_stunned:
+	if character.fsm.is_state("stun"):
 		return state_stun
 	if Input.is_action_pressed(character.input_prefix + "attack1") or Input.is_action_pressed(character.input_prefix + "attack2"):
 		return state_attack

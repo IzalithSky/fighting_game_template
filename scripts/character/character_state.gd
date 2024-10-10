@@ -5,6 +5,7 @@ extends State
 
 @onready var character: Character = get_parent().get_parent() as Character
 
+@onready var fsm: StateMachine = get_parent() as StateMachine
 @onready var state_idle: CharacterStateIdle = get_parent().get_node("Idle") as CharacterStateIdle
 @onready var state_stun: CharacterStateStun = get_parent().get_node("Stun") as CharacterStateStun
 @onready var state_attack: CharacterStateAttack = get_parent().get_node("Attack") as CharacterStateAttack
@@ -30,3 +31,9 @@ func process_physics(delta: float) -> State:
 	character.velocity.y += gravity * delta
 	character.move_and_slide()
 	return null
+
+
+func apply_stun(duration: float) -> State:
+	character.stun_timer = duration
+	return state_stun
+	

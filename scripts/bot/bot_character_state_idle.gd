@@ -8,8 +8,6 @@ extends CharacterStateIdle
 
 func process_physics(delta: float) -> State:
 	super(delta)
-	if character.is_stunned:
-		return state_stun
 	if params.idle_only:
 		if params.always_block:
 			return state_block

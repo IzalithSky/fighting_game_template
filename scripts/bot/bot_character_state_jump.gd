@@ -27,7 +27,7 @@ func enter() -> void:
 
 func process_frame(delta: float) -> State:
 	super(delta)
-	if character.is_stunned:
+	if character.fsm.is_state("stun"):
 		return state_stun
 	if params.is_in_attack_distance():
 		if character.opponent.fsm.current_state.state_name == "attack":

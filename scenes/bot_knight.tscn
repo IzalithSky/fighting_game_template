@@ -12,7 +12,7 @@
 [ext_resource type="AudioStream" uid="uid://d3ewpmd067n2e" path="res://audio/swing1.wav" id="10_prmwa"]
 [ext_resource type="AudioStream" uid="uid://h5bj5a04vj5d" path="res://audio/block1.wav" id="11_0e7jf"]
 [ext_resource type="AudioStream" uid="uid://dlw2cg3qghboe" path="res://audio/hit2.wav" id="12_25yp3"]
-[ext_resource type="Script" path="res://scripts/fsm/state_machine.gd" id="13_d6fpl"]
+[ext_resource type="Script" path="res://scripts/character/character_state_machine.gd" id="13_7pfui"]
 [ext_resource type="Script" path="res://scripts/bot/bot_character_state_attack.gd" id="16_ugyue"]
 [ext_resource type="Script" path="res://scripts/bot/bot_character_state_walk.gd" id="18_ryk3x"]
 [ext_resource type="Script" path="res://scripts/bot/bot_character_state_jump.gd" id="19_27ewp"]
@@ -423,34 +423,34 @@ stream = ExtResource("11_0e7jf")
 [node name="hit2" type="AudioStreamPlayer2D" parent="sound"]
 stream = ExtResource("12_25yp3")
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
-script = ExtResource("13_d6fpl")
-starting_state = NodePath("Idle")
-
-[node name="Stun" type="Node" parent="StateMachine"]
-script = ExtResource("19_402f5")
-
-[node name="Attack" type="Node" parent="StateMachine"]
-script = ExtResource("16_ugyue")
-
-[node name="Jump" type="Node" parent="StateMachine"]
-script = ExtResource("19_27ewp")
-
-[node name="Walk" type="Node" parent="StateMachine"]
-script = ExtResource("18_ryk3x")
-
-[node name="Block" type="Node" parent="StateMachine"]
-script = ExtResource("19_yihv2")
-
-[node name="Idle" type="Node" parent="StateMachine"]
-script = ExtResource("19_o8y2x")
-
-[node name="BotParameters" type="Node" parent="StateMachine"]
-script = ExtResource("20_mraoc")
-
 [node name="StateLabel" type="Label" parent="."]
 offset_left = -20.0
 offset_top = -99.0
 offset_right = 21.0
 offset_bottom = -76.0
 horizontal_alignment = 1
+
+[node name="CharacterStateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
+script = ExtResource("13_7pfui")
+starting_state = NodePath("Idle")
+
+[node name="Stun" type="Node" parent="CharacterStateMachine"]
+script = ExtResource("19_402f5")
+
+[node name="Attack" type="Node" parent="CharacterStateMachine"]
+script = ExtResource("16_ugyue")
+
+[node name="Jump" type="Node" parent="CharacterStateMachine"]
+script = ExtResource("19_27ewp")
+
+[node name="Walk" type="Node" parent="CharacterStateMachine"]
+script = ExtResource("18_ryk3x")
+
+[node name="Block" type="Node" parent="CharacterStateMachine"]
+script = ExtResource("19_yihv2")
+
+[node name="Idle" type="Node" parent="CharacterStateMachine"]
+script = ExtResource("19_o8y2x")
+
+[node name="BotParameters" type="Node" parent="CharacterStateMachine"]
+script = ExtResource("20_mraoc")

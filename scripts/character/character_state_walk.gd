@@ -12,13 +12,6 @@ func enter() -> void:
 	character.anim.play("walk")
 
 
-func process_frame(delta: float) -> State:
-	super(delta)
-	if character.is_stunned:
-		return state_stun
-	return null
-
-
 func process_physics(delta: float) -> State:
 	super(delta)
 	return state_idle
