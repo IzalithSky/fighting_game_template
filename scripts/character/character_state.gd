@@ -2,10 +2,9 @@
 class_name CharacterState
 extends State
 
+@export var character: Character
 
-@onready var character: Character = get_parent().get_parent() as Character
-
-@onready var fsm: StateMachine = get_parent() as StateMachine
+@onready var fsm: CharacterStateMachine = get_parent() as CharacterStateMachine
 @onready var state_idle: CharacterStateIdle = get_parent().get_node("Idle") as CharacterStateIdle
 @onready var state_stun: CharacterStateStun = get_parent().get_node("Stun") as CharacterStateStun
 @onready var state_attack_startup: CharacterStateAttackStartup = get_parent().get_node("AttackStartup") as CharacterStateAttackStartup

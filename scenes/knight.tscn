@@ -1,4 +1,4 @@
-[gd_scene load_steps=70 format=3 uid="uid://ckkbqrqtc0g77"]
+[gd_scene load_steps=61 format=3 uid="uid://ckkbqrqtc0g77"]
 
 [ext_resource type="Script" path="res://scripts/character/character.gd" id="1_6l4u0"]
 [ext_resource type="Texture2D" uid="uid://dajq780bxf8av" path="res://sprites/characters/Knight_player/Idle_KG_2.png" id="1_okya6"]
@@ -12,16 +12,7 @@
 [ext_resource type="AudioStream" uid="uid://d3ewpmd067n2e" path="res://audio/swing1.wav" id="10_prmwa"]
 [ext_resource type="AudioStream" uid="uid://h5bj5a04vj5d" path="res://audio/block1.wav" id="11_0e7jf"]
 [ext_resource type="AudioStream" uid="uid://dlw2cg3qghboe" path="res://audio/hit2.wav" id="12_25yp3"]
-[ext_resource type="Script" path="res://scripts/character/character_state_machine.gd" id="13_bohqj"]
-[ext_resource type="Script" path="res://scripts/character/character_state_stun.gd" id="14_8pydr"]
-[ext_resource type="Script" path="res://scripts/player/player_character_state_idle.gd" id="15_v5lbh"]
-[ext_resource type="Script" path="res://scripts/player/player_character_state_jump.gd" id="17_gabdw"]
-[ext_resource type="Script" path="res://scripts/player/player_character_state_walk.gd" id="18_rnqjj"]
-[ext_resource type="Script" path="res://scripts/character/character_state_attack_startup.gd" id="19_c7ror"]
 [ext_resource type="Script" path="res://scripts/attack/attack.gd" id="19_kgyee"]
-[ext_resource type="Script" path="res://scripts/player/player_character_state_block.gd" id="19_o8oww"]
-[ext_resource type="Script" path="res://scripts/character/character_state_attack_recovery.gd" id="19_s002s"]
-[ext_resource type="Script" path="res://scripts/character/character_state_attack_hit.gd" id="19_whrjr"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_37uav"]
 atlas = ExtResource("1_wgnkk")
@@ -423,34 +414,6 @@ offset_top = -99.0
 offset_right = 21.0
 offset_bottom = -76.0
 horizontal_alignment = 1
-
-[node name="CharacterStateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
-script = ExtResource("13_bohqj")
-starting_state = NodePath("Idle")
-
-[node name="Stun" type="Node" parent="CharacterStateMachine"]
-script = ExtResource("14_8pydr")
-
-[node name="Idle" type="Node" parent="CharacterStateMachine"]
-script = ExtResource("15_v5lbh")
-
-[node name="Jump" type="Node" parent="CharacterStateMachine"]
-script = ExtResource("17_gabdw")
-
-[node name="Walk" type="Node" parent="CharacterStateMachine"]
-script = ExtResource("18_rnqjj")
-
-[node name="Block" type="Node" parent="CharacterStateMachine"]
-script = ExtResource("19_o8oww")
-
-[node name="AttackStartup" type="Node" parent="CharacterStateMachine"]
-script = ExtResource("19_c7ror")
-
-[node name="AttackHit" type="Node" parent="CharacterStateMachine"]
-script = ExtResource("19_whrjr")
-
-[node name="AttackRecovery" type="Node" parent="CharacterStateMachine"]
-script = ExtResource("19_s002s")
 
 [node name="attack1" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
 collision_layer = 4

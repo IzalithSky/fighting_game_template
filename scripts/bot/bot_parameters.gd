@@ -3,7 +3,7 @@ class_name BotParameters
 extends Node
 
 
-@onready var character: Character = get_parent().get_parent() as Character
+@export var character: Character
 
 @export var idle_only: bool = false
 @export var always_block: bool = false

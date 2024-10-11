@@ -1,11 +1,13 @@
-[gd_scene load_steps=18 format=4 uid="uid://c4kerx7igi33w"]
+[gd_scene load_steps=20 format=4 uid="uid://c4kerx7igi33w"]
 
 [ext_resource type="Script" path="res://scripts/world.gd" id="1_o1srd"]
 [ext_resource type="TileSet" uid="uid://vrst3418t234" path="res://sprites/locations/dungeon/dungeon.tres" id="2_uyt7w"]
 [ext_resource type="Texture2D" uid="uid://ljx484yido8y" path="res://sprites/locations/dungeon/Torch Sprite Sheet 32x64.png" id="3_65jhg"]
+[ext_resource type="PackedScene" uid="uid://ckkbqrqtc0g77" path="res://scenes/knight.tscn" id="3_iurch"]
 [ext_resource type="PackedScene" uid="uid://62t2005fchbn" path="res://scenes/zidane.tscn" id="3_qb37m"]
+[ext_resource type="PackedScene" uid="uid://c00n14agb6bxn" path="res://scenes/player_character_state_machine.tscn" id="4_l88d3"]
 [ext_resource type="PackedScene" uid="uid://diksjuhs82jqo" path="res://scenes/hpbar.tscn" id="4_sblbn"]
-[ext_resource type="PackedScene" uid="uid://cbbfxf83lknfq" path="res://scenes/bot_knight.tscn" id="5_ikrd0"]
+[ext_resource type="PackedScene" uid="uid://b238h33cgofap" path="res://scenes/bot_character_state_machine.tscn" id="5_fmefg"]
 [ext_resource type="Script" path="res://scripts/frame_data_bar.gd" id="6_lrnrk"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_umtby"]
@@ -78,6 +80,10 @@ shadow_size = 2
 
 [node name="world" type="Node2D"]
 script = ExtResource("1_o1srd")
+player1_scene = ExtResource("3_qb37m")
+player2_scene = ExtResource("3_iurch")
+fsm1_scene = ExtResource("4_l88d3")
+fsm2_scene = ExtResource("5_fmefg")
 
 [node name="background" type="Node2D" parent="."]
 
@@ -110,17 +116,6 @@ position = Vector2(432, 217)
 sprite_frames = SubResource("SpriteFrames_cph13")
 autoplay = "default"
 frame_progress = 0.581879
-
-[node name="player1" parent="." node_paths=PackedStringArray("opponent", "frame_data_bar") instance=ExtResource("3_qb37m")]
-position = Vector2(96, 360)
-opponent = NodePath("../player2")
-frame_data_bar = NodePath("../framedatabar")
-
-[node name="player2" parent="." node_paths=PackedStringArray("opponent", "frame_data_bar") instance=ExtResource("5_ikrd0")]
-position = Vector2(500, 380)
-input_prefix = "p2_"
-opponent = NodePath("../player1")
-frame_data_bar = NodePath("../framedatabar")
 
 [node name="hpbar1" parent="." instance=ExtResource("4_sblbn")]
 offset_left = 280.0
@@ -159,8 +154,3 @@ offset_right = 360.0
 offset_bottom = 103.0
 horizontal_alignment = 1
 vertical_alignment = 2
-
-[connection signal="damaged" from="player1" to="." method="_on_player_1_damaged"]
-[connection signal="died" from="player1" to="." method="_on_player_1_died"]
-[connection signal="damaged" from="player2" to="." method="_on_player_2_damaged"]
-[connection signal="died" from="player2" to="." method="_on_player_2_died"]

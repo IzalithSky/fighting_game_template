@@ -1,0 +1,43 @@
+[gd_scene load_steps=11 format=3 uid="uid://b238h33cgofap"]
+
+[ext_resource type="Script" path="res://scripts/character/character_state_machine.gd" id="1_wuvxo"]
+[ext_resource type="Script" path="res://scripts/character/character_state_stun.gd" id="2_dwao0"]
+[ext_resource type="Script" path="res://scripts/bot/bot_character_state_jump.gd" id="3_wiikw"]
+[ext_resource type="Script" path="res://scripts/bot/bot_character_state_walk.gd" id="4_g4fce"]
+[ext_resource type="Script" path="res://scripts/bot/bot_character_state_block.gd" id="5_d0gh8"]
+[ext_resource type="Script" path="res://scripts/bot/bot_character_state_idle.gd" id="6_mh7av"]
+[ext_resource type="Script" path="res://scripts/bot/bot_parameters.gd" id="7_eg2jo"]
+[ext_resource type="Script" path="res://scripts/character/character_state_attack_startup.gd" id="8_3v6wl"]
+[ext_resource type="Script" path="res://scripts/character/character_state_attack_hit.gd" id="9_kfupv"]
+[ext_resource type="Script" path="res://scripts/character/character_state_attack_recovery.gd" id="10_5vbv8"]
+
+[node name="CharacterStateMachine" type="Node" node_paths=PackedStringArray("starting_state")]
+script = ExtResource("1_wuvxo")
+starting_state = NodePath("Idle")
+
+[node name="Stun" type="Node" parent="."]
+script = ExtResource("2_dwao0")
+
+[node name="Jump" type="Node" parent="."]
+script = ExtResource("3_wiikw")
+
+[node name="Walk" type="Node" parent="."]
+script = ExtResource("4_g4fce")
+
+[node name="Block" type="Node" parent="."]
+script = ExtResource("5_d0gh8")
+
+[node name="Idle" type="Node" parent="."]
+script = ExtResource("6_mh7av")
+
+[node name="BotParameters" type="Node" parent="."]
+script = ExtResource("7_eg2jo")
+
+[node name="AttackStartup" type="Node" parent="."]
+script = ExtResource("8_3v6wl")
+
+[node name="AttackHit" type="Node" parent="."]
+script = ExtResource("9_kfupv")
+
+[node name="AttackRecovery" type="Node" parent="."]
+script = ExtResource("10_5vbv8")

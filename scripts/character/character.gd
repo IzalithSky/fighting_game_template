@@ -10,6 +10,7 @@ extends CharacterBody2D
 @export var opponent: Character
 @export var always_face_opponent: bool = true
 @export var frame_data_bar: FrameDataBar
+@export var fsm: CharacterStateMachine
 
 signal damaged(amount: int)
 signal died()
@@ -18,7 +19,6 @@ var current_hp: int = max_hp
 var attacks: Dictionary = {}
 var is_opponent_right: bool = true
 
-@onready var fsm: CharacterStateMachine = $CharacterStateMachine
 @onready var anim: AnimatedSprite2D = $Animations
 @onready var sound_block = $sound/block
 @onready var state_label = $StateLabel
