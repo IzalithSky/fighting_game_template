@@ -20,23 +20,13 @@ var is_opponent_right: bool = true
 
 @onready var fsm: CharacterStateMachine = $CharacterStateMachine
 @onready var anim: AnimatedSprite2D = $Animations
-@onready var hurtbox = $hurtbox/collider
-@onready var slash_attack = $hitboxes
-@onready var slash_hitbox1 = $hitboxes/slash_hitbox1  # Adjust this to the correct node path
-@onready var slash_hitbox2 = $hitboxes/slash_hitbox2  # Adjust this to the correct node path
-@onready var sound_hit1 = $sound/hit1
-@onready var sound_hit2 = $sound/hit2
-@onready var sound_swing = $sound/swing
 @onready var sound_block = $sound/block
 @onready var state_label = $StateLabel
+@onready var hurtbox: Area2D = $hurtbox
 
 
 func _ready() -> void:
-	slash_attack.connect("body_entered", on_hitbox_body_entered)
-	
 	load_attack_data()
-	disable_hitboxes()
-	
 	fsm.init()
 
 
@@ -50,19 +40,13 @@ func _input(event: InputEvent) -> void:
 
 
 func load_attack_data() -> void:
-	var attacks_node = $Attacks
-	if not attacks_node:
-		printerr("Attacks node not found in the scene")
-		return
-	
-	for child in attacks_node.get_children():
+	for child in get_children():
 		if child is Attack:
 			var attack_name = child.name
 			if attack_name != "":
 				attacks[attack_name] = child
 			else:
 				printerr("Attack node has no name: ", child.name)
-	
 	print("Attacks loaded successfully. Total attacks: ", attacks.size())
 
 
@@ -74,26 +58,6 @@ func face_opponent() -> void:
 	elif opponent_pos.x < global_position.x:
 		is_opponent_right = false
 		flip_sprite(-1)
-
-
-func on_hitbox_body_entered(body: Node) -> void:
-	if body != self and body.has_method("take_damage"):
-		if not body.is_blocking():
-			if anim.animation == "attack1":
-				sound_hit1.play()
-			elif anim.animation == "attack2":
-				sound_hit2.play()
-		
-		var attack: Attack = (fsm.current_state as CharacterStateAttack).current_attack
-		body.take_damage(attack.damage, attack.stun_duration)
-		apply_pushback(body, attack.pushback)
-
-
-func apply_pushback(body: Node, pushback_force: Vector2) -> void:	
-	var pushback_direction = 1 if is_opponent_right else -1
-	if body is CharacterBody2D:
-		body.velocity.x = pushback_direction * pushback_force.x
-		body.velocity.y = -pushback_force.y
 
 
 func take_damage(amount: int, stun_duration: float = 0.0) -> void:
@@ -131,17 +95,12 @@ func flip_sprite(direction: float) -> void:
 		anim.flip_h = false
 	elif direction < 0:
 		anim.flip_h = true
-	slash_attack.scale.x = direction
-
-
-func disable_hitboxes() -> void:
-	slash_hitbox1.call_deferred("set_disabled", true)
-	slash_hitbox2.call_deferred("set_disabled", true)
+	for attack in attacks.values():
+		attack.scale.x = direction
 
 
 func reset(new_position: Vector2) -> void:
 	current_hp = max_hp
 	position = new_position
 	velocity = Vector2.ZERO
-	disable_hitboxes()
 	fsm.reset()

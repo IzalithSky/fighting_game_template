@@ -18,7 +18,7 @@ func process_physics(delta: float) -> State:
 		return state_idle
 
 
-func process_input(event: InputEvent) -> State:
+func process_input(event: InputEvent) -> State:	
 	if event.is_action_pressed(character.input_prefix + "attack1"):
 		state_attack_startup.current_attack = character.attacks["attack1"]
 		return state_attack_startup

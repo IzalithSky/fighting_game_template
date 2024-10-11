@@ -525,20 +525,13 @@ position = Vector2(0, -23)
 shape = SubResource("RectangleShape2D_hch7y")
 
 [node name="hurtbox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 4
 
 [node name="collider" type="CollisionShape2D" parent="hurtbox"]
 position = Vector2(-1, -21.75)
 shape = SubResource("RectangleShape2D_j4y4m")
-
-[node name="hitboxes" type="Area2D" parent="."]
-
-[node name="slash_hitbox1" type="CollisionShape2D" parent="hitboxes"]
-position = Vector2(50, -29)
-shape = SubResource("RectangleShape2D_xotkn")
-
-[node name="slash_hitbox2" type="CollisionShape2D" parent="hitboxes"]
-position = Vector2(40, -46)
-shape = SubResource("RectangleShape2D_xotkn")
+debug_color = Color(0.355039, 0.616281, 0.149107, 0.42)
 
 [node name="sound" type="Node" parent="."]
 
@@ -589,26 +582,42 @@ script = ExtResource("16_grms8")
 [node name="AttackRecovery" type="Node" parent="CharacterStateMachine"]
 script = ExtResource("17_npxpi")
 
-[node name="Attacks" type="Node" parent="."]
-
-[node name="attack1" type="Node" parent="Attacks" node_paths=PackedStringArray("hitbox")]
+[node name="attack1" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
+collision_layer = 4
+collision_mask = 2
 script = ExtResource("14_2csiw")
 damage = 20
 stun_duration = 0.6
 pushback = Vector2(80, 80)
-hitbox = NodePath("../../hitboxes/slash_hitbox1")
 animation_name = "attack1"
+sound_swing = NodePath("../sound/swing")
+sound_hit = NodePath("../sound/hit1")
+input_name = "attack1"
 duration_startup = 0.2
 duration_hit = 0.2
 duration_recovery = 0.3
 
-[node name="attack2" type="Node" parent="Attacks" node_paths=PackedStringArray("hitbox")]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="attack1"]
+position = Vector2(50, -29)
+shape = SubResource("RectangleShape2D_xotkn")
+debug_color = Color(0.92549, 0.239216, 0.341176, 0.419608)
+
+[node name="attack2" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
+collision_layer = 4
+collision_mask = 2
 script = ExtResource("14_2csiw")
 damage = 10
 stun_duration = 0.5
 pushback = Vector2(40, 80)
-hitbox = NodePath("../../hitboxes/slash_hitbox2")
 animation_name = "attack2"
+sound_swing = NodePath("../sound/swing")
+sound_hit = NodePath("../sound/hit2")
+input_name = "attack2"
 duration_startup = 0.1
 duration_hit = 0.2
 duration_recovery = 0.2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="attack2"]
+position = Vector2(40, -46)
+shape = SubResource("RectangleShape2D_xotkn")
+debug_color = Color(0.92549, 0.239216, 0.341176, 0.419608)

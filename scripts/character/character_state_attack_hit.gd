@@ -11,6 +11,7 @@ func enter() -> void:
 	super()
 	duration = current_attack.duration_hit
 	current_attack.hitbox.disabled = false
+	current_attack.do_hit()
 
 
 func process_physics(delta: float) -> State:

@@ -11,8 +11,8 @@ func enter() -> void:
 	super()
 	duration = current_attack.duration_startup
 	current_attack.hitbox.disabled = true
-	character.anim.play(current_attack.animation_name)
-	character.sound_swing.play()
+
+	current_attack.do_startup()
 
 
 func process_physics(delta: float) -> State:

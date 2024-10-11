@@ -2,6 +2,8 @@
 extends Node2D
 
 
+@export var time_scale: float = 1.0
+
 @onready var player1 = $player1
 @onready var player2 = $player2
 
@@ -17,6 +19,8 @@ var score_p2 = 0
 
 
 func _ready() -> void:
+	Engine.time_scale = time_scale
+	
 	_reset_players()
 	
 	hpbar1.init_hp(player1.max_hp)
