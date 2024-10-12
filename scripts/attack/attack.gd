@@ -24,23 +24,32 @@ func _ready() -> void:
 
 
 func enter_startup():
-	if character.is_on_floor():
-		character.velocity.x = 0
-		character.velocity.y = 0
 	character.anim.play(animation_name)
 	sound_swing.play()
 
 
 func exit_startup():
 	pass
+	
+	
+func physics_startup():
+	do_physics()
 
 
 func enter_hit():
 	hitbox.disabled = false
 
 
+func physics_hit():
+	do_physics()
+
+
 func exit_hit():
 	hitbox.call_deferred("set_disabled", true)
+
+
+func physics_recovery():
+	do_physics()
 
 
 func enter_recovery():
@@ -49,6 +58,12 @@ func enter_recovery():
 
 func exit_recovery():
 	pass
+
+
+func do_physics():
+	if character.is_on_floor():
+		character.velocity.x = 0
+		character.velocity.y = 0
 
 
 func on_area_entered(area: Area2D) -> void:

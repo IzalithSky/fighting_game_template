@@ -20,6 +20,7 @@ func exit() -> void:
 
 func process_physics(delta: float) -> State:
 	super(delta)
+	current_attack.physics_recovery()
 	
 	var color = Color(0, 0, 1)
 	if character.input_prefix == "p1_":
