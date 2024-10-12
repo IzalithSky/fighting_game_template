@@ -1,15 +1,19 @@
-[gd_scene load_steps=3 format=4 uid="uid://cfy0wqfr218rf"]
+[gd_scene load_steps=4 format=4 uid="uid://cfy0wqfr218rf"]
 
+[ext_resource type="Script" path="res://scripts/pause_scene.gd" id="1_driq1"]
 [ext_resource type="TileSet" uid="uid://vrst3418t234" path="res://sprites/locations/dungeon/dungeon.tres" id="1_qfhqt"]
 [ext_resource type="FontFile" uid="uid://1mina24aowrb" path="res://fonts/DungeonFont.ttf" id="2_7nmmc"]
 
 [node name="PauseScene" type="Control"]
+process_mode = 3
+z_index = 10
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_driq1")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -18,7 +22,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 1)
+color = Color(0, 0, 0, 0.784314)
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 position = Vector2(129, 140)
@@ -26,6 +30,7 @@ tile_map_data = PackedByteArray("AAAAAAAAAAAAAAoAAAAAAAEAAAAAAAsAAAAAAAIAAAAAAAw
 tile_set = ExtResource("1_qfhqt")
 
 [node name="Label" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0.705882)
 z_index = 2
 layout_mode = 1
 anchors_preset = 8
@@ -34,12 +39,50 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -36.0
-offset_top = -88.0
+offset_top = -89.0
 offset_right = 36.0
-offset_bottom = -55.0
+offset_bottom = -56.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_7nmmc")
+theme_override_font_sizes/font_size = 24
+text = "Pause
+"
+horizontal_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -49.0
+offset_top = -38.0
+offset_right = 53.0
+offset_bottom = 3.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("2_7nmmc")
 theme_override_font_sizes/font_size = 32
-text = "Pause
-"
+text = "Resume"
+
+[node name="MenuButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -76.0
+offset_top = 25.0
+offset_right = 76.0
+offset_bottom = 66.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_7nmmc")
+theme_override_font_sizes/font_size = 32
+text = "Main Menu"
+
+[connection signal="pressed" from="ResumeButton" to="." method="on_resume_button_pressed"]
+[connection signal="pressed" from="MenuButton" to="." method="on_menu_button_pressed"]

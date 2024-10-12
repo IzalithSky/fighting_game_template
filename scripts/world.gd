@@ -104,7 +104,7 @@ func _physics_process(delta: float) -> void:
 	label_distance.text = str(round(distance))
 
 func _input(event: InputEvent):
-	if event.is_action_pressed("ui_cancel"):  # 'ui_cancel' is mapped to Esc
+	if event.is_action_pressed("ui_cancel"):
 		toggle_pause()
 
 func toggle_pause():
@@ -116,5 +116,5 @@ func toggle_pause():
 	else:
 		get_tree().paused = true
 		pause_menu = pause_menu_scene.instantiate()
-		add_child(pause_menu)
+		get_tree().get_root().add_child(pause_menu)
 		pause_menu.grab_focus()
