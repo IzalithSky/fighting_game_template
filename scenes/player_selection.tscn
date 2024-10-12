@@ -74,31 +74,12 @@ focus_neighbor_top = NodePath("../../../../SettingsButton")
 focus_neighbor_bottom = NodePath("../Player1Bot")
 
 [node name="Player1Bot" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer1"]
+layout_direction = 3
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_fonts/font = ExtResource("2_bwah3")
 theme_override_font_sizes/font_size = 21
 text = "bot
-"
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer1"]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 8
-
-[node name="CheckBox" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer1/VBoxContainer"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2_bwah3")
-theme_override_font_sizes/font_size = 21
-text = "always idle
-"
-
-[node name="CheckBox2" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer1/VBoxContainer"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2_bwah3")
-theme_override_font_sizes/font_size = 21
-text = "always block
 "
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
@@ -118,12 +99,66 @@ custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 
 [node name="Player2Bot" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_direction = 3
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_fonts/font = ExtResource("2_bwah3")
 theme_override_font_sizes/font_size = 21
-button_pressed = true
 text = "bot
+"
+
+[node name="Player1BotOptions" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 2
+offset_left = 153.0
+offset_top = 367.0
+offset_right = 284.0
+offset_bottom = 423.0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_constants/separation = 0
+
+[node name="Player1IdleCheckBox" type="CheckBox" parent="Player1BotOptions"]
+layout_direction = 3
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_bwah3")
+theme_override_font_sizes/font_size = 21
+text = "always idle
+"
+
+[node name="Player1BlockCheckBox" type="CheckBox" parent="Player1BotOptions"]
+layout_direction = 3
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_bwah3")
+theme_override_font_sizes/font_size = 21
+text = "always block
+"
+
+[node name="Player2BotOptions" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 2
+offset_left = 374.0
+offset_top = 368.0
+offset_right = 505.0
+offset_bottom = 432.0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_constants/separation = 0
+
+[node name="Player2IdleCheckBox" type="CheckBox" parent="Player2BotOptions"]
+layout_direction = 3
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_bwah3")
+theme_override_font_sizes/font_size = 21
+text = "always idle
+"
+
+[node name="Player2BlockCheckBox" type="CheckBox" parent="Player2BotOptions"]
+layout_direction = 3
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_bwah3")
+theme_override_font_sizes/font_size = 21
+text = "always block
 "
 
 [node name="SettingsButton" type="Button" parent="."]
@@ -162,4 +197,6 @@ theme_override_font_sizes/font_size = 30
 text = "Fight
 "
 
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/VBoxContainer1/Player1Bot" to="." method="on_player_1_bot_toggled"]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/VBoxContainer2/Player2Bot" to="." method="on_player_2_bot_toggled"]
 [connection signal="pressed" from="PlayButton" to="." method="on_play_button_pressed"]
