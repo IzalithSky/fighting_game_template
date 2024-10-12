@@ -8,6 +8,7 @@ extends Node2D
 @export var fsm2_scene: PackedScene
 @export var player1_respawn_pos: Vector2 = Vector2(100, 320)
 @export var player2_respawn_pos: Vector2 = Vector2(500, 320)
+@export var pause_menu_scene: PackedScene = preload("res://scenes/pause_scene.tscn")
 
 @onready var hpbar1 = $hpbar1
 @onready var hpbar2 = $hpbar2
@@ -21,7 +22,7 @@ var fsm1: CharacterStateMachine
 var fsm2: CharacterStateMachine
 var score_p1 = 0
 var score_p2 = 0
-
+var pause_menu: Control
 
 func _ready() -> void:
 	Engine.time_scale = time_scale
@@ -101,3 +102,19 @@ func reset_players() -> void:
 func _physics_process(delta: float) -> void:
 	var distance = abs(player1.position.x - player2.position.x)
 	label_distance.text = str(round(distance))
+
+func _input(event: InputEvent):
+	if event.is_action_pressed("ui_cancel"):  # 'ui_cancel' is mapped to Esc
+		toggle_pause()
+
+func toggle_pause():
+	if get_tree().paused:
+		get_tree().paused = false
+		if pause_menu:
+			pause_menu.queue_free()
+			pause_menu = null
+	else:
+		get_tree().paused = true
+		pause_menu = pause_menu_scene.instantiate()
+		add_child(pause_menu)
+		pause_menu.grab_focus()
