@@ -1,0 +1,74 @@
+[gd_scene load_steps=6 format=3 uid="uid://c6cv3nff50giv"]
+
+[ext_resource type="Script" path="res://scripts/character_slot.gd" id="1_knmdd"]
+[ext_resource type="FontFile" uid="uid://1mina24aowrb" path="res://fonts/DungeonFont.ttf" id="1_v2y1p"]
+[ext_resource type="Shader" path="res://scripts/color_blink.gdshader" id="2_g0bwj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vmmhd"]
+resource_local_to_scene = true
+shader = ExtResource("2_g0bwj")
+shader_parameter/blink_speed = 2.0
+shader_parameter/is_blinking = false
+
+[sub_resource type="LabelSettings" id="LabelSettings_0t77t"]
+font = ExtResource("1_v2y1p")
+font_size = 18
+shadow_color = Color(0, 0, 0, 0.784314)
+
+[node name="CharacterSlot" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -530.0
+offset_bottom = -370.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 2
+script = ExtResource("1_knmdd")
+
+[node name="BottomColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_vmmhd")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0.4)
+
+[node name="MainColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.03
+anchor_top = 0.03
+anchor_right = 0.97
+anchor_bottom = 0.97
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0980392, 0.0980392, 0.0980392, 1)
+
+[node name="CharacterTextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.15
+anchor_right = 1.0
+anchor_bottom = 1.2
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 4
+stretch_mode = 4
+
+[node name="NameLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.02
+anchor_top = 0.98
+anchor_right = 0.98
+anchor_bottom = 0.98
+grow_horizontal = 2
+grow_vertical = 0
+text = "
+"
+label_settings = SubResource("LabelSettings_0t77t")
+horizontal_alignment = 2
