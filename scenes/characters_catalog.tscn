@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=4 uid="uid://dh0c853bfnjtv"]
 
-[ext_resource type="Script" path="res://scenes/characters_catalog.gd" id="1_pyeff"]
+[ext_resource type="Script" path="res://scripts/characters_catalog.gd" id="1_pyeff"]
 [ext_resource type="TileSet" uid="uid://vrst3418t234" path="res://sprites/locations/dungeon/dungeon.tres" id="1_scubj"]
 [ext_resource type="FontFile" uid="uid://1mina24aowrb" path="res://fonts/DungeonFont.ttf" id="3_h3v8y"]
 

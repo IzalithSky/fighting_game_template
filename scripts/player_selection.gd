@@ -1,7 +1,9 @@
 extends Control
 
-@export var player1: CharacterSlot
-@export var player2: CharacterSlot
+@onready var player1 = $VBoxContainer/HBoxContainer/VBoxContainer1/Player1Slot
+@onready var player1bot = $VBoxContainer/HBoxContainer/VBoxContainer1/Player1Bot
+@onready var player2 = $VBoxContainer/HBoxContainer/VBoxContainer2/Player2Slot
+@onready var player2bot = $VBoxContainer/HBoxContainer/VBoxContainer2/Player2Bot
 @export var character_library_scene: PackedScene = preload("res://scenes/characters_catalog.tscn")
 
 var player1character: Dictionary
@@ -47,3 +49,22 @@ func on_character_selected(selected_character: Dictionary, slot: CharacterSlot):
 		player2character = selected_character
 	slot.grab_focus()
 	refresh_character_slots()
+
+func on_play_button_pressed() -> void:
+	var world_scene = preload("res://scenes/world.tscn")
+	var world = world_scene.instantiate()
+	world.player1_scene = load(player1character["scene_path"])
+	world.player2_scene = load(player2character["scene_path"])
+	
+	if (player1bot.button_pressed):
+		world.fsm1_scene = load("res://scenes/bot_character_state_machine.tscn")
+	else:
+		world.fsm1_scene = load("res://scenes/player_character_state_machine.tscn")
+	
+	if (player2bot.button_pressed):
+		world.fsm2_scene = load("res://scenes/bot_character_state_machine.tscn")
+	else:
+		world.fsm2_scene = load("res://scenes/player_character_state_machine.tscn")
+	
+	get_tree().get_root().add_child(world)
+	get_tree().get_root().remove_child(self)
