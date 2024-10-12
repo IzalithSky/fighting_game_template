@@ -1,6 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://c6cv3nff50giv"]
+[gd_scene load_steps=6 format=3 uid="uid://c6cv3nff50giv"]
 
+[ext_resource type="Script" path="res://scripts/character_slot.gd" id="1_knmdd"]
 [ext_resource type="FontFile" uid="uid://1mina24aowrb" path="res://fonts/DungeonFont.ttf" id="1_v2y1p"]
+[ext_resource type="Shader" path="res://scripts/color_blink.gdshader" id="2_g0bwj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vmmhd"]
+resource_local_to_scene = true
+shader = ExtResource("2_g0bwj")
+shader_parameter/blink_speed = 2.0
+shader_parameter/is_blinking = false
 
 [sub_resource type="LabelSettings" id="LabelSettings_0t77t"]
 font = ExtResource("1_v2y1p")
@@ -16,17 +24,20 @@ offset_right = -530.0
 offset_bottom = -370.0
 grow_horizontal = 2
 grow_vertical = 2
+focus_mode = 2
+script = ExtResource("1_knmdd")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="BottomColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_vmmhd")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(1, 1, 1, 0.392157)
+color = Color(1, 1, 1, 0.4)
 
-[node name="ColorRect2" type="ColorRect" parent="."]
+[node name="MainColorRect" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.03
@@ -37,7 +48,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.0980392, 0.0980392, 0.0980392, 1)
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="CharacterTextureRect" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.05
