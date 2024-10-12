@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://ckkbqrqtc0g77"]
+[gd_scene load_steps=70 format=3 uid="uid://ckkbqrqtc0g77"]
 
 [ext_resource type="Script" path="res://scripts/character/character.gd" id="1_6l4u0"]
 [ext_resource type="Texture2D" uid="uid://dajq780bxf8av" path="res://sprites/characters/Knight_player/Idle_KG_2.png" id="1_okya6"]
@@ -13,6 +13,8 @@
 [ext_resource type="AudioStream" uid="uid://d3ewpmd067n2e" path="res://audio/swing1.wav" id="10_prmwa"]
 [ext_resource type="AudioStream" uid="uid://h5bj5a04vj5d" path="res://audio/block1.wav" id="11_0e7jf"]
 [ext_resource type="AudioStream" uid="uid://dlw2cg3qghboe" path="res://audio/hit2.wav" id="12_25yp3"]
+[ext_resource type="Script" path="res://scripts/attack/attack_ranged.gd" id="15_ex06t"]
+[ext_resource type="PackedScene" uid="uid://bcfn8pe3p7idk" path="res://scenes/projectile_knight.tscn" id="16_nvux6"]
 [ext_resource type="Script" path="res://scripts/attack/attack.gd" id="19_kgyee"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_37uav"]
@@ -413,6 +415,8 @@ size = Vector2(28, 63)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xotkn"]
 size = Vector2(41, 34.5)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uhff5"]
+
 [node name="Character" type="CharacterBody2D"]
 script = ExtResource("1_6l4u0")
 
@@ -421,8 +425,7 @@ position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
 animation = &"attack_ranged"
 autoplay = "idle"
-frame = 4
-frame_progress = 1.0
+frame = 3
 
 [node name="collider" type="CollisionShape2D" parent="."]
 position = Vector2(0, -40)
@@ -497,3 +500,21 @@ duration_recovery = 0.2
 position = Vector2(29.5, -46)
 shape = SubResource("RectangleShape2D_xotkn")
 debug_color = Color(0.92549, 0.239216, 0.341176, 0.419608)
+
+[node name="attack_ranged" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
+script = ExtResource("15_ex06t")
+projectile_scene = ExtResource("16_nvux6")
+damage = 10
+stun_duration = 0.4
+pushback = Vector2(40, 40)
+animation_name = "attack_ranged"
+sound_swing = NodePath("../sound/swing")
+sound_hit = NodePath("../sound/hit1")
+input_name = "attack_ranged"
+duration_startup = 0.3
+duration_hit = 0.1
+duration_recovery = 0.1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="attack_ranged"]
+position = Vector2(24, -47)
+shape = SubResource("RectangleShape2D_uhff5")

@@ -11,7 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://b2ja84lka7c00" path="res://audio/block2.wav" id="6_wpehk"]
 [ext_resource type="AudioStream" uid="uid://dlw2cg3qghboe" path="res://audio/hit2.wav" id="7_7aj4a"]
 [ext_resource type="Script" path="res://scripts/attack/attack_ranged.gd" id="12_hhpd5"]
-[ext_resource type="PackedScene" uid="uid://dj074m827hrck" path="res://scenes/projectile.tscn" id="13_nyjhg"]
+[ext_resource type="PackedScene" uid="uid://dj074m827hrck" path="res://scenes/projectile_zidane.tscn" id="13_nyjhg"]
 [ext_resource type="Script" path="res://scripts/attack/attack.gd" id="14_2csiw"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2op1a"]
