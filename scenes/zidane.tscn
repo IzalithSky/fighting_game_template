@@ -1,7 +1,8 @@
-[gd_scene load_steps=77 format=3 uid="uid://62t2005fchbn"]
+[gd_scene load_steps=76 format=3 uid="uid://62t2005fchbn"]
 
 [ext_resource type="Script" path="res://scripts/character/character.gd" id="1_yecoy"]
 [ext_resource type="Texture2D" uid="uid://6lpxmb2is1jj" path="res://sprites/characters/zidane/jump_backward.png" id="3_80c3s"]
+[ext_resource type="Texture2D" uid="uid://b51to4uyqchjs" path="res://sprites/characters/zidane/attack_ranged.png" id="3_coheh"]
 [ext_resource type="Texture2D" uid="uid://b253el4yq1vy8" path="res://sprites/characters/zidane/entrance.png" id="3_wseqo"]
 [ext_resource type="AudioStream" uid="uid://c3seaau4f0sdo" path="res://audio/hit1.wav" id="4_7ve4u"]
 [ext_resource type="Texture2D" uid="uid://wbfown2qldun" path="res://sprites/characters/zidane/jump_forward.png" id="4_p3mkr"]
@@ -58,6 +59,22 @@ region = Rect2(480, 4800, 160, 160)
 [sub_resource type="AtlasTexture" id="AtlasTexture_fx8fb"]
 atlas = ExtResource("5_cgt00")
 region = Rect2(640, 4800, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mly4q"]
+atlas = ExtResource("3_coheh")
+region = Rect2(0, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1nqia"]
+atlas = ExtResource("3_coheh")
+region = Rect2(160, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_26lx5"]
+atlas = ExtResource("3_coheh")
+region = Rect2(320, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x78sv"]
+atlas = ExtResource("3_coheh")
+region = Rect2(480, 0, 160, 160)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_860u1"]
 atlas = ExtResource("5_cgt00")
@@ -191,30 +208,6 @@ region = Rect2(160, 0, 160, 160)
 atlas = ExtResource("3_wseqo")
 region = Rect2(320, 0, 160, 160)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_lrt1g"]
-atlas = ExtResource("3_wseqo")
-region = Rect2(480, 0, 160, 160)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_di0kb"]
-atlas = ExtResource("3_wseqo")
-region = Rect2(640, 0, 160, 160)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_1jo46"]
-atlas = ExtResource("3_wseqo")
-region = Rect2(800, 0, 160, 160)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_rvpw7"]
-atlas = ExtResource("3_wseqo")
-region = Rect2(0, 160, 160, 160)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qtcbo"]
-atlas = ExtResource("3_wseqo")
-region = Rect2(160, 160, 160, 160)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_5lclh"]
-atlas = ExtResource("3_wseqo")
-region = Rect2(320, 160, 160, 160)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_8rv8d"]
 atlas = ExtResource("3_wseqo")
 region = Rect2(480, 160, 160, 160)
@@ -306,6 +299,23 @@ animations = [{
 "loop": false,
 "name": &"attack2",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mly4q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1nqia")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_26lx5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x78sv")
+}],
+"loop": false,
+"name": &"attack_ranged",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -428,24 +438,6 @@ animations = [{
 "texture": SubResource("AtlasTexture_6w28w")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_lrt1g")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_di0kb")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_1jo46")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_rvpw7")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qtcbo")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_5lclh")
-}, {
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_8rv8d")
 }, {
 "duration": 1.0,
@@ -456,7 +448,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"jump",
-"speed": 12.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -508,8 +500,10 @@ script = ExtResource("1_yecoy")
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"attack2"
+animation = &"jump"
 autoplay = "idle"
+frame = 5
+frame_progress = 1.0
 
 [node name="collider" type="CollisionShape2D" parent="."]
 position = Vector2(0, -23)
