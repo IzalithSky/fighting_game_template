@@ -17,11 +17,9 @@ func enter_hit():
 	projectile.character = character
 	projectile.spawn_pos = hitbox.global_position
 	
-	var world_root = get_tree().root.get_child(0)
+	var world_root = get_tree().root
 	world_root.add_child(projectile)
-	
-	print(1)
-	
-	
+
+
 func on_area_entered(area: Area2D) -> void:
 	pass
