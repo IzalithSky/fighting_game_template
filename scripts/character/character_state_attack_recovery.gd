@@ -10,7 +10,12 @@ func _ready() -> void:
 func enter() -> void:
 	super()
 	duration = current_attack.duration_recovery
-	current_attack.do_recovery()
+	current_attack.enter_recovery()
+
+
+func exit() -> void:
+	super()
+	current_attack.exit_recovery()
 
 
 func process_physics(delta: float) -> State:

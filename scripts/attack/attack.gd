@@ -23,16 +23,31 @@ func _ready() -> void:
 	hitbox.disabled = true
 
 
-func do_startup():
+func enter_startup():
+	if character.is_on_floor():
+		character.velocity.x = 0
+		character.velocity.y = 0
 	character.anim.play(animation_name)
 	sound_swing.play()
 
 
-func do_hit():
+func exit_startup():
 	pass
 
 
-func do_recovery():
+func enter_hit():
+	hitbox.disabled = false
+
+
+func exit_hit():
+	hitbox.call_deferred("set_disabled", true)
+
+
+func enter_recovery():
+	pass
+
+
+func exit_recovery():
 	pass
 
 

@@ -10,9 +10,12 @@ func _ready() -> void:
 func enter() -> void:
 	super()
 	duration = current_attack.duration_startup
-	current_attack.hitbox.disabled = true
+	current_attack.enter_startup()
 
-	current_attack.do_startup()
+
+func exit() -> void:
+	super()
+	current_attack.exit_startup()
 
 
 func process_physics(delta: float) -> State:

@@ -10,8 +10,12 @@ func _ready() -> void:
 func enter() -> void:
 	super()
 	duration = current_attack.duration_hit
-	current_attack.hitbox.disabled = false
-	current_attack.do_hit()
+	current_attack.enter_hit()
+
+
+func exit() -> void:
+	super()
+	current_attack.exit_hit()
 
 
 func process_physics(delta: float) -> State:
@@ -29,8 +33,3 @@ func process_physics(delta: float) -> State:
 	else:
 		duration -= delta
 		return null
-
-
-func exit() -> void:
-	super()
-	current_attack.hitbox.call_deferred("set_disabled", true)
