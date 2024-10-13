@@ -137,6 +137,9 @@ class AnimationViewer(QMainWindow):
         # Set splitter as central widget
         self.setCentralWidget(splitter)
 
+        # Set initial sizes: 100 for file panel, 100 for anim panel, and the rest for the image panel
+        splitter.setSizes([100, 100, 800])  # Adjust the numbers as needed for image panel width
+
         # Menu bar actions
         self.createMenu()
 
@@ -187,12 +190,20 @@ class AnimationViewer(QMainWindow):
         # Parse the files
         frames = parse_cgg_file(cgg_file_path)
         frame_indices = parse_cgs_file(cgs_file_path)
-        # Collect used rectangles
+        # Collect used rectangles with frame and part indices
         used_rectangles = []
-        for frame_index in frame_indices:
+        for frame_in_cgs_idx, frame_index in enumerate(frame_indices):
             if frame_index < len(frames):
                 parts = frames[frame_index]
-                used_rectangles.extend(parts)
+                for part_index, rect in enumerate(parts):
+                    used_rectangles.append({
+                        'imgX': rect['imgX'],
+                        'imgY': rect['imgY'],
+                        'imgWidth': rect['imgWidth'],
+                        'imgHeight': rect['imgHeight'],
+                        'frame_index': frame_index,   # Line number in CGG
+                        'part_index': part_index      # Part number in this frame
+                    })
         # Highlight used areas
         highlighted_image = highlight_used_areas(image_path, used_rectangles)
         # Convert to QImage and display
@@ -207,7 +218,7 @@ def parse_cgg_file(cgg_file_path):
     frames = []
     with open(cgg_file_path, 'r') as f:
         lines = [line.strip() for line in f if line.strip()]
-        for line in lines:
+        for line_number, line in enumerate(lines):
             params = line.split(',')[:-1]
             if len(params) < 2:
                 continue
@@ -225,6 +236,8 @@ def parse_cgg_file(cgg_file_path):
                     rotate, imgX, imgY, imgWidth, imgHeight, pageID
                 ) = map(int, config)
                 parts.append({
+                    'xPos': xPos,
+                    'yPos': yPos,
                     'imgX': imgX,
                     'imgY': imgY,
                     'imgWidth': imgWidth,
@@ -248,7 +261,7 @@ def parse_cgs_file(cgs_file_path):
 def highlight_used_areas(image_path, rectangles):
     # Open the image
     image = Image.open(image_path).convert('RGBA')
-    overlay = Image.new('RGBA', image.size, (0,0,0,0))
+    overlay = Image.new('RGBA', image.size, (0, 0, 0, 0))
     draw = ImageDraw.Draw(overlay)
 
     for rect in rectangles:
@@ -256,12 +269,17 @@ def highlight_used_areas(image_path, rectangles):
         imgY = rect['imgY']
         imgWidth = rect['imgWidth']
         imgHeight = rect['imgHeight']
+        frame_index = rect['frame_index'] + 1  # Convert to 1-based indexing
+        part_index = rect['part_index'] + 1    # Convert to 1-based indexing
 
-        # Semi-transparent green overlay
+        # Semi-transparent green overlay for the rectangle
         draw.rectangle(
             [(imgX, imgY), (imgX + imgWidth, imgY + imgHeight)],
             fill=(0, 255, 0, 100)  # Green color
         )
+
+        # Draw text showing "frame_index, part_index"
+        draw.text((imgX + 5, imgY + 5), f"{frame_index}\n{part_index}", fill=(255, 255, 255, 255))  # White text
 
     # Composite the overlay onto the original image
     highlighted_image = Image.alpha_composite(image, overlay)
