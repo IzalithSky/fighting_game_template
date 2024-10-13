@@ -68,7 +68,7 @@ def update_cache(unit_id, animation_name, input_dir, cache_dir):
 
 def process_animation(args_tuple):
     """Process a single animation."""
-    (unit_id, animation_name, input_dir, output_dir, cache_dir) = args_tuple
+    (unit_id, animation_name, input_dir, output_dir, cache_dir, ffbetool_path) = args_tuple
 
     # Check if processing is needed
     if not should_process(unit_id, animation_name, input_dir, cache_dir):
@@ -77,7 +77,7 @@ def process_animation(args_tuple):
 
     # Construct the command
     command = [
-        'node', 'ffbetool.js', unit_id,
+        'node', ffbetool_path, unit_id,
         '-a', animation_name,
         '-i', input_dir,
         '-o', output_dir
@@ -97,6 +97,7 @@ def process_animation(args_tuple):
 def main():
     # Set up command-line argument parsing
     parser = argparse.ArgumentParser(description='Process unit animations with ffbetool.js')
+    parser.add_argument('--ffbetool_path', type=str, required=True, help='Path to ffbetool.js')
     parser.add_argument('--input_dir', type=str, default='FF9', help='Input directory containing unit subdirectories')
     parser.add_argument('--output_dir', type=str, default='out', help='Output directory for processed files')
     parser.add_argument('--cache_dir', type=str, default='cache', help='Cache directory to store checksums')
@@ -134,7 +135,7 @@ def main():
                 input_dir = root  # The directory containing the files
 
                 # Append task to the list
-                tasks.append((unit_id, animation_name, input_dir, output_dir, cache_dir))
+                tasks.append((unit_id, animation_name, input_dir, output_dir, cache_dir, args.ffbetool_path))
 
     # Process animations in parallel
     with Pool(processes=num_processes) as pool:
