@@ -1,9 +1,10 @@
 import sys
 import os
+import re
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QFileSystemModel, QTreeView,
-    QListWidget, QSplitter, QWidget, QVBoxLayout, QPushButton, QFileDialog,
-    QGraphicsView, QGraphicsScene, QGraphicsPixmapItem, QStatusBar
+    QListWidget, QSplitter, QStatusBar, QFileDialog, QPushButton,
+    QGraphicsView, QGraphicsScene, QGraphicsPixmapItem, QVBoxLayout, QWidget
 )
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtCore import Qt, QModelIndex, QRectF
@@ -25,6 +26,10 @@ class ImageViewer(QGraphicsView):
         self.setDragMode(QGraphicsView.NoDrag)  # Disable hand drag mode initially
         self._parent = parent
 
+        # Variables to store the state
+        self._zoomStack = []
+        self._transformStack = []
+
     def hasPhoto(self):
         return not self._empty
 
@@ -32,7 +37,7 @@ class ImageViewer(QGraphicsView):
         rect = QRectF(self._photo.pixmap().rect())
         if not rect.isNull():
             self.setSceneRect(rect)
-            if self.hasPhoto():
+            if self.hasPhoto() and scale:
                 unity = self.transform().mapRect(QRectF(0, 0, 1, 1))
                 self.scale(1 / unity.width(), 1 / unity.height())
                 viewrect = self.viewport().rect()
@@ -42,15 +47,25 @@ class ImageViewer(QGraphicsView):
                 self.scale(factor, factor)
                 self._zoom = 0
 
-    def setPhoto(self, pixmap=None):
-        self._zoom = 0
+    def setPhoto(self, pixmap=None, preserve_transform=False):
+        if preserve_transform:
+            # Store current transformation
+            transform = self.transform()
+        else:
+            self._zoom = 0
+
         if pixmap and not pixmap.isNull():
             self._empty = False
             self._photo.setPixmap(pixmap)
         else:
             self._empty = True
             self._photo.setPixmap(QPixmap())
-        self.fitInView()
+
+        self.fitInView(scale=not preserve_transform)
+
+        if preserve_transform:
+            # Restore transformation
+            self.setTransform(transform)
 
     def wheelEvent(self, event):
         if self.hasPhoto():
@@ -180,14 +195,27 @@ class AnimationViewer(QMainWindow):
                 self.unit_cgg_file = unit_cgg_files[0]
                 self.unit_id = self.unit_anime_file.split('_')[-1].split('.')[0]
                 self.listAnimations()
+                # Display the image immediately
+                image_path = os.path.join(self.current_dir, self.unit_anime_file)
+                self.image_path = image_path  # Store for later use
+                pixmap = QPixmap(image_path)
+                self.imageViewer.setPhoto(pixmap)
+            else:
+                # Clear the image viewer if no valid files are found
+                self.imageViewer.setPhoto(None)
 
     def listAnimations(self):
         self.animationList.clear()
         self.frameList.clear()
-        self.imageViewer.setPhoto(None)
         contents = os.listdir(self.current_dir)
         cgs_files = [f for f in contents if f.startswith('unit_') and f.endswith(f'_cgs_{self.unit_id}.csv')]
-        animation_names = [f.split('_')[1] for f in cgs_files]
+        animation_names = []
+        for f in cgs_files:
+            # Use regular expression to extract the animation name
+            match = re.match(r'unit_(.+)_cgs_\d+\.csv', f)
+            if match:
+                animation_name = match.group(1)
+                animation_names.append(animation_name)
         self.cgs_files = dict(zip(animation_names, cgs_files))
         self.animationList.addItems(animation_names)
 
@@ -197,8 +225,7 @@ class AnimationViewer(QMainWindow):
         # Paths to the required files
         cgg_file_path = os.path.join(self.current_dir, self.unit_cgg_file)
         cgs_file_path = os.path.join(self.current_dir, cgs_file)
-        image_path = os.path.join(self.current_dir, self.unit_anime_file)
-        self.image_path = image_path  # Store for later use
+        image_path = self.image_path  # Use stored image path
 
         # Parse the files
         self.frames = parse_cgg_file(cgg_file_path)
@@ -226,10 +253,13 @@ class AnimationViewer(QMainWindow):
 
         # Highlight all used areas across frames
         highlighted_image = highlight_used_areas(image_path, used_rectangles)
+
         # Convert to QImage and display
         qimage = pil_image_to_qimage(highlighted_image)
         pixmap = QPixmap.fromImage(qimage)
-        self.imageViewer.setPhoto(pixmap)
+
+        # Set the photo without resetting zoom and position
+        self.imageViewer.setPhoto(pixmap, preserve_transform=True)
 
     def onFrameSelected(self, index):
         frame_list_index = self.frameList.currentRow()
@@ -253,7 +283,9 @@ class AnimationViewer(QMainWindow):
             # Convert to QImage and display
             qimage = pil_image_to_qimage(highlighted_image)
             pixmap = QPixmap.fromImage(qimage)
-            self.imageViewer.setPhoto(pixmap)
+
+            # Set the photo without resetting zoom and position
+            self.imageViewer.setPhoto(pixmap, preserve_transform=True)
 
     def updateStatusBar(self, message):
         self.statusBar.showMessage(message)
