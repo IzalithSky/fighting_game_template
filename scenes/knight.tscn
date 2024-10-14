@@ -17,30 +17,6 @@
 [ext_resource type="PackedScene" uid="uid://bcfn8pe3p7idk" path="res://scenes/projectile_knight.tscn" id="16_nvux6"]
 [ext_resource type="Script" path="res://scripts/attack/attack.gd" id="19_kgyee"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_37uav"]
-atlas = ExtResource("1_wgnkk")
-region = Rect2(0, 0, 100, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_07fh2"]
-atlas = ExtResource("1_wgnkk")
-region = Rect2(100, 0, 100, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_uhfjt"]
-atlas = ExtResource("1_wgnkk")
-region = Rect2(200, 0, 100, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_61510"]
-atlas = ExtResource("1_wgnkk")
-region = Rect2(300, 0, 100, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_25yff"]
-atlas = ExtResource("1_wgnkk")
-region = Rect2(400, 0, 100, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_j2l2f"]
-atlas = ExtResource("1_wgnkk")
-region = Rect2(500, 0, 100, 64)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_3pnbn"]
 atlas = ExtResource("3_4ve8t")
 region = Rect2(0, 0, 100, 64)
@@ -63,6 +39,30 @@ region = Rect2(400, 0, 100, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dikod"]
 atlas = ExtResource("3_4ve8t")
+region = Rect2(500, 0, 100, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_37uav"]
+atlas = ExtResource("1_wgnkk")
+region = Rect2(0, 0, 100, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_07fh2"]
+atlas = ExtResource("1_wgnkk")
+region = Rect2(100, 0, 100, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uhfjt"]
+atlas = ExtResource("1_wgnkk")
+region = Rect2(200, 0, 100, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_61510"]
+atlas = ExtResource("1_wgnkk")
+region = Rect2(300, 0, 100, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_25yff"]
+atlas = ExtResource("1_wgnkk")
+region = Rect2(400, 0, 100, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j2l2f"]
+atlas = ExtResource("1_wgnkk")
 region = Rect2(500, 0, 100, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3ask2"]
@@ -213,29 +213,6 @@ region = Rect2(600, 0, 100, 64)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_37uav")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_07fh2")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_uhfjt")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_61510")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_25yff")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_j2l2f")
-}],
-"loop": false,
-"name": &"attack1",
-"speed": 10.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_3pnbn")
 }, {
 "duration": 1.0,
@@ -254,8 +231,31 @@ animations = [{
 "texture": SubResource("AtlasTexture_dikod")
 }],
 "loop": false,
+"name": &"attack1",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_37uav")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_07fh2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uhfjt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_61510")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_25yff")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j2l2f")
+}],
+"loop": false,
 "name": &"attack2",
-"speed": 10.0
+"speed": 20.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -423,9 +423,8 @@ script = ExtResource("1_6l4u0")
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"attack_ranged"
+animation = &"attack1"
 autoplay = "idle"
-frame = 3
 
 [node name="collider" type="CollisionShape2D" parent="."]
 position = Vector2(0, -40)
@@ -465,19 +464,19 @@ horizontal_alignment = 1
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("19_kgyee")
-damage = 10
-stun_duration = 0.6
-pushback = Vector2(40, 80)
+damage = 5
+stun_duration = 0.25
+pushback = Vector2(80, 200)
 animation_name = "attack1"
 sound_swing = NodePath("../sound/swing")
 sound_hit = NodePath("../sound/hit1")
 input_name = "attack1"
 duration_startup = 0.1
-duration_hit = 0.2
-duration_recovery = 0.3
+duration_hit = 0.1
+duration_recovery = 0.1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="attack1"]
-position = Vector2(36, -27.25)
+position = Vector2(29.5, -46)
 shape = SubResource("RectangleShape2D_xotkn")
 debug_color = Color(0.92549, 0.239216, 0.341176, 0.419608)
 
@@ -485,19 +484,19 @@ debug_color = Color(0.92549, 0.239216, 0.341176, 0.419608)
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("19_kgyee")
-damage = 20
-stun_duration = 0.4
-pushback = Vector2(80, 80)
+damage = 10
+stun_duration = 0.3
+pushback = Vector2(40, 160)
 animation_name = "attack2"
 sound_swing = NodePath("../sound/swing")
 sound_hit = NodePath("../sound/hit2")
 input_name = "attack2"
-duration_startup = 0.2
-duration_hit = 0.2
-duration_recovery = 0.2
+duration_startup = 0.05
+duration_hit = 0.1
+duration_recovery = 0.15
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="attack2"]
-position = Vector2(29.5, -46)
+position = Vector2(36, -27.25)
 shape = SubResource("RectangleShape2D_xotkn")
 debug_color = Color(0.92549, 0.239216, 0.341176, 0.419608)
 
@@ -513,7 +512,7 @@ sound_hit = NodePath("../sound/hit1")
 input_name = "attack_ranged"
 duration_startup = 0.3
 duration_hit = 0.1
-duration_recovery = 0.1
+duration_recovery = 0.2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="attack_ranged"]
 position = Vector2(24, -47)

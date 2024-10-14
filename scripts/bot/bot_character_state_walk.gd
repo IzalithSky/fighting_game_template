@@ -8,10 +8,10 @@ extends CharacterStateWalk
 
 func process_physics(delta: float) -> State:
 	super(delta)
-	if params.is_in_jump_distance():
+	if params.is_in_jump_distance() and character.is_on_floor():
 		return state_jump
 	elif params.is_in_attack_distance():
-		if character.opponent.fsm.current_state.state_name == "attack":
+		if character.opponent.fsm.is_state("attack_startup") or character.opponent.fsm.is_state("attack_hit"):
 			return state_block
 		else:
 			if randf() < 0.5:

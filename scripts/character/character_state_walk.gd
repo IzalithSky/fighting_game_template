@@ -18,7 +18,8 @@ func process_physics(delta: float) -> State:
 
 
 func do_move(move_dir: float) -> void:
-	character.velocity.x = move_dir * character.move_speed
+	if character.is_on_floor():
+		character.velocity.x = move_dir * character.move_speed
 
 
 func exit() -> void:
