@@ -8,20 +8,35 @@ extends CharacterStateJump
 
 func enter() -> void:
 	super()
+	
 	character.velocity.x = 0
 	character.velocity.y = 0
-	if character.position.x > character.opponent.position.x:
-		character.velocity.x = -character.move_speed
-		if character.is_opponent_right:
-			character.anim.play("flip_left")
+	if not params.is_in_jump_distance() and character.opponent.fsm.is_state("attack_startup") or character.opponent.fsm.is_state("attack_hit"):
+		if character.position.x > character.opponent.position.x:
+			character.velocity.x = character.move_speed
+			if character.is_opponent_right:
+				character.anim.play("flip_left")
+			else:
+				character.anim.play("flip_right")
 		else:
-			character.anim.play("flip_right")
+			character.velocity.x = -character.move_speed
+			if character.is_opponent_right:
+				character.anim.play("flip_right")
+			else:
+				character.anim.play("flip_left")
 	else:
-		character.velocity.x = character.move_speed
-		if character.is_opponent_right:
-			character.anim.play("flip_right")
+		if character.position.x > character.opponent.position.x:
+			character.velocity.x = -character.move_speed
+			if character.is_opponent_right:
+				character.anim.play("flip_left")
+			else:
+				character.anim.play("flip_right")
 		else:
-			character.anim.play("flip_left")
+			character.velocity.x = character.move_speed
+			if character.is_opponent_right:
+				character.anim.play("flip_right")
+			else:
+				character.anim.play("flip_left")
 	character.velocity.y = -character.jump_velocity
 
 

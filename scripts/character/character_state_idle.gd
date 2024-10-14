@@ -10,5 +10,11 @@ func _ready() -> void:
 func enter() -> void:
 	super()
 	character.anim.play("idle")
-	character.velocity.x = 0
-	character.velocity.y = 0
+
+
+func process_physics(delta: float) -> State:
+	super(delta)
+	if character.is_on_floor():
+		character.velocity.x = 0
+		character.velocity.y = 0
+	return null

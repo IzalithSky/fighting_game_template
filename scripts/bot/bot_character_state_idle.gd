@@ -21,7 +21,10 @@ func process_physics(delta: float) -> State:
 			return state_attack_startup
 	elif params.is_in_attack_distance():
 		if character.opponent.fsm.is_state("attack_startup") or character.opponent.fsm.is_state("attack_hit"):
-			return state_block
+			if randf() < 0.8:
+				return state_block
+			else:
+				return state_jump
 		else:
 			if randf() < 0.5:
 				state_attack_startup.current_attack = character.attacks["attack1"]
