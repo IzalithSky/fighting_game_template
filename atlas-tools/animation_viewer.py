@@ -101,44 +101,53 @@ class AnimationViewer(QMainWindow):
         self.unit_cgg_file = ''
         self.unit_id = ''
         self.cgs_files = {}
+        self.frames = []
+        self.frame_indices = []
+        self.image_path = ''
 
         # Initialize UI components
         self.initUI()
 
     def initUI(self):
-        # Splitter to divide the window
+        # Main splitter to divide the window horizontally
         splitter = QSplitter(Qt.Horizontal)
 
-        # Left side: Directory tree
+        # Left side: Vertical splitter for directory, animations, and frames
+        leftSplitter = QSplitter(Qt.Vertical)
+
+        # Directory tree
         self.dirModel = QFileSystemModel()
         self.dirModel.setRootPath('')
         self.treeView = QTreeView()
         self.treeView.setModel(self.dirModel)
         self.treeView.setRootIndex(self.dirModel.index(''))
         self.treeView.clicked.connect(self.onTreeClicked)
-        splitter.addWidget(self.treeView)
+        leftSplitter.addWidget(self.treeView)
 
-        # Middle: List of animations
+        # List of animations
         self.animationList = QListWidget()
         self.animationList.clicked.connect(self.onAnimationSelected)
-        splitter.addWidget(self.animationList)
+        leftSplitter.addWidget(self.animationList)
+
+        # List of frames
+        self.frameList = QListWidget()
+        self.frameList.clicked.connect(self.onFrameSelected)
+        leftSplitter.addWidget(self.frameList)
+
+        splitter.addWidget(leftSplitter)
 
         # Right side: Image viewer with zoom and pan
         self.imageViewer = ImageViewer(self)
-
-        # Create a layout for the right side
-        rightLayoutWidget = QWidget()
-        rightLayout = QVBoxLayout()
-        rightLayout.addWidget(self.imageViewer)
-        rightLayoutWidget.setLayout(rightLayout)
-
-        splitter.addWidget(rightLayoutWidget)
+        splitter.addWidget(self.imageViewer)
 
         # Set splitter as central widget
         self.setCentralWidget(splitter)
 
-        # Set initial sizes: 100 for file panel, 100 for anim panel, and the rest for the image panel
-        splitter.setSizes([100, 100, 800])  # Adjust the numbers as needed for image panel width
+        # Set initial sizes for leftSplitter (adjust as needed)
+        leftSplitter.setSizes([200, 100, 100])
+
+        # Set initial sizes for the main splitter
+        splitter.setSizes([300, 900])  # Left panel width, right panel width
 
         # Menu bar actions
         self.createMenu()
@@ -174,6 +183,8 @@ class AnimationViewer(QMainWindow):
 
     def listAnimations(self):
         self.animationList.clear()
+        self.frameList.clear()
+        self.imageViewer.setPhoto(None)
         contents = os.listdir(self.current_dir)
         cgs_files = [f for f in contents if f.startswith('unit_') and f.endswith(f'_cgs_{self.unit_id}.csv')]
         animation_names = [f.split('_')[1] for f in cgs_files]
@@ -187,14 +198,22 @@ class AnimationViewer(QMainWindow):
         cgg_file_path = os.path.join(self.current_dir, self.unit_cgg_file)
         cgs_file_path = os.path.join(self.current_dir, cgs_file)
         image_path = os.path.join(self.current_dir, self.unit_anime_file)
+        self.image_path = image_path  # Store for later use
+
         # Parse the files
-        frames = parse_cgg_file(cgg_file_path)
-        frame_indices = parse_cgs_file(cgs_file_path)
-        # Collect used rectangles with frame and part indices
+        self.frames = parse_cgg_file(cgg_file_path)
+        self.frame_indices = parse_cgs_file(cgs_file_path)
+
+        # Populate the frame list
+        self.frameList.clear()
+        for i, frame_index in enumerate(self.frame_indices):
+            self.frameList.addItem(f"Frame {i + 1} (CGG line {frame_index + 1})")
+
+        # Show the image with all frames highlighted initially
         used_rectangles = []
-        for frame_in_cgs_idx, frame_index in enumerate(frame_indices):
-            if frame_index < len(frames):
-                parts = frames[frame_index]
+        for frame_index in self.frame_indices:
+            if frame_index < len(self.frames):
+                parts = self.frames[frame_index]
                 for part_index, rect in enumerate(parts):
                     used_rectangles.append({
                         'imgX': rect['imgX'],
@@ -204,12 +223,37 @@ class AnimationViewer(QMainWindow):
                         'frame_index': frame_index,   # Line number in CGG
                         'part_index': part_index      # Part number in this frame
                     })
-        # Highlight used areas
+
+        # Highlight all used areas across frames
         highlighted_image = highlight_used_areas(image_path, used_rectangles)
         # Convert to QImage and display
         qimage = pil_image_to_qimage(highlighted_image)
         pixmap = QPixmap.fromImage(qimage)
         self.imageViewer.setPhoto(pixmap)
+
+    def onFrameSelected(self, index):
+        frame_list_index = self.frameList.currentRow()
+        frame_index = self.frame_indices[frame_list_index]
+        # Get the corresponding frame from self.frames
+        if frame_index < len(self.frames):
+            parts = self.frames[frame_index]
+            # Collect rectangles with part indices
+            used_rectangles = []
+            for part_index, rect in enumerate(parts):
+                used_rectangles.append({
+                    'imgX': rect['imgX'],
+                    'imgY': rect['imgY'],
+                    'imgWidth': rect['imgWidth'],
+                    'imgHeight': rect['imgHeight'],
+                    'frame_index': frame_index,   # Line number in CGG
+                    'part_index': part_index      # Part number in this frame
+                })
+            # Highlight used areas for this frame
+            highlighted_image = highlight_used_areas(self.image_path, used_rectangles)
+            # Convert to QImage and display
+            qimage = pil_image_to_qimage(highlighted_image)
+            pixmap = QPixmap.fromImage(qimage)
+            self.imageViewer.setPhoto(pixmap)
 
     def updateStatusBar(self, message):
         self.statusBar.showMessage(message)
