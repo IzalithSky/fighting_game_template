@@ -9,7 +9,14 @@ extends CharacterStateWalk
 func process_physics(delta: float) -> State:
 	super(delta)
 	if params.is_in_jump_distance() and character.is_on_floor():
-		return state_jump
+		var r = randf()
+		if r < 0.33:
+			return state_jump
+		elif r < 0.66:
+			return state_walk
+		else:
+			state_attack_startup.current_attack = character.attacks["attack_ranged"]
+			return state_attack_startup
 	elif params.is_in_attack_distance():
 		if character.opponent.fsm.is_state("attack_startup") or character.opponent.fsm.is_state("attack_hit"):
 			return state_block
@@ -21,7 +28,11 @@ func process_physics(delta: float) -> State:
 			return state_attack_startup
 	else:
 		do_move(get_move_dir())
-	return null
+		if randf() > 0.95 and character.is_on_floor() and not params.is_in_attack_distance():
+			state_attack_startup.current_attack = character.attacks["attack_ranged"]
+			return state_attack_startup
+		else:
+			return null
 
 
 func get_move_dir() -> float:

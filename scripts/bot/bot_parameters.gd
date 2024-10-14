@@ -8,7 +8,7 @@ extends Node
 @export var idle_only: bool = false
 @export var always_block: bool = false
 @export var jump_distance: float = 256
-@export var attack_distance: float = 50
+@export var attack_distance: float = 55
 
 var opponent_distance: float = 1000
 
