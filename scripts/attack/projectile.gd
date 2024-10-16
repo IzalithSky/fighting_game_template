@@ -59,6 +59,10 @@ func on_area_entered(area: Area2D) -> void:
 		
 		remove_from_group(group_name)
 		queue_free()
+		
+	if area.get_parent() is Projectile:
+		remove_from_group(group_name)
+		queue_free()
 
 
 func apply_pushback(opponent: Character, pushback_force: Vector2) -> void:	

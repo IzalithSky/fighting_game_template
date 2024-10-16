@@ -47,7 +47,8 @@ func process_physics(delta: float) -> State:
 		else:
 			state_attack_startup.current_attack = character.attacks["attack2"]
 		return state_attack_startup
-	elif character.is_on_floor() and character.velocity.y >= 0:
+	
+	if character.is_on_floor() and character.velocity.y >= 0:
 		return state_idle
-	else:
-		return null
+	
+	return null

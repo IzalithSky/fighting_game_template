@@ -6,8 +6,18 @@ extends CharacterStateBlock
 @onready var params: BotParameters = get_parent().get_node("BotParameters") as BotParameters
 
 
+func enter():
+	super()
+	params.current_block_time = params.block_duration
+
+
 func process_physics(delta: float) -> State:
 	super(delta)
+	
+	if params.current_block_time > 0:
+		params.current_block_time -= delta
+		return null
+	
 	if params.is_in_jump_distance() and character.is_on_floor():
 		return state_jump
 	

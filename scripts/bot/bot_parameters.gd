@@ -3,12 +3,15 @@ class_name BotParameters
 extends Node
 
 
-@export var character: Character
-@export var jump_distance: float = 256
-@export var attack_distance: float = 55
-@export var projectile_distance: float = 128
-@export var projectile_warning_distance: float = 64
-@export var projectile_imminent_distance: float = 32
+var character: Character
+var jump_distance: float = 256
+var attack_distance: float = 50
+var projectile_distance: float = 128
+var projectile_warning_distance: float = 64
+var projectile_imminent_distance: float = 32
+var block_duration: float = 0.5
+
+var current_block_time: float = 0.0
 
 @onready var fsm: CharacterStateMachine = get_parent() as CharacterStateMachine
 @onready var state_idle: CharacterStateIdle = get_parent().get_node("Idle") as CharacterStateIdle

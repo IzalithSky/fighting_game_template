@@ -24,40 +24,47 @@ func process_physics(delta: float) -> State:
 		state_attack_startup.current_attack = character.attacks["attack_ranged"]
 		return state_attack_startup
 
-	if params.is_in_attack_distance():
-		if character.opponent.fsm.is_state("attack_startup") or character.opponent.fsm.is_state("attack_hit"):
-			return state_block
-		if not character.opponent.fsm.is_state("block"):
-			if randf() < 0.75:
+	if character.opponent.fsm.is_state("block"):
+		if not params.is_in_ranged_distance():
+			var r = randf()
+			if r < 0.8:
+				do_move(-get_dir_towards_opponent())
+				return null
+			elif r < 0.9:
+				state_attack_startup.current_attack = character.attacks["attack_ranged"]
+				return state_attack_startup
+			else:
 				if randf() < 0.5:
 					state_attack_startup.current_attack = character.attacks["attack1"]
 				else:
 					state_attack_startup.current_attack = character.attacks["attack2"]
 				return state_attack_startup
-			return state_block
+		else:
+			state_attack_startup.current_attack = character.attacks["attack_ranged"]
+			return state_attack_startup
 
-	if character.opponent.fsm.is_state("block") and not params.is_in_ranged_distance():
-		if params.is_in_attack_distance():
-			do_move(-get_move_dir())
-		elif randf() < 0.15:
+	if params.is_in_attack_distance():
+		if character.opponent.fsm.is_state("attack_startup") or character.opponent.fsm.is_state("attack_hit"):
+			return state_block
+		if randf() < 0.75:
 			if randf() < 0.5:
 				state_attack_startup.current_attack = character.attacks["attack1"]
 			else:
 				state_attack_startup.current_attack = character.attacks["attack2"]
 			return state_attack_startup
+		if randf() < 0.5:
+			return state_jump
 		else:
-			do_move(-get_move_dir())
+			return state_block
+
+	if randf() < 0.95:
+		do_move(get_dir_towards_opponent())
+		return null
 	else:
-		do_move(get_move_dir())
-		
-	if character.is_on_floor():
-		state_attack_startup.current_attack = character.attacks["attack_ranged"]
-		return state_attack_startup
-
-	return null
+		return state_jump
 
 
-func get_move_dir() -> float:
+func get_dir_towards_opponent() -> float:
 	if character.position.x < character.opponent.position.x:
 		return 1
 	else:

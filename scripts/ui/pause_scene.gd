@@ -21,4 +21,4 @@ func on_menu_button_pressed() -> void:
 	if world:
 		world.queue_free()
 	queue_free()
-	get_tree().change_scene_to_file("res://scenes/player_selection.tscn")
+	get_tree().change_scene_to_file("res://scenes/ui/player_selection.tscn")
