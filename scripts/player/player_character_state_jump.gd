@@ -26,9 +26,7 @@ func enter() -> void:
 
 func process_physics(delta: float) -> State:
 	super(delta)
-	if character.fsm.is_state("block"):
-		return state_stun
-	elif character.is_on_floor() and character.velocity.y >= 0:
+	if character.is_on_floor() and character.velocity.y >= 0:
 		return state_idle
 	else:
 		return null

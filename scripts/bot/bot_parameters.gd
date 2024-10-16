@@ -6,6 +6,7 @@ extends Node
 @export var character: Character
 @export var jump_distance: float = 256
 @export var attack_distance: float = 55
+@export var projectile_distance: float = 128
 @export var projectile_warning_distance: float = 64
 @export var projectile_imminent_distance: float = 32
 
@@ -37,6 +38,10 @@ func is_in_jump_distance() -> bool:
 
 func is_in_attack_distance() -> bool:
 	return abs(character.global_position.x - character.opponent.global_position.x) <= attack_distance
+
+
+func is_in_ranged_distance() ->bool:
+	return abs(character.global_position.x - character.opponent.global_position.x) >= projectile_distance
 
 
 func get_projectile_warning() -> ProjectileWarning:

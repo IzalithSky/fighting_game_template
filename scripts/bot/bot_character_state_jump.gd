@@ -41,9 +41,7 @@ func enter() -> void:
 
 func process_physics(delta: float) -> State:
 	super(delta)
-	if character.fsm.is_state("stun"):
-		return state_stun
-	elif params.is_in_attack_distance():
+	if params.is_in_attack_distance():
 		if randf() < 0.5:
 			state_attack_startup.current_attack = character.attacks["attack1"]
 		else:
