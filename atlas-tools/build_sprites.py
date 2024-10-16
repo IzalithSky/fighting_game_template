@@ -80,7 +80,8 @@ def process_animation(args_tuple):
         'node', ffbetool_path, unit_id,
         '-a', animation_name,
         '-i', input_dir,
-        '-o', output_dir
+        '-o', output_dir,
+        '-g'
     ]
 
     # Run the command

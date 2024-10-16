@@ -1,4 +1,4 @@
-[gd_scene load_steps=79 format=3 uid="uid://62t2005fchbn"]
+[gd_scene load_steps=76 format=3 uid="uid://62t2005fchbn"]
 
 [ext_resource type="Script" path="res://scripts/character/character.gd" id="1_yecoy"]
 [ext_resource type="Texture2D" uid="uid://6lpxmb2is1jj" path="res://sprites/characters/zidane/jump_backward.png" id="3_80c3s"]
@@ -10,6 +10,7 @@
 [ext_resource type="AudioStream" uid="uid://d3ewpmd067n2e" path="res://audio/swing1.wav" id="5_huqtv"]
 [ext_resource type="AudioStream" uid="uid://b2ja84lka7c00" path="res://audio/block2.wav" id="6_wpehk"]
 [ext_resource type="AudioStream" uid="uid://dlw2cg3qghboe" path="res://audio/hit2.wav" id="7_7aj4a"]
+[ext_resource type="Texture2D" uid="uid://dxwvf3vht3xkg" path="res://sprites/characters/zidane/stun.png" id="7_66xt5"]
 [ext_resource type="Script" path="res://scripts/attack/attack_ranged.gd" id="12_hhpd5"]
 [ext_resource type="PackedScene" uid="uid://dj074m827hrck" path="res://scenes/characters/projectile_zidane.tscn" id="13_nyjhg"]
 [ext_resource type="Script" path="res://scripts/attack/attack.gd" id="14_2csiw"]
@@ -221,22 +222,6 @@ region = Rect2(640, 160, 160, 160)
 [sub_resource type="AtlasTexture" id="AtlasTexture_u64gs"]
 atlas = ExtResource("3_wseqo")
 region = Rect2(800, 160, 160, 160)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_n58pw"]
-atlas = ExtResource("5_cgt00")
-region = Rect2(0, 480, 160, 160)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_rlxhv"]
-atlas = ExtResource("5_cgt00")
-region = Rect2(160, 480, 160, 160)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_bhnbf"]
-atlas = ExtResource("5_cgt00")
-region = Rect2(320, 480, 160, 160)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qhwd5"]
-atlas = ExtResource("5_cgt00")
-region = Rect2(480, 480, 160, 160)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f84u0"]
 atlas = ExtResource("5_cgt00")
@@ -454,16 +439,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_n58pw")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_rlxhv")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_bhnbf")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qhwd5")
+"texture": ExtResource("7_66xt5")
 }],
 "loop": true,
 "name": &"stun",
@@ -504,7 +480,7 @@ script = ExtResource("1_yecoy")
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"attack1"
+animation = &"stun"
 autoplay = "idle"
 
 [node name="collider" type="CollisionShape2D" parent="."]
