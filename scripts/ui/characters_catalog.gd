@@ -1,8 +1,9 @@
+# characters_catalog.gd
 extends Control
 
 signal character_selected(selected_character: Dictionary)
 
-@export var character_slot_scene: PackedScene = preload("res://scenes/character_slot.tscn")
+@export var character_slot_scene: PackedScene
 @onready var character_grid = $GridContainer
 
 var player_number: int = 0

@@ -62,20 +62,18 @@ func face_opponent() -> void:
 
 func take_damage(amount: int, stun_duration: float = 0.0) -> void:
 	var actual_damage = amount
-	var actual_stun_duration = stun_duration
 	
 	if is_blocking():
 		sound_block.play()
 		actual_damage = max(1, int(amount * 0.2))
-		actual_stun_duration = stun_duration * 0.6
 	
 	current_hp -= actual_damage
 	emit_signal("damaged", actual_damage)
 
 	if current_hp <= 0:
 		die()
-	elif actual_stun_duration > 0.0:
-		initiate_stun(actual_stun_duration)
+	elif stun_duration > 0.0:
+		initiate_stun(stun_duration)
 
 
 func initiate_stun(stun_duration: float) -> void:

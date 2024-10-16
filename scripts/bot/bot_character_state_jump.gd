@@ -8,10 +8,9 @@ extends CharacterStateJump
 
 func enter() -> void:
 	super()
-	
 	character.velocity.x = 0
 	character.velocity.y = 0
-	if not params.is_in_jump_distance() and character.opponent.fsm.is_state("attack_startup") or character.opponent.fsm.is_state("attack_hit"):
+	if not params.is_in_jump_distance():
 		if character.position.x > character.opponent.position.x:
 			character.velocity.x = character.move_speed
 			if character.is_opponent_right:

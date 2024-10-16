@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://c6cv3nff50giv"]
 
-[ext_resource type="Script" path="res://scripts/character_slot.gd" id="1_knmdd"]
+[ext_resource type="Script" path="res://scripts/ui/character_slot.gd" id="1_knmdd"]
 [ext_resource type="FontFile" uid="uid://1mina24aowrb" path="res://fonts/DungeonFont.ttf" id="1_v2y1p"]
-[ext_resource type="Shader" path="res://scripts/color_blink.gdshader" id="2_g0bwj"]
+[ext_resource type="Shader" path="res://scripts/ui/color_blink.gdshader" id="2_g0bwj"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vmmhd"]
 resource_local_to_scene = true

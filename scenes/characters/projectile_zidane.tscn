@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bcfn8pe3p7idk"]
+[gd_scene load_steps=5 format=3 uid="uid://dj074m827hrck"]
 
-[ext_resource type="Script" path="res://scripts/projectile.gd" id="1_ajuiv"]
-[ext_resource type="Texture2D" uid="uid://cisglhie85w1s" path="res://sprites/characters/Knight_player/projectile.png" id="2_56dns"]
+[ext_resource type="Script" path="res://scripts/attack/projectile.gd" id="1_w65t2"]
+[ext_resource type="Texture2D" uid="uid://cuy6xwhlqq4fd" path="res://sprites/characters/zidane/projectile.png" id="2_ajmcg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_th5tr"]
 
@@ -10,11 +10,11 @@
 [node name="Projectile" type="CharacterBody2D"]
 collision_layer = 0
 collision_mask = 0
-script = ExtResource("1_ajuiv")
+script = ExtResource("1_w65t2")
 
 [node name="sprite" type="Sprite2D" parent="."]
-position = Vector2(-2, -1)
-texture = ExtResource("2_56dns")
+position = Vector2(-32, 16)
+texture = ExtResource("2_ajmcg")
 
 [node name="collider" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_th5tr")

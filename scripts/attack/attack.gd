@@ -4,7 +4,8 @@ extends Area2D
 
 
 @export var damage: int = 0
-@export var stun_duration: float = 0
+@export var stun_hit_duration: float = 0
+@export var stun_block_duration: float = 0
 @export var pushback: Vector2 = Vector2.ZERO
 @export var animation_name: String
 @export var sound_swing: AudioStreamPlayer2D
@@ -71,7 +72,8 @@ func on_area_entered(area: Area2D) -> void:
 		if not character.opponent.is_blocking():
 			sound_hit.play()
 			
-		character.opponent.take_damage(damage, stun_duration)
+		character.opponent.take_damage(damage, 
+			stun_block_duration if character.opponent.is_blocking() else stun_hit_duration)
 		apply_pushback(character.opponent, pushback)
 
 

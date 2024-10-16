@@ -1,3 +1,4 @@
+# projectile.gd
 class_name Projectile
 extends CharacterBody2D
 
@@ -9,15 +10,19 @@ extends CharacterBody2D
 @onready var timer: Timer = $Timer
 
 var damage: int
-var stun_duration: float
+var stun_hit_duration: float
+var stun_block_duration: float
 var pushback: Vector2
 var sound_hit: AudioStreamPlayer2D
 
 var spawn_pos: Vector2
 var character: Character
+var group_name: String = "projectiles"
 
 
 func _ready() -> void:
+	add_to_group(group_name)
+	
 	global_position = spawn_pos
 	
 	hitbox.area_entered.connect(on_area_entered)
@@ -39,6 +44,7 @@ func _physics_process(delta: float) -> void:
 
 
 func timeout():
+	remove_from_group(group_name)
 	queue_free()
 	
 	
@@ -47,9 +53,11 @@ func on_area_entered(area: Area2D) -> void:
 		if not character.opponent.is_blocking():
 			sound_hit.play()
 			
-		character.opponent.take_damage(damage, stun_duration)
+		character.opponent.take_damage(damage, 
+			stun_block_duration if character.opponent.is_blocking() else stun_hit_duration)
 		apply_pushback(character.opponent, pushback)
 		
+		remove_from_group(group_name)
 		queue_free()
 
 

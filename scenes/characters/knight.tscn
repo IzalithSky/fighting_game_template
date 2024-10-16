@@ -14,7 +14,7 @@
 [ext_resource type="AudioStream" uid="uid://h5bj5a04vj5d" path="res://audio/block1.wav" id="11_0e7jf"]
 [ext_resource type="AudioStream" uid="uid://dlw2cg3qghboe" path="res://audio/hit2.wav" id="12_25yp3"]
 [ext_resource type="Script" path="res://scripts/attack/attack_ranged.gd" id="15_ex06t"]
-[ext_resource type="PackedScene" uid="uid://bcfn8pe3p7idk" path="res://scenes/projectile_knight.tscn" id="16_nvux6"]
+[ext_resource type="PackedScene" uid="uid://bcfn8pe3p7idk" path="res://scenes/characters/projectile_knight.tscn" id="16_nvux6"]
 [ext_resource type="Script" path="res://scripts/attack/attack.gd" id="19_kgyee"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3pnbn"]
@@ -465,7 +465,8 @@ collision_layer = 4
 collision_mask = 2
 script = ExtResource("19_kgyee")
 damage = 6
-stun_duration = 0.25
+stun_hit_duration = 0.3
+stun_block_duration = 0.2
 pushback = Vector2(80, 200)
 animation_name = "attack1"
 sound_swing = NodePath("../sound/swing")
@@ -485,7 +486,8 @@ collision_layer = 4
 collision_mask = 2
 script = ExtResource("19_kgyee")
 damage = 11
-stun_duration = 0.3
+stun_hit_duration = 0.4
+stun_block_duration = 0.2
 pushback = Vector2(40, 160)
 animation_name = "attack2"
 sound_swing = NodePath("../sound/swing")
@@ -504,7 +506,8 @@ debug_color = Color(0.92549, 0.239216, 0.341176, 0.419608)
 script = ExtResource("15_ex06t")
 projectile_scene = ExtResource("16_nvux6")
 damage = 10
-stun_duration = 0.4
+stun_hit_duration = 0.4
+stun_block_duration = 0.2
 pushback = Vector2(40, 40)
 animation_name = "attack_ranged"
 sound_swing = NodePath("../sound/swing")

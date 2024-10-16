@@ -1,3 +1,4 @@
+// color_blink.gdshader
 shader_type canvas_item;
 
 uniform float blink_speed = 2.0;

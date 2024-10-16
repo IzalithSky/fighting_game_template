@@ -1,14 +1,15 @@
+# world.gd
 extends Node2D
 
 
 @export var time_scale: float = 1.0
+@export var pause_menu_scene: PackedScene
 @export var player1_scene: PackedScene
 @export var player2_scene: PackedScene
 @export var fsm1_scene: PackedScene
 @export var fsm2_scene: PackedScene
 @export var player1_respawn_pos: Vector2 = Vector2(100, 320)
 @export var player2_respawn_pos: Vector2 = Vector2(500, 320)
-@export var pause_menu_scene: PackedScene = preload("res://scenes/pause_scene.tscn")
 
 @onready var hpbar1 = $hpbar1
 @onready var hpbar2 = $hpbar2

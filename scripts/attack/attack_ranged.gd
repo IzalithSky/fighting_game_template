@@ -11,7 +11,8 @@ func enter_hit():
 	
 	var projectile: Projectile = projectile_scene.instantiate()
 	projectile.damage = damage
-	projectile.stun_duration = stun_duration
+	projectile.stun_hit_duration = stun_hit_duration
+	projectile.stun_block_duration = stun_block_duration
 	projectile.sound_hit = sound_hit
 	projectile.pushback = pushback
 	projectile.character = character
