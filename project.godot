@@ -13,7 +13,8 @@ config_version=5
 config/name="fighting_game_template"
 run/main_scene="res://scenes/ui/player_selection.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
-config/icon="res://sprites/misc/icon.svg"
+boot_splash/image="res://sprites/logo/poster.png"
+config/icon="res://sprites/logo/icon.png"
 
 [autoload]
 
