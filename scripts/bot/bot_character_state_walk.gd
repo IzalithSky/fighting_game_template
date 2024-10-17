@@ -16,17 +16,18 @@ func process_physics(delta: float) -> State:
 		return state_block
 
 	if params.is_in_jump_distance() and character.is_on_floor():
-		var r = randf()
-		if r < 0.33:
+		var r = params.rng()
+		if r < 0.15:
 			return state_jump
-		if r < 0.66:
-			return state_walk
+		if r < 0.85:
+			do_move(get_dir_towards_opponent())
+			return null
 		state_attack_startup.current_attack = character.attacks["attack_ranged"]
 		return state_attack_startup
 
 	if character.opponent.fsm.is_state("block"):
 		if not params.is_in_ranged_distance():
-			var r = randf()
+			var r = params.rng()
 			if r < 0.8:
 				do_move(-get_dir_towards_opponent())
 				return null
@@ -46,18 +47,18 @@ func process_physics(delta: float) -> State:
 	if params.is_in_attack_distance():
 		if character.opponent.fsm.is_state("attack_startup") or character.opponent.fsm.is_state("attack_hit"):
 			return state_block
-		if randf() < 0.75:
+		if params.rng() < 0.75:
 			if randf() < 0.5:
 				state_attack_startup.current_attack = character.attacks["attack1"]
 			else:
 				state_attack_startup.current_attack = character.attacks["attack2"]
 			return state_attack_startup
-		if randf() < 0.5:
+		if params.rng() < 0.5:
 			return state_jump
 		else:
 			return state_block
 
-	if randf() < 0.95:
+	if params.rng() < 0.95:
 		do_move(get_dir_towards_opponent())
 		return null
 	else:

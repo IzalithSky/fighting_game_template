@@ -10,8 +10,10 @@ var projectile_distance: float = 128
 var projectile_warning_distance: float = 64
 var projectile_imminent_distance: float = 32
 var block_duration: float = 0.5
+var rng_persist_duration: float = 0.5
 
 var current_block_time: float = 0.0
+var current_rng_time: float = 0.0
 
 @onready var fsm: CharacterStateMachine = get_parent() as CharacterStateMachine
 @onready var state_idle: CharacterStateIdle = get_parent().get_node("Idle") as CharacterStateIdle
@@ -29,10 +31,12 @@ enum ProjectileWarning {
 	IMMINENT
 }
 var projectile_warning: ProjectileWarning = ProjectileWarning.NONE
+var current_rng: float = 0
 
 
 func _physics_process(delta: float) -> void:
 	projectile_warning = get_projectile_warning()
+	next_rng(delta)
 
 
 func is_in_jump_distance() -> bool:
@@ -65,3 +69,15 @@ func is_projectile_traveling_towards_me(projectile: Projectile) -> bool:
 	if (relative_position > 0 and projectile_direction < 0) or (relative_position < 0 and projectile_direction > 0):
 		return true
 	return false
+
+
+func next_rng(delta: float):
+	if current_rng_time < 0:
+		current_rng = randf()
+		current_rng_time = rng_persist_duration
+	else:
+		current_rng_time -= delta
+
+
+func rng() -> float:
+	return current_rng
