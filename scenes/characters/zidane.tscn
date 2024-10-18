@@ -474,6 +474,11 @@ size = Vector2(59.5, 72)
 [node name="Character" type="CharacterBody2D"]
 script = ExtResource("1_yecoy")
 
+[node name="collider" type="CollisionPolygon2D" parent="."]
+position = Vector2(5.68434e-14, -9)
+scale = Vector2(0.742188, 0.859375)
+polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
+
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
@@ -572,7 +577,3 @@ duration_recovery = 0.2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="attack_ranged"]
 position = Vector2(45, -27)
 shape = SubResource("RectangleShape2D_ruig2")
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-position = Vector2(0, -8)
-polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
