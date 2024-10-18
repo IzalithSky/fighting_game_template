@@ -69,6 +69,9 @@ func do_physics():
 
 func on_area_entered(area: Area2D) -> void:
 	if area == character.opponent.hurtbox:
+		if character.opponent.fsm.is_state("knokdown"):
+			return
+		
 		if not character.opponent.is_blocking():
 			sound_hit.play()
 			

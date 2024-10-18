@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b238h33cgofap"]
+[gd_scene load_steps=12 format=3 uid="uid://b238h33cgofap"]
 
 [ext_resource type="Script" path="res://scripts/character/character_state_machine.gd" id="1_wuvxo"]
 [ext_resource type="Script" path="res://scripts/character/character_state_stun.gd" id="2_dwao0"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://scripts/character/character_state_attack_startup.gd" id="8_3v6wl"]
 [ext_resource type="Script" path="res://scripts/character/character_state_attack_hit.gd" id="9_kfupv"]
 [ext_resource type="Script" path="res://scripts/character/character_state_attack_recovery.gd" id="10_5vbv8"]
+[ext_resource type="Script" path="res://scripts/character/character_state_knokdown.gd" id="11_ia35h"]
 
 [node name="CharacterStateMachine" type="Node" node_paths=PackedStringArray("starting_state")]
 script = ExtResource("1_wuvxo")
@@ -41,3 +42,6 @@ script = ExtResource("9_kfupv")
 
 [node name="AttackRecovery" type="Node" parent="."]
 script = ExtResource("10_5vbv8")
+
+[node name="Knokdown" type="Node" parent="."]
+script = ExtResource("11_ia35h")

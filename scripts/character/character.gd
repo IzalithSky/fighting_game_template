@@ -6,6 +6,8 @@ extends CharacterBody2D
 @export var max_hp: int = 100
 @export var move_speed: float = 275
 @export var jump_velocity: float = 400.0
+@export var knokdown_duration = 2
+@export var stun_to_knowkdown_duration: float = 1
 @export var input_prefix: String = "p1_"  # To switch between p1_ and p2_
 @export var opponent: Character
 @export var always_face_opponent: bool = true
@@ -18,6 +20,7 @@ signal died()
 var current_hp: int = max_hp
 var attacks: Dictionary = {}
 var is_opponent_right: bool = true
+var is_invincible: bool = false
 
 @onready var anim: AnimatedSprite2D = $Animations
 @onready var sound_block = $sound/block
@@ -61,6 +64,9 @@ func face_opponent() -> void:
 
 
 func take_damage(amount: int, stun_duration: float = 0.0) -> void:
+	if is_invincible:
+		return
+	
 	var actual_damage = amount
 	
 	if is_blocking():

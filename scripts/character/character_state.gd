@@ -7,6 +7,7 @@ extends State
 @onready var fsm: CharacterStateMachine = get_parent() as CharacterStateMachine
 @onready var state_idle: CharacterStateIdle = get_parent().get_node("Idle") as CharacterStateIdle
 @onready var state_stun: CharacterStateStun = get_parent().get_node("Stun") as CharacterStateStun
+@onready var state_knokdown: CharacterStateKnokdown = get_parent().get_node("Knokdown") as CharacterStateKnokdown
 @onready var state_attack_startup: CharacterStateAttackStartup = get_parent().get_node("AttackStartup") as CharacterStateAttackStartup
 @onready var state_attack_hit: CharacterStateAttackHit = get_parent().get_node("AttackHit") as CharacterStateAttackHit
 @onready var state_attack_recovery: CharacterStateAttackRecovery = get_parent().get_node("AttackRecovery") as CharacterStateAttackRecovery
@@ -32,4 +33,9 @@ func process_physics(delta: float) -> State:
 
 func apply_stun(duration: float) -> State:
 	state_stun.stun_timer = duration
-	return state_stun
+	state_stun.total_stun_duration += duration
+	
+	if fsm.is_state("stun"):
+		return null
+	else:
+		return state_stun

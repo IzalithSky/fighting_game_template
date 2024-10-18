@@ -1,4 +1,4 @@
-[gd_scene load_steps=69 format=3 uid="uid://ckkbqrqtc0g77"]
+[gd_scene load_steps=72 format=3 uid="uid://ckkbqrqtc0g77"]
 
 [ext_resource type="Script" path="res://scripts/character/character.gd" id="1_6l4u0"]
 [ext_resource type="Texture2D" uid="uid://dajq780bxf8av" path="res://sprites/characters/Knight_player/Idle_KG_2.png" id="1_okya6"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bnuifwywwq425" path="res://sprites/characters/Knight_player/Shield_Bash_KG.png" id="4_joupm"]
 [ext_resource type="Texture2D" uid="uid://55no5d7a6fl5" path="res://sprites/characters/Knight_player/Landing_KG_2.png" id="6_bvqnp"]
 [ext_resource type="Texture2D" uid="uid://c314iueirxsvv" path="res://sprites/characters/Knight_player/Hurt_KG_2.png" id="7_0bih1"]
+[ext_resource type="Texture2D" uid="uid://cu6ryesxa176b" path="res://sprites/characters/Knight_player/Dying_KG_2.png" id="8_g4pop"]
 [ext_resource type="AudioStream" uid="uid://c3seaau4f0sdo" path="res://audio/hit1.wav" id="9_b2t3y"]
 [ext_resource type="AudioStream" uid="uid://d3ewpmd067n2e" path="res://audio/swing1.wav" id="10_prmwa"]
 [ext_resource type="AudioStream" uid="uid://h5bj5a04vj5d" path="res://audio/block1.wav" id="11_0e7jf"]
@@ -164,6 +165,14 @@ region = Rect2(200, 0, 100, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_r2s1y"]
 atlas = ExtResource("6_bvqnp")
 region = Rect2(300, 0, 100, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ala0c"]
+atlas = ExtResource("8_g4pop")
+region = Rect2(400, 0, 100, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ed5cx"]
+atlas = ExtResource("8_g4pop")
+region = Rect2(500, 0, 100, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0ck4g"]
 atlas = ExtResource("7_0bih1")
@@ -364,6 +373,17 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_ala0c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ed5cx")
+}],
+"loop": true,
+"name": &"knokdown",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_0ck4g")
 }, {
 "duration": 1.0,
@@ -425,8 +445,9 @@ polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"idle"
+animation = &"knokdown"
 autoplay = "idle"
+frame_progress = 0.719314
 
 [node name="hurtbox" type="Area2D" parent="."]
 collision_layer = 2

@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=3 uid="uid://62t2005fchbn"]
+[gd_scene load_steps=76 format=3 uid="uid://62t2005fchbn"]
 
 [ext_resource type="Script" path="res://scripts/character/character.gd" id="1_yecoy"]
 [ext_resource type="Texture2D" uid="uid://6lpxmb2is1jj" path="res://sprites/characters/zidane/jump_backward.png" id="3_80c3s"]
@@ -223,6 +223,10 @@ region = Rect2(640, 160, 160, 160)
 atlas = ExtResource("3_wseqo")
 region = Rect2(800, 160, 160, 160)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_trkqs"]
+atlas = ExtResource("5_cgt00")
+region = Rect2(320, 2400, 160, 160)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_f84u0"]
 atlas = ExtResource("5_cgt00")
 region = Rect2(0, 800, 160, 160)
@@ -439,6 +443,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_trkqs")
+}],
+"loop": true,
+"name": &"knokdown",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("7_66xt5")
 }],
 "loop": true,
@@ -482,7 +494,7 @@ polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"idle"
+animation = &"knokdown"
 autoplay = "idle"
 
 [node name="hurtbox" type="Area2D" parent="."]
