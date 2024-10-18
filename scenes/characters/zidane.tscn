@@ -1,4 +1,4 @@
-[gd_scene load_steps=76 format=3 uid="uid://62t2005fchbn"]
+[gd_scene load_steps=75 format=3 uid="uid://62t2005fchbn"]
 
 [ext_resource type="Script" path="res://scripts/character/character.gd" id="1_yecoy"]
 [ext_resource type="Texture2D" uid="uid://6lpxmb2is1jj" path="res://sprites/characters/zidane/jump_backward.png" id="3_80c3s"]
@@ -463,9 +463,6 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_hch7y"]
-size = Vector2(25, 45.5)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j4y4m"]
 size = Vector2(24, 42.5)
 
@@ -480,12 +477,8 @@ script = ExtResource("1_yecoy")
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"stun"
+animation = &"idle"
 autoplay = "idle"
-
-[node name="collider" type="CollisionShape2D" parent="."]
-position = Vector2(0, -23)
-shape = SubResource("RectangleShape2D_hch7y")
 
 [node name="hurtbox" type="Area2D" parent="."]
 collision_layer = 2
@@ -579,3 +572,7 @@ duration_recovery = 0.2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="attack_ranged"]
 position = Vector2(45, -27)
 shape = SubResource("RectangleShape2D_ruig2")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(0, -8)
+polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)

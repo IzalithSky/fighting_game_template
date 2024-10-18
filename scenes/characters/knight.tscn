@@ -1,4 +1,4 @@
-[gd_scene load_steps=70 format=3 uid="uid://ckkbqrqtc0g77"]
+[gd_scene load_steps=69 format=3 uid="uid://ckkbqrqtc0g77"]
 
 [ext_resource type="Script" path="res://scripts/character/character.gd" id="1_6l4u0"]
 [ext_resource type="Texture2D" uid="uid://dajq780bxf8av" path="res://sprites/characters/Knight_player/Idle_KG_2.png" id="1_okya6"]
@@ -406,9 +406,6 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_hch7y"]
-size = Vector2(28, 63)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j4y4m"]
 size = Vector2(28, 63)
 
@@ -425,10 +422,6 @@ position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
 animation = &"stun"
 autoplay = "idle"
-
-[node name="collider" type="CollisionShape2D" parent="."]
-position = Vector2(0, -40)
-shape = SubResource("RectangleShape2D_hch7y")
 
 [node name="hurtbox" type="Area2D" parent="."]
 collision_layer = 2
@@ -520,3 +513,7 @@ duration_recovery = 0.2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="attack_ranged"]
 position = Vector2(24, -47)
 shape = SubResource("RectangleShape2D_uhff5")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(0, -16)
+polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
