@@ -7,7 +7,9 @@ extends State
 @onready var fsm: CharacterStateMachine = get_parent() as CharacterStateMachine
 @onready var state_idle: CharacterStateIdle = get_parent().get_node("Idle") as CharacterStateIdle
 @onready var state_stun: CharacterStateStun = get_parent().get_node("Stun") as CharacterStateStun
-@onready var state_knokdown: CharacterStateKnokdown = get_parent().get_node("Knokdown") as CharacterStateKnokdown
+@onready var state_knokdown_fall: CharacterStateKnokdownFall = get_parent().get_node("KnokdownFall") as CharacterStateKnokdownFall
+@onready var state_knokdown_down: CharacterStateKnokdownDown = get_parent().get_node("KnokdownDown") as CharacterStateKnokdownDown
+@onready var state_knokdown_up: CharacterStateKnokdownUp = get_parent().get_node("KnokdownUp") as CharacterStateKnokdownUp
 @onready var state_attack_startup: CharacterStateAttackStartup = get_parent().get_node("AttackStartup") as CharacterStateAttackStartup
 @onready var state_attack_hit: CharacterStateAttackHit = get_parent().get_node("AttackHit") as CharacterStateAttackHit
 @onready var state_attack_recovery: CharacterStateAttackRecovery = get_parent().get_node("AttackRecovery") as CharacterStateAttackRecovery

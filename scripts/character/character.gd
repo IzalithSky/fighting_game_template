@@ -6,7 +6,10 @@ extends CharacterBody2D
 @export var max_hp: int = 100
 @export var move_speed: float = 275
 @export var jump_velocity: float = 400.0
+@export var knokdown_fall_duration = 0.4
+@export var knokdown_down_duration = 0.4
 @export var knokdown_duration = 2
+@export var active_invincibility_duration = 0.4
 @export var stun_to_knowkdown_duration: float = 1
 @export var input_prefix: String = "p1_"  # To switch between p1_ and p2_
 @export var opponent: Character
@@ -21,6 +24,8 @@ var current_hp: int = max_hp
 var attacks: Dictionary = {}
 var is_opponent_right: bool = true
 var is_invincible: bool = false
+var knokdown_timer: float = 0
+var active_invincibility_timer: float = 0
 
 @onready var anim: AnimatedSprite2D = $Animations
 @onready var sound_block = $sound/block
@@ -35,7 +40,8 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	fsm.process_physics(delta)			
-	state_label.text = fsm.state()
+	manage_active_invincibility(delta)
+	state_label.text = fsm.state() if not is_invincible else "[i] " + fsm.state()
 
 
 func _input(event: InputEvent) -> void:
@@ -101,6 +107,24 @@ func flip_sprite(direction: float) -> void:
 		anim.flip_h = true
 	for attack in attacks.values():
 		attack.scale.x = direction
+
+
+func start_active_invicibility():
+	active_invincibility_timer = active_invincibility_duration
+
+
+func manage_active_invincibility(delta: float):
+	if fsm.is_state("knokdown_fall"):
+		return
+	if fsm.is_state("knokdown_down"):
+		return
+	if fsm.is_state("knokdown_up"):
+		return
+		
+	if active_invincibility_timer <= 0:
+		is_invincible = false
+	else:
+		active_invincibility_timer -= delta
 
 
 func reset(new_position: Vector2) -> void:

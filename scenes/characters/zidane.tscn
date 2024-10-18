@@ -1,4 +1,4 @@
-[gd_scene load_steps=76 format=3 uid="uid://62t2005fchbn"]
+[gd_scene load_steps=79 format=3 uid="uid://62t2005fchbn"]
 
 [ext_resource type="Script" path="res://scripts/character/character.gd" id="1_yecoy"]
 [ext_resource type="Texture2D" uid="uid://6lpxmb2is1jj" path="res://sprites/characters/zidane/jump_backward.png" id="3_80c3s"]
@@ -223,9 +223,21 @@ region = Rect2(640, 160, 160, 160)
 atlas = ExtResource("3_wseqo")
 region = Rect2(800, 160, 160, 160)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_trkqs"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_io3nv"]
 atlas = ExtResource("5_cgt00")
-region = Rect2(320, 2400, 160, 160)
+region = Rect2(640, 2400, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xyb3o"]
+atlas = ExtResource("5_cgt00")
+region = Rect2(800, 2400, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0kcim"]
+atlas = ExtResource("5_cgt00")
+region = Rect2(960, 2400, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dyvmh"]
+atlas = ExtResource("5_cgt00")
+region = Rect2(1120, 2400, 160, 160)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f84u0"]
 atlas = ExtResource("5_cgt00")
@@ -443,11 +455,39 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_trkqs")
+"texture": SubResource("AtlasTexture_io3nv")
 }],
 "loop": true,
-"name": &"knokdown",
+"name": &"knokdown_down",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_66xt5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_io3nv")
+}],
+"loop": false,
+"name": &"knokdown_fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_io3nv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xyb3o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0kcim")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dyvmh")
+}],
+"loop": false,
+"name": &"knokdown_up",
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -485,6 +525,8 @@ size = Vector2(59.5, 72)
 
 [node name="Character" type="CharacterBody2D"]
 script = ExtResource("1_yecoy")
+knokdown_fall_duration = 0.2
+knokdown_down_duration = 1.4
 
 [node name="collider" type="CollisionPolygon2D" parent="."]
 position = Vector2(5.68434e-14, -9)
@@ -494,7 +536,7 @@ polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"knokdown"
+animation = &"knokdown_down"
 autoplay = "idle"
 
 [node name="hurtbox" type="Area2D" parent="."]
@@ -553,7 +595,7 @@ collision_layer = 4
 collision_mask = 2
 script = ExtResource("14_2csiw")
 damage = 5
-stun_hit_duration = 0.4
+stun_hit_duration = 0.5
 stun_block_duration = 0.1
 pushback = Vector2(80, 200)
 animation_name = "attack2"

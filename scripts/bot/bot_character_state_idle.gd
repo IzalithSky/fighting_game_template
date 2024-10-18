@@ -28,10 +28,10 @@ func process_physics(delta: float) -> State:
 		if character.opponent.fsm.is_state("attack_startup") or character.opponent.fsm.is_state("attack_hit"):
 			return state_block
 
-		if character.opponent.fsm.is_state("block") and character.is_on_floor():
+		if (character.opponent.fsm.is_state("block") or character.opponent.is_invincible) and character.is_on_floor():
 			return state_walk
 
-		if params.rng() < 0.95:
+		if params.rng() < 0.95 and not character.opponent.is_invincible:
 			if randf() < 0.5:
 				state_attack_startup.current_attack = character.attacks["attack1"]
 			else:

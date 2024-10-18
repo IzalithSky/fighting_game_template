@@ -50,6 +50,9 @@ func timeout():
 	
 func on_area_entered(area: Area2D) -> void:
 	if area == character.opponent.hurtbox:
+		if character.opponent.is_invincible:
+			return
+		
 		if not character.opponent.is_blocking():
 			sound_hit.play()
 			

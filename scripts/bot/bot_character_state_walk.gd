@@ -25,21 +25,22 @@ func process_physics(delta: float) -> State:
 		state_attack_startup.current_attack = character.attacks["attack_ranged"]
 		return state_attack_startup
 
-	if character.opponent.fsm.is_state("block"):
+	if character.opponent.fsm.is_state("block") or character.opponent.is_invincible:
 		if not params.is_in_ranged_distance():
 			var r = params.rng()
-			if r < 0.8:
-				do_move(-get_dir_towards_opponent())
-				return null
-			elif r < 0.9:
-				state_attack_startup.current_attack = character.attacks["attack_ranged"]
-				return state_attack_startup
-			else:
+			if r < 0.1 and not character.opponent.is_invincible:
 				if randf() < 0.5:
 					state_attack_startup.current_attack = character.attacks["attack1"]
 				else:
 					state_attack_startup.current_attack = character.attacks["attack2"]
 				return state_attack_startup
+			elif r < 0.2:
+				state_attack_startup.current_attack = character.attacks["attack_ranged"]
+				return state_attack_startup
+			else:
+				do_move(-get_dir_towards_opponent())
+				return null
+
 		else:
 			state_attack_startup.current_attack = character.attacks["attack_ranged"]
 			return state_attack_startup
@@ -47,7 +48,7 @@ func process_physics(delta: float) -> State:
 	if params.is_in_attack_distance():
 		if character.opponent.fsm.is_state("attack_startup") or character.opponent.fsm.is_state("attack_hit"):
 			return state_block
-		if params.rng() < 0.75:
+		if params.rng() < 0.75 and not character.opponent.is_invincible:
 			if randf() < 0.5:
 				state_attack_startup.current_attack = character.attacks["attack1"]
 			else:

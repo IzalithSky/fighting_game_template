@@ -42,7 +42,7 @@ func enter() -> void:
 func process_physics(delta: float) -> State:
 	super(delta)
 	if params.is_in_attack_distance():
-		if randf() < 0.5:
+		if randf() < 0.5 and not character.opponent.is_invincible:
 			state_attack_startup.current_attack = character.attacks["attack1"]
 		else:
 			state_attack_startup.current_attack = character.attacks["attack2"]

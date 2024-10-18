@@ -69,7 +69,7 @@ func do_physics():
 
 func on_area_entered(area: Area2D) -> void:
 	if area == character.opponent.hurtbox:
-		if character.opponent.fsm.is_state("knokdown"):
+		if character.opponent.is_invincible:
 			return
 		
 		if not character.opponent.is_blocking():

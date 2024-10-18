@@ -31,7 +31,7 @@ func process_physics(delta: float) -> State:
 		character.frame_data_bar.update_bot_block_color(color)
 	
 	if total_stun_duration >= character.stun_to_knowkdown_duration:
-		return state_knokdown
+		return state_knokdown_fall
 	
 	if stun_timer <= 0:
 		stun_timer = 0
