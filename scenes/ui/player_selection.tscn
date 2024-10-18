@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=4 uid="uid://nt3u2y1dher8"]
+[gd_scene load_steps=8 format=4 uid="uid://nt3u2y1dher8"]
 
 [ext_resource type="Script" path="res://scripts/ui/player_selection.gd" id="1_1e2l4"]
 [ext_resource type="TileSet" uid="uid://vrst3418t234" path="res://sprites/locations/dungeon/dungeon.tres" id="1_r0t8j"]
 [ext_resource type="FontFile" uid="uid://1mina24aowrb" path="res://fonts/DungeonFont.ttf" id="2_bwah3"]
 [ext_resource type="PackedScene" uid="uid://dh0c853bfnjtv" path="res://scenes/ui/characters_catalog.tscn" id="2_bxrsw"]
 [ext_resource type="PackedScene" uid="uid://c6cv3nff50giv" path="res://scenes/ui/character_slot.tscn" id="3_sv0tw"]
+[ext_resource type="AudioStream" uid="uid://bupa0ppu5yeqi" path="res://audio/menu_theme.ogg" id="6_yxjxl"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_822if"]
 font = ExtResource("2_bwah3")
@@ -144,6 +145,10 @@ theme_override_fonts/font = ExtResource("2_bwah3")
 theme_override_font_sizes/font_size = 30
 text = "Fight
 "
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_yxjxl")
+autoplay = true
 
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/VBoxContainer1/Player1Bot" to="." method="on_player_1_bot_toggled"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/VBoxContainer2/Player2Bot" to="." method="on_player_2_bot_toggled"]
