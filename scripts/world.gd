@@ -16,6 +16,8 @@ extends Node2D
 @onready var score = $score
 @onready var label_distance = $LabelDistance
 @onready var frame_data_bar = $framedatabar
+@onready var touch_controls = $MobileControl/TouchControls
+@onready var label_os = $LabelOS
 
 var player1: Character
 var player2: Character
@@ -34,6 +36,15 @@ func _ready() -> void:
 	hpbar1.init_hp(player1.max_hp)
 	hpbar2.init_hp(player2.max_hp)
 	score.text = "0 : 0"
+	
+	label_os.text = OS.get_name()
+	var is_mobile = OS.get_name() == "Android" or OS.get_name() == "iOS"
+	if is_mobile:
+		touch_controls.visible = true
+		touch_controls.set_process(true)
+	else:
+		touch_controls.visible = false
+		touch_controls.set_process(false)
 
 
 func spawn_players() -> void:

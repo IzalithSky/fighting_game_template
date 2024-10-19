@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=3 uid="uid://dmbwk7qobd46s"]
+
+[ext_resource type="Texture2D" uid="uid://cwna6njv1qffl" path="res://sprites/misc/icon.svg" id="1_nbrt7"]
+
+[node name="TouchControls" type="CanvasLayer"]
+
+[node name="left" type="TouchScreenButton" parent="."]
+position = Vector2(8, 424)
+scale = Vector2(0.375, 0.375)
+texture_normal = ExtResource("1_nbrt7")
+action = "p1_left"
+
+[node name="right" type="TouchScreenButton" parent="."]
+position = Vector2(120, 424)
+scale = Vector2(0.375, 0.375)
+texture_normal = ExtResource("1_nbrt7")
+action = "p1_right"
+
+[node name="jump" type="TouchScreenButton" parent="."]
+position = Vector2(64, 424)
+scale = Vector2(0.375, 0.375)
+texture_normal = ExtResource("1_nbrt7")
+action = "p1_jump"
+
+[node name="attack1" type="TouchScreenButton" parent="."]
+position = Vector2(528, 424)
+scale = Vector2(0.375, 0.375)
+texture_normal = ExtResource("1_nbrt7")
+action = "p1_attack1"
+
+[node name="attack2" type="TouchScreenButton" parent="."]
+position = Vector2(584, 424)
+scale = Vector2(0.375, 0.375)
+texture_normal = ExtResource("1_nbrt7")
+action = "p1_attack2"
+
+[node name="attack_ranged" type="TouchScreenButton" parent="."]
+position = Vector2(584, 312)
+scale = Vector2(0.375, 0.375)
+texture_normal = ExtResource("1_nbrt7")
+action = "p1_attack_ranged"
+
+[node name="block" type="TouchScreenButton" parent="."]
+position = Vector2(584, 368)
+scale = Vector2(0.375, 0.375)
+texture_normal = ExtResource("1_nbrt7")
+action = "p1_block"

@@ -31,6 +31,6 @@ venv/     # venv without dot
 .venv/    # venv with dot
 *.egg-info/
 *.eggs/
-build/
+export/
 dist/
 *.log
