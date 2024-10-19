@@ -110,11 +110,11 @@ func on_fullscreen_check_box_toggled(toggled_on: bool):
 	ConfigHandler.save_setting("video", "fullscreen", toggled_on)
 	ConfigHandler.apply_video_settings()
 
-func on_music_slider_drag_ended(value_changed: bool):
-	if value_changed:
-		ConfigHandler.save_setting("audio", "music_volume", music_volume_slider.value / 100)
-		ConfigHandler.apply_audio_settings()
-func on_sfx_slider_drag_ended(value_changed: bool):
-	if value_changed:
-		ConfigHandler.save_setting("audio", "sfx_volume", sfx_volume_slider.value / 100)
-		ConfigHandler.apply_audio_settings()
+func on_music_slider_value_changed(value: float) -> void:
+	ConfigHandler.save_setting("audio", "music_volume", music_volume_slider.value / 100)
+	ConfigHandler.apply_audio_settings()
+
+
+func on_sfx_slider_value_changed(value: float) -> void:
+	ConfigHandler.save_setting("audio", "sfx_volume", sfx_volume_slider.value / 100)
+	ConfigHandler.apply_audio_settings()
