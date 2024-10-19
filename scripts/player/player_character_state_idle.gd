@@ -5,7 +5,7 @@ extends CharacterStateIdle
 
 func process_physics(delta: float) -> State:
 	super(delta)
-	if Input.is_action_pressed(character.input_prefix + "jump") and character.is_on_floor():
+	if Input.is_action_just_pressed(character.input_prefix + "jump") and (character.is_on_floor() or character.jumps_left > 0):
 		return state_jump
 	elif Input.is_action_pressed(character.input_prefix + "left") or Input.is_action_pressed(character.input_prefix + "right"):
 		return state_walk

@@ -11,6 +11,7 @@ extends CharacterBody2D
 @export var knokdown_duration = 2
 @export var active_invincibility_duration = 0.4
 @export var stun_to_knowkdown_duration: float = 1
+@export var max_jumps: int = 2
 @export var input_prefix: String = "p1_"  # To switch between p1_ and p2_
 @export var opponent: Character
 @export var always_face_opponent: bool = true
@@ -26,6 +27,7 @@ var is_opponent_right: bool = true
 var is_invincible: bool = false
 var knokdown_timer: float = 0
 var active_invincibility_timer: float = 0
+var jumps_left: int = max_jumps
 
 @onready var anim: AnimatedSprite2D = $Animations
 @onready var sound_block = $sound/block
@@ -41,8 +43,9 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	fsm.process_physics(delta)			
 	manage_active_invincibility(delta)
-	state_label.text = fsm.state() if not is_invincible else "[i] " + fsm.state()
-
+	if is_on_floor():
+		jumps_left = max_jumps
+	state_label.text = fsm.state() + " " + str(jumps_left) if not is_invincible else "[i] " + fsm.state() + " " + str(jumps_left)
 
 func _input(event: InputEvent) -> void:
 	fsm.process_input(event)
@@ -64,7 +67,7 @@ func face_opponent() -> void:
 	if opponent_pos.x > global_position.x:
 		is_opponent_right = true
 		flip_sprite(1)
-	elif opponent_pos.x < global_position.x:
+	else:
 		is_opponent_right = false
 		flip_sprite(-1)
 

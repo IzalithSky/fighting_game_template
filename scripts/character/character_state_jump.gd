@@ -5,3 +5,8 @@ extends CharacterState
 
 func _ready() -> void:
 	state_name = "jump"
+
+
+func enter() -> void:
+	super()
+	character.jumps_left -= 1

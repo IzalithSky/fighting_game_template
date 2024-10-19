@@ -10,37 +10,35 @@ func enter() -> void:
 	super()
 	character.velocity.x = 0
 	character.velocity.y = 0
-	if not params.is_in_jump_distance():
-		if character.position.x > character.opponent.position.x:
+	params.until_can_jump = params.jump_delay
+	
+	if params.is_in_jump_distance():
+		if character.is_opponent_right:
 			character.velocity.x = character.move_speed
-			if character.is_opponent_right:
-				character.anim.play("flip_left")
-			else:
-				character.anim.play("flip_right")
+			character.anim.play("flip_right")
 		else:
 			character.velocity.x = -character.move_speed
-			if character.is_opponent_right:
-				character.anim.play("flip_right")
-			else:
-				character.anim.play("flip_left")
-	else:
-		if character.position.x > character.opponent.position.x:
+			character.anim.play("flip_left")
+	elif not params.is_opponent_above():
+		if character.is_opponent_right:
 			character.velocity.x = -character.move_speed
-			if character.is_opponent_right:
-				character.anim.play("flip_left")
-			else:
-				character.anim.play("flip_right")
+			character.anim.play("flip_right")
 		else:
 			character.velocity.x = character.move_speed
-			if character.is_opponent_right:
-				character.anim.play("flip_right")
-			else:
-				character.anim.play("flip_left")
+			character.anim.play("flip_left")
+				
 	character.velocity.y = -character.jump_velocity
 
 
 func process_physics(delta: float) -> State:
 	super(delta)
+	
+	if (params.projectile_warning == params.ProjectileWarning.WARNING 
+			and not params.is_in_attack_distance() 
+			and character.jumps_left > 0
+			and params.is_past_jump_cd()):
+		return state_jump
+	
 	if params.is_in_attack_distance():
 		if randf() < 0.5 and not character.opponent.is_invincible:
 			state_attack_startup.current_attack = character.attacks["attack1"]

@@ -7,7 +7,7 @@ func process_physics(delta: float) -> State:
 	super(delta)
 	if character.fsm.is_state("block"):
 		return state_stun
-	elif Input.is_action_pressed(character.input_prefix + "jump") and character.is_on_floor():
+	elif Input.is_action_just_pressed(character.input_prefix + "jump") and (character.is_on_floor() or character.jumps_left > 0):
 		return state_jump
 	elif Input.is_action_pressed(character.input_prefix + "block"):
 		return state_block
