@@ -13,15 +13,6 @@ var is_remapping = false
 var action_to_remap = null
 var event_to_remap = null
 var remapping_button = null
-var input_actions = {
-	"left": "Move left",
-	"right": "Move right",
-	"jump": "Jump",
-	"attack1": "Attack 1",
-	"attack2": "Attack 2",
-	"attack_ranged": "Attack ranged",
-	"block": "Block",
-}
 
 func _ready():
 	back_button.grab_focus()
@@ -30,9 +21,10 @@ func _ready():
 	music_volume_slider.value = min(audio_settings.music_volume, 1.0) * 100
 	sfx_volume_slider.value = min(audio_settings.sfx_volume, 1.0) * 100
 	create_action_list()
-
+		
 func create_action_list():
-	InputMap.load_from_project_settings()
+	ConfigHandler.apply_keybindings_from_settings()
+	#InputMap.load_from_project_settings()
 	fill_action_list("p1_", player1_action_list)
 	fill_action_list("p2_", player2_action_list)
 	
@@ -40,29 +32,25 @@ func fill_action_list(prefix: String, action_list: Control):
 	for item in action_list.get_children():
 		item.queue_free()
 	
-	for action in input_actions:
+	for action in ConfigHandler.input_actions:
 		var button = input_button_scene.instantiate()
 		var action_label = button.find_child("LabelAction")
 		var input_button1 = button.find_child("Button1")
 		var input_button2 = button.find_child("Button2")
 		
-		action_label.text = input_actions[action]
+		action_label.text = ConfigHandler.input_actions[action]
 		var events = InputMap.action_get_events(prefix + action)
-		var filtered_events = []
-		for event in events:
-			if !(event is InputEventJoypadButton or event is InputEventJoypadMotion):
-				filtered_events.append(event)
 		var event1 = null
-		if filtered_events.size() > 0:
-			event1 = filtered_events[0]
-			input_button1.text = filtered_events[0].as_text().trim_suffix(" (Physical)")
+		if events.size() > 0:
+			event1 = events[0]
+			input_button1.text = format_event_name(events[0])
 		else:
 			input_button1.text = ""
 		
 		var event2 = null
-		if filtered_events.size() > 1:
-			event2 = filtered_events[1]
-			input_button2.text = filtered_events[1].as_text().trim_suffix(" (Physical)")
+		if events.size() > 1:
+			event2 = events[1]
+			input_button2.text = format_event_name(events[1])
 		else:
 			input_button2.text = ""
 		action_list.add_child(button)
@@ -84,11 +72,12 @@ func _input(event: InputEvent):
 				if event_to_remap == null:
 					remapping_button.text = ""
 				else: 
-					remapping_button.text = event_to_remap.as_text().trim_suffix(" (Physical)")
+					remapping_button.text = format_event_name(event_to_remap)
 			else:
 				InputMap.action_erase_event(action_to_remap, event_to_remap)
 				InputMap.action_add_event(action_to_remap, event)
-				remapping_button.text = event.as_text().trim_suffix(" (Physical)")
+				ConfigHandler.replace_keybinding(action_to_remap, event_to_remap, event)
+				remapping_button.text = format_event_name(event)
 			
 			is_remapping = false
 			action_to_remap = null
@@ -98,7 +87,10 @@ func _input(event: InputEvent):
 			
 	elif event.is_action_pressed("ui_cancel"):
 		close_scene()
-	
+
+func format_event_name(event: InputEvent) -> String:
+	var name = event.as_text()
+	return name.trim_suffix(" (Physical)")
 
 func _on_back_button_pressed():
 	close_scene()
@@ -107,6 +99,7 @@ func close_scene():
 	queue_free() 
 
 func on_reset_button_pressed():
+	ConfigHandler.set_default_keybindings()
 	create_action_list()
 
 
