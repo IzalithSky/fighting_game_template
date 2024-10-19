@@ -6,9 +6,9 @@ extends CharacterBody2D
 @export var max_hp: int = 100
 @export var move_speed: float = 275
 @export var jump_velocity: float = 400.0
-@export var knokdown_fall_duration = 0.4
-@export var knokdown_down_duration = 0.4
-@export var knokdown_duration = 2
+@export var knockdown_fall_duration: float = 0.4
+@export var knockdown_down_duration: float = 0.4
+@export var knockdown_duration: float = 2
 @export var active_invincibility_duration = 0.4
 @export var stun_to_knowkdown_duration: float = 1
 @export var max_jumps: int = 2
@@ -25,7 +25,7 @@ var current_hp: int = max_hp
 var attacks: Dictionary = {}
 var is_opponent_right: bool = true
 var is_invincible: bool = false
-var knokdown_timer: float = 0
+var knockdown_timer: float = 0
 var active_invincibility_timer: float = 0
 var jumps_left: int = max_jumps
 
@@ -117,11 +117,11 @@ func start_active_invicibility():
 
 
 func manage_active_invincibility(delta: float):
-	if fsm.is_state("knokdown_fall"):
+	if fsm.is_state("knockdown_fall"):
 		return
-	if fsm.is_state("knokdown_down"):
+	if fsm.is_state("knockdown_down"):
 		return
-	if fsm.is_state("knokdown_up"):
+	if fsm.is_state("knockdown_up"):
 		return
 		
 	if active_invincibility_timer <= 0:

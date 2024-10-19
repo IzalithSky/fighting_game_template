@@ -427,7 +427,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_ed5cx")
 }],
 "loop": true,
-"name": &"knokdown_down",
+"name": &"knockdown_down",
 "speed": 5.0
 }, {
 "frames": [{
@@ -450,7 +450,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_37d7f")
 }],
 "loop": false,
-"name": &"knokdown_fall",
+"name": &"knockdown_fall",
 "speed": 10.0
 }, {
 "frames": [{
@@ -473,7 +473,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_7osrr")
 }],
 "loop": false,
-"name": &"knokdown_up",
+"name": &"knockdown_up",
 "speed": 10.0
 }, {
 "frames": [{
@@ -530,8 +530,9 @@ size = Vector2(41, 34.5)
 
 [node name="Character" type="CharacterBody2D"]
 script = ExtResource("1_6l4u0")
-knokdown_fall_duration = 0.6
-knokdown_down_duration = 0.8
+knockdown_fall_duration = 0.6
+knockdown_down_duration = 0.3
+knockdown_duration = 1.5
 
 [node name="collider" type="CollisionPolygon2D" parent="."]
 position = Vector2(0, -17)
@@ -541,10 +542,8 @@ polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"knokdown_up"
+animation = &"knockdown_fall"
 autoplay = "idle"
-frame = 5
-frame_progress = 1.0
 
 [node name="hurtbox" type="Area2D" parent="."]
 collision_layer = 2
