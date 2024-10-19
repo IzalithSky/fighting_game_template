@@ -3,6 +3,10 @@ extends Control
 @onready var back_button = $BackButton
 @onready var player1_action_list = $ScrollContainer/MarginContainer/SettingsContainer/P1ActionList
 @onready var player2_action_list = $ScrollContainer/MarginContainer/SettingsContainer/P2ActionList
+@onready var fullscreen_checkbox = $ScrollContainer/MarginContainer/SettingsContainer/FullscreenContainer/FullscreenCheckBox
+@onready var music_volume_slider = $ScrollContainer/MarginContainer/SettingsContainer/MusicContainer/MusicSlider
+@onready var sfx_volume_slider = $ScrollContainer/MarginContainer/SettingsContainer/SFXContainer/SFXSlider
+
 @onready var input_button_scene = preload("res://scenes/ui/settings_input_buttons.tscn")
 
 var is_remapping = false
@@ -21,6 +25,10 @@ var input_actions = {
 
 func _ready():
 	back_button.grab_focus()
+	fullscreen_checkbox.button_pressed = ConfigHandler.load_settings("video").fullscreen
+	var audio_settings = ConfigHandler.load_settings("audio")
+	music_volume_slider.value = min(audio_settings.music_volume, 1.0) * 100
+	sfx_volume_slider.value = min(audio_settings.sfx_volume, 1.0) * 100
 	create_action_list()
 
 func create_action_list():
@@ -92,11 +100,27 @@ func _input(event: InputEvent):
 		close_scene()
 	
 
-func _on_back_button_pressed() -> void:
+func _on_back_button_pressed():
 	close_scene()
 
 func close_scene():
 	queue_free() 
 
-func on_reset_button_pressed() -> void:
+func on_reset_button_pressed():
 	create_action_list()
+
+
+func on_fullscreen_check_box_toggled(toggled_on: bool):
+	ConfigHandler.save_setting("video", "fullscreen", toggled_on)
+	if toggled_on:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MAXIMIZED)
+	else:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+
+func on_music_slider_drag_ended(value_changed: bool):
+	if value_changed:
+		ConfigHandler.save_setting("audio", "music_volume", music_volume_slider.value / 100)
+
+func on_sfx_slider_drag_ended(value_changed: bool):
+	if value_changed:
+		ConfigHandler.save_setting("audio", "sfx_volume", sfx_volume_slider.value / 100)
