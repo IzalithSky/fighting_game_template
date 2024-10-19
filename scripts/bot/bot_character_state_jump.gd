@@ -12,7 +12,7 @@ func enter() -> void:
 	character.velocity.y = 0
 	params.until_can_jump = params.jump_delay
 	
-	if params.is_in_jump_distance():
+	if params.is_in_jump_distance() or character.fsm.is_state("jump"):
 		if character.is_opponent_right:
 			character.velocity.x = character.move_speed
 			character.anim.play("flip_right")
