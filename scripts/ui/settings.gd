@@ -112,15 +112,13 @@ func on_reset_button_pressed():
 
 func on_fullscreen_check_box_toggled(toggled_on: bool):
 	ConfigHandler.save_setting("video", "fullscreen", toggled_on)
-	if toggled_on:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MAXIMIZED)
-	else:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+	ConfigHandler.apply_video_settings()
 
 func on_music_slider_drag_ended(value_changed: bool):
 	if value_changed:
 		ConfigHandler.save_setting("audio", "music_volume", music_volume_slider.value / 100)
-
+		ConfigHandler.apply_audio_settings()
 func on_sfx_slider_drag_ended(value_changed: bool):
 	if value_changed:
 		ConfigHandler.save_setting("audio", "sfx_volume", sfx_volume_slider.value / 100)
+		ConfigHandler.apply_audio_settings()

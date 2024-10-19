@@ -150,6 +150,7 @@ text = "Fight
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_yxjxl")
 autoplay = true
+bus = &"Music"
 
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/VBoxContainer1/Player1Bot" to="." method="on_player_1_bot_toggled"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/VBoxContainer2/Player2Bot" to="." method="on_player_2_bot_toggled"]

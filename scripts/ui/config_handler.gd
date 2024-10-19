@@ -1,7 +1,9 @@
 extends Node
 
-var config = ConfigFile.new()
 const SETTINGS_FILE_PATH = "user://settings_t.ini"
+var config = ConfigFile.new()
+var min_db = -80.0  # Minimum dB (mute)
+var max_db = 0.0    # Maximum dB (full volume)
 
 func _ready():
 	if !FileAccess.file_exists(SETTINGS_FILE_PATH):
@@ -29,11 +31,27 @@ func _ready():
 		config.save(SETTINGS_FILE_PATH)
 	else:
 		config.load(SETTINGS_FILE_PATH)
+	
+	apply_video_settings()
+	apply_audio_settings()
+		
+func apply_video_settings():
 	var fullscreen = load_settings("video").fullscreen
 	if fullscreen:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MAXIMIZED)
 	else:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+
+func apply_audio_settings():
+	var audio_settings = ConfigHandler.load_settings("audio")
+	var music_volume = min(audio_settings.music_volume, 1.0)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear_to_db(music_volume))
+
+	var sfx_volume = min(audio_settings.sfx_volume, 1.0)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(sfx_volume))
+
+func linear_to_db(linear_value: float) -> float:
+	return lerp(min_db, max_db, linear_value)
 
 func save_setting(section: String, key: String, value):
 	config.set_value(section, key, value)
