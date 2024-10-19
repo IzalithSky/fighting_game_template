@@ -1,6 +1,6 @@
 extends Node
 
-const SETTINGS_FILE_PATH = "user://settings_t5.ini"
+const SETTINGS_FILE_PATH = "user://settings.ini"
 var config = ConfigFile.new()
 var min_db = -80.0  # Minimum dB (mute)
 var max_db = 0.0    # Maximum dB (full volume)
