@@ -19,12 +19,12 @@ config/icon="res://sprites/logo/icon.png"
 [autoload]
 
 CharactersList="*res://scripts/ui/characters_list.gd"
+ConfigHandler="*res://scripts/ui/config_handler.gd"
 
 [display]
 
 window/size/viewport_width=640
 window/size/viewport_height=480
-window/size/mode=2
 window/stretch/mode="viewport"
 
 [input]
