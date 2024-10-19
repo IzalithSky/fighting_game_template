@@ -7,6 +7,7 @@ extends Control
 
 var is_remapping = false
 var action_to_remap = null
+var event_to_remap = null
 var remapping_button = null
 var input_actions = {
 	"left": "Move left",
@@ -43,23 +44,59 @@ func fill_action_list(prefix: String, action_list: Control):
 		for event in events:
 			if !(event is InputEventJoypadButton or event is InputEventJoypadMotion):
 				filtered_events.append(event)
-				
+		var event1 = null
 		if filtered_events.size() > 0:
+			event1 = filtered_events[0]
 			input_button1.text = filtered_events[0].as_text().trim_suffix(" (Physical)")
 		else:
 			input_button1.text = ""
+		
+		var event2 = null
 		if filtered_events.size() > 1:
+			event2 = filtered_events[1]
 			input_button2.text = filtered_events[1].as_text().trim_suffix(" (Physical)")
 		else:
 			input_button2.text = ""
 		action_list.add_child(button)
+		input_button1.pressed.connect(on_input_button_pressed.bind(prefix + action, event1, input_button1))
+		input_button2.pressed.connect(on_input_button_pressed.bind(prefix + action, event2, input_button2))
 	
+func on_input_button_pressed(action, event, clicked_button):
+	if !is_remapping:
+		is_remapping = true
+		action_to_remap = action
+		event_to_remap = event
+		remapping_button = clicked_button
+		clicked_button.text = "Press key to bind.."
+		
 func _input(event: InputEvent):
-	if event.is_action_pressed("ui_cancel"):
+	if is_remapping:
+		if event is InputEventKey:
+			if event.is_action_pressed("ui_cancel"):
+				if event_to_remap == null:
+					remapping_button.text = ""
+				else: 
+					remapping_button.text = event_to_remap.as_text().trim_suffix(" (Physical)")
+			else:
+				InputMap.action_erase_event(action_to_remap, event_to_remap)
+				InputMap.action_add_event(action_to_remap, event)
+				remapping_button.text = event.as_text().trim_suffix(" (Physical)")
+			
+			is_remapping = false
+			action_to_remap = null
+			event_to_remap = null
+			remapping_button = null
+			accept_event()
+			
+	elif event.is_action_pressed("ui_cancel"):
 		close_scene()
+	
 
 func _on_back_button_pressed() -> void:
 	close_scene()
 
 func close_scene():
 	queue_free() 
+
+func on_reset_button_pressed() -> void:
+	create_action_list()
