@@ -3,6 +3,7 @@ extends Control
 
 
 @export var character_library_scene: PackedScene
+@export var settings_scene: PackedScene
 
 @onready var player1 = $VBoxContainer/HBoxContainer/VBoxContainer1/Player1Slot
 @onready var player1bot = $VBoxContainer/HBoxContainer/VBoxContainer1/Player1Bot
@@ -79,3 +80,8 @@ func on_play_button_pressed() -> void:
 	
 	get_tree().get_root().add_child(world)
 	get_tree().get_root().remove_child(self)
+
+
+func on_settings_button_pressed() -> void:
+	var settings = settings_scene.instantiate()
+	add_child(settings)
