@@ -1,6 +1,6 @@
 extends Node
 
-const SETTINGS_FILE_PATH = "user://settings.ini"
+const SETTINGS_FILE_PATH = "user://config.ini"
 var config = ConfigFile.new()
 var min_db = -80.0  # Minimum dB (mute)
 var max_db = 0.0    # Maximum dB (full volume)
@@ -17,7 +17,8 @@ var input_actions = {
 
 func _ready():
 	if !FileAccess.file_exists(SETTINGS_FILE_PATH):
-		config.set_value("video", "fullscreen", true) 		
+		config.set_value("video", "fullscreen", true)
+		config.set_value("video", "mobile_controls", false)
 		config.set_value("audio", "music_volume", 1.0) 
 		config.set_value("audio", "sfx_volume", 1.0) 
 		set_default_keybindings()

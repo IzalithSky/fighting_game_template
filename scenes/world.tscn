@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://diksjuhs82jqo" path="res://scenes/ui/hpbar.tscn" id="4_sblbn"]
 [ext_resource type="PackedScene" uid="uid://b238h33cgofap" path="res://scenes/characters/bot_character_state_machine.tscn" id="5_fmefg"]
 [ext_resource type="Script" path="res://scripts/ui/frame_data_bar.gd" id="6_lrnrk"]
-[ext_resource type="PackedScene" uid="uid://dmbwk7qobd46s" path="res://scenes/ui/touch_controls.tscn" id="11_8r0x1"]
+[ext_resource type="PackedScene" path="res://scenes/ui/touch_controls.tscn" id="11_8r0x1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_umtby"]
 atlas = ExtResource("3_65jhg")

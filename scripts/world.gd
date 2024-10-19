@@ -38,7 +38,7 @@ func _ready() -> void:
 	score.text = "0 : 0"
 	
 	label_os.text = OS.get_name()
-	var is_mobile = OS.get_name() == "Android" or OS.get_name() == "iOS"
+	var is_mobile = ConfigHandler.load_settings("video").mobile_controls or OS.get_name() == "Android" or OS.get_name() == "iOS"
 	if is_mobile:
 		touch_controls.visible = true
 		touch_controls.set_process(true)

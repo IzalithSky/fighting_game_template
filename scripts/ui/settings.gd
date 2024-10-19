@@ -4,6 +4,8 @@ extends Control
 @onready var player1_action_list = $ScrollContainer/MarginContainer/SettingsContainer/P1ActionList
 @onready var player2_action_list = $ScrollContainer/MarginContainer/SettingsContainer/P2ActionList
 @onready var fullscreen_checkbox = $ScrollContainer/MarginContainer/SettingsContainer/FullscreenContainer/FullscreenCheckBox
+@onready var mobile_controls_checkbox = $ScrollContainer/MarginContainer/SettingsContainer/MobileContainer/MobileCheckBox
+
 @onready var music_volume_slider = $ScrollContainer/MarginContainer/SettingsContainer/MusicContainer/MusicSlider
 @onready var sfx_volume_slider = $ScrollContainer/MarginContainer/SettingsContainer/SFXContainer/SFXSlider
 
@@ -17,6 +19,7 @@ var remapping_button = null
 func _ready():
 	back_button.grab_focus()
 	fullscreen_checkbox.button_pressed = ConfigHandler.load_settings("video").fullscreen
+	mobile_controls_checkbox.button_pressed = ConfigHandler.load_settings("video").mobile_controls
 	var audio_settings = ConfigHandler.load_settings("audio")
 	music_volume_slider.value = min(audio_settings.music_volume, 1.0) * 100
 	sfx_volume_slider.value = min(audio_settings.sfx_volume, 1.0) * 100
@@ -118,3 +121,7 @@ func on_music_slider_value_changed(value: float) -> void:
 func on_sfx_slider_value_changed(value: float) -> void:
 	ConfigHandler.save_setting("audio", "sfx_volume", sfx_volume_slider.value / 100)
 	ConfigHandler.apply_audio_settings()
+
+
+func on_mobile_check_box_toggled(toggled_on: bool) -> void:
+	ConfigHandler.save_setting("video", "mobile_controls", toggled_on)
