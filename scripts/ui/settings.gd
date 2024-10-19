@@ -90,6 +90,9 @@ func _input(event: InputEvent):
 
 func format_event_name(event: InputEvent) -> String:
 	var name = event.as_text()
+	if event is InputEventJoypadButton:
+		name = name.trim_suffix(")")
+		return name.trim_prefix("Joypad Button " + str(event.button_index) + " (")
 	return name.trim_suffix(" (Physical)")
 
 func _on_back_button_pressed():
