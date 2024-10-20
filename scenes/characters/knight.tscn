@@ -345,9 +345,9 @@ animations = [{
 "speed": 5.0
 }, {
 "frames": [],
-"loop": true,
+"loop": false,
 "name": &"attack_special3",
-"speed": 5.0
+"speed": 16.0
 }, {
 "frames": [],
 "loop": true,
@@ -562,7 +562,7 @@ polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"attack_special4"
+animation = &"attack_special3"
 autoplay = "idle"
 
 [node name="hurtbox" type="Area2D" parent="."]

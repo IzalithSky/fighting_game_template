@@ -15,10 +15,11 @@ extends Area2D
 @export var duration_startup: float = 0
 @export var duration_hit: float = 0
 @export var duration_recovery: float = 0
-@export var ignore_gravity: bool = false
+@export var ignore_gravity_startup: bool = false
+@export var ignore_gravity_hit: bool = false
+@export var ignore_gravity_recovery: bool = false
 @export var reset_velocity: bool = false
 @export var freeze_on_floor: bool = true
-@export var lock_rotation: bool = false
 @export var impulse_startup: Vector2 = Vector2.ZERO
 @export var impulse_hit: Vector2 = Vector2.ZERO
 @export var impulse_recovery: Vector2 = Vector2.ZERO
@@ -33,8 +34,13 @@ func _ready() -> void:
 
 
 func enter_startup():
-	character.play_anim(animation_name, animation_offset.x, animation_offset.y)
-	sound_swing.play()
+	character.play_anim(
+		animation_name, 
+		animation_offset.x if character.is_opponent_right else -animation_offset.x, 
+		animation_offset.y)
+		
+	if sound_swing:
+		sound_swing.play()
 	if reset_velocity:
 		character.velocity = Vector2.ZERO
 	if impulse_startup != Vector2.ZERO:
@@ -90,7 +96,7 @@ func on_area_entered(area: Area2D) -> void:
 		if character.opponent.is_invincible:
 			return
 		
-		if not character.opponent.is_blocking():
+		if sound_swing and not character.opponent.is_blocking():
 			sound_hit.play()
 			
 		character.opponent.take_damage(damage, 

@@ -29,7 +29,6 @@ var knockdown_timer: float = 0
 var active_invincibility_timer: float = 0
 var jumps_left: int = max_jumps
 var ignore_gravity: bool = false
-var lock_rotation: bool = false
 
 @onready var anim: AnimatedSprite2D = $Animations
 @onready var sound_block = $sound/block
@@ -48,8 +47,12 @@ func _physics_process(delta: float) -> void:
 	
 	manage_active_invincibility(delta)
 	
-	if not lock_rotation and always_face_opponent and opponent:
-		face_opponent()
+	if not (fsm.is_state("stun")
+		or fsm.is_state("attack_startup")
+		or fsm.is_state("attack_hit")
+		or fsm.is_state("attack_recovery")):
+		if always_face_opponent and opponent:
+			face_opponent()
 	if not ignore_gravity:
 		velocity.y += gravity * delta
 	move_and_slide()
@@ -114,11 +117,9 @@ func die() -> void:
 	emit_signal("died")
 
 
-func flip_sprite(direction: float) -> void:
-	if direction > 0:
-		anim.flip_h = false
-	elif direction < 0:
-		anim.flip_h = true
+func flip_sprite(direction: float) -> void:	
+	anim.scale.x = direction
+	
 	for attack in attacks.values():
 		attack.scale.x = direction
 

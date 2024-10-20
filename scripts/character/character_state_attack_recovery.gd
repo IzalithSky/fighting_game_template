@@ -9,6 +9,10 @@ func _ready() -> void:
 
 func enter() -> void:
 	super()
+	
+	if current_attack.ignore_gravity_recovery:
+		character.ignore_gravity = true
+	
 	duration = current_attack.duration_recovery
 	current_attack.enter_recovery()
 
