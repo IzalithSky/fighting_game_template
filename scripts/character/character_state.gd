@@ -18,19 +18,8 @@ extends State
 @onready var state_block: CharacterStateBlock = get_parent().get_node("Block") as CharacterStateBlock
 
 
-var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity", -9.8)
-
-
 func enter() -> void:
 	print(character.input_prefix + state_name)
-
-
-func process_physics(delta: float) -> State:
-	if character.always_face_opponent and character.opponent:
-		character.face_opponent()
-	character.velocity.y += gravity * delta
-	character.move_and_slide()
-	return null
 
 
 func apply_stun(duration: float) -> State:

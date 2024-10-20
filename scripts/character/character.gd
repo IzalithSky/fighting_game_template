@@ -28,11 +28,14 @@ var is_invincible: bool = false
 var knockdown_timer: float = 0
 var active_invincibility_timer: float = 0
 var jumps_left: int = max_jumps
+var ignore_gravity: bool = false
+var lock_rotation: bool = false
 
 @onready var anim: AnimatedSprite2D = $Animations
 @onready var sound_block = $sound/block
 @onready var state_label = $StateLabel
 @onready var hurtbox: Area2D = $hurtbox
+@onready var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity", -9.8)
 
 
 func _ready() -> void:
@@ -42,7 +45,15 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	fsm.process_physics(delta)			
+	
 	manage_active_invincibility(delta)
+	
+	if not lock_rotation and always_face_opponent and opponent:
+		face_opponent()
+	if not ignore_gravity:
+		velocity.y += gravity * delta
+	move_and_slide()
+	
 	if is_on_floor():
 		jumps_left = max_jumps
 	state_label.text = fsm.state() + " " + str(jumps_left) if not is_invincible else "[i] " + fsm.state() + " " + str(jumps_left)

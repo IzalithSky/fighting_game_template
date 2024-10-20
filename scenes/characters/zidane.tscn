@@ -332,6 +332,26 @@ animations = [{
 "name": &"attack_ranged",
 "speed": 10.0
 }, {
+"frames": [],
+"loop": true,
+"name": &"attack_special1",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"attack_special2",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"attack_special3",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"attack_special4",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_sc45d")
@@ -548,7 +568,7 @@ polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"knockdown_up"
+animation = &"attack_special4"
 autoplay = "idle"
 
 [node name="hurtbox" type="Area2D" parent="."]

@@ -15,6 +15,13 @@ extends Area2D
 @export var duration_startup: float = 0
 @export var duration_hit: float = 0
 @export var duration_recovery: float = 0
+@export var ignore_gravity: bool = false
+@export var reset_velocity: bool = false
+@export var freeze_on_floor: bool = true
+@export var lock_rotation: bool = false
+@export var impulse_startup: Vector2 = Vector2.ZERO
+@export var impulse_hit: Vector2 = Vector2.ZERO
+@export var impulse_recovery: Vector2 = Vector2.ZERO
 
 @onready var character: Character = get_parent() as Character
 @onready var hitbox: CollisionShape2D = $CollisionShape2D
@@ -28,6 +35,10 @@ func _ready() -> void:
 func enter_startup():
 	character.play_anim(animation_name, animation_offset.x, animation_offset.y)
 	sound_swing.play()
+	if reset_velocity:
+		character.velocity = Vector2.ZERO
+	if impulse_startup != Vector2.ZERO:
+		character.velocity += impulse_startup
 
 
 func exit_startup():
@@ -40,6 +51,10 @@ func physics_startup():
 
 func enter_hit():
 	hitbox.disabled = false
+	if reset_velocity:
+		character.velocity = Vector2.ZERO
+	if impulse_hit != Vector2.ZERO:
+		character.velocity += impulse_hit
 
 
 func physics_hit():
@@ -55,7 +70,10 @@ func physics_recovery():
 
 
 func enter_recovery():
-	pass
+	if reset_velocity:
+		character.velocity = Vector2.ZERO
+	if impulse_recovery != Vector2.ZERO:
+		character.velocity += impulse_recovery
 
 
 func exit_recovery():
@@ -63,9 +81,8 @@ func exit_recovery():
 
 
 func do_physics():
-	if character.is_on_floor():
+	if freeze_on_floor and character.is_on_floor():
 		character.velocity.x = 0
-		character.velocity.y = 0
 
 
 func on_area_entered(area: Area2D) -> void:
