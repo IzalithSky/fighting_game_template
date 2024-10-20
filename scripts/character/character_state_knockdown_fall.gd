@@ -12,7 +12,7 @@ func _ready() -> void:
 
 func enter() -> void:
 	super()
-	character.anim.play("knockdown_fall")
+	character.play_anim("knockdown_fall", 0, -40)
 	character.is_invincible = true
 	character.knockdown_timer = character.knockdown_duration
 	timer = character.knockdown_fall_duration

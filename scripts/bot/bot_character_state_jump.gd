@@ -15,17 +15,17 @@ func enter() -> void:
 	if params.is_in_jump_distance() or character.fsm.is_state("jump"):
 		if character.is_opponent_right:
 			character.velocity.x = character.move_speed
-			character.anim.play("flip_right")
+			character.play_anim("flip_right", 0, -40)
 		else:
 			character.velocity.x = -character.move_speed
-			character.anim.play("flip_left")
+			character.play_anim("flip_left", 0, -40)
 	elif not params.is_opponent_above():
 		if character.is_opponent_right:
 			character.velocity.x = -character.move_speed
-			character.anim.play("flip_right")
+			character.play_anim("flip_right", 0, -40)
 		else:
 			character.velocity.x = character.move_speed
-			character.anim.play("flip_left")
+			character.play_anim("flip_left", 0, -40)
 				
 	character.velocity.y = -character.jump_velocity
 

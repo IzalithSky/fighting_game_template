@@ -12,7 +12,7 @@ func _ready() -> void:
 
 func enter() -> void:
 	super()
-	character.anim.play("knockdown_down")
+	character.play_anim("knockdown_down", 0, -40)
 	timer = character.knockdown_down_duration
 	character.velocity.x = 0
 	character.velocity.y = 0

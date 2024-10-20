@@ -13,7 +13,7 @@ func _ready() -> void:
 
 func enter() -> void:
 	super()
-	character.anim.play("stun")
+	character.play_anim("stun", 0, -40)
 
 
 func exit() -> void:

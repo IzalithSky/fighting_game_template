@@ -9,7 +9,7 @@ func _ready() -> void:
 
 func enter() -> void:
 	super()
-	character.anim.play("knockdown_up")
+	character.play_anim("knockdown_up", 0, -40)
 	character.velocity.x = 0
 	character.velocity.y = 0
 

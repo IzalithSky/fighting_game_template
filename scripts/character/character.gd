@@ -130,6 +130,11 @@ func manage_active_invincibility(delta: float):
 		active_invincibility_timer -= delta
 
 
+func play_anim(anim_name: String, offset_x: float, offset_y: float):
+	anim.position = Vector2(offset_x, offset_y)
+	anim.play(anim_name)
+
+
 func reset(new_position: Vector2) -> void:
 	current_hp = max_hp
 	position = new_position

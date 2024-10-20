@@ -8,6 +8,7 @@ extends Area2D
 @export var stun_block_duration: float = 0
 @export var pushback: Vector2 = Vector2.ZERO
 @export var animation_name: String
+@export var animation_offset: Vector2 = Vector2(0, -40)
 @export var sound_swing: AudioStreamPlayer2D
 @export var sound_hit: AudioStreamPlayer2D
 @export var input_name: String
@@ -25,7 +26,7 @@ func _ready() -> void:
 
 
 func enter_startup():
-	character.anim.play(animation_name)
+	character.play_anim(animation_name, animation_offset.x, animation_offset.y)
 	sound_swing.play()
 
 

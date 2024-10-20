@@ -10,17 +10,17 @@ func enter() -> void:
 	if Input.is_action_pressed(character.input_prefix + "left"):
 		character.velocity.x = -character.move_speed
 		if character.is_opponent_right:
-			character.anim.play("flip_left")
+			character.play_anim("flip_left", 0, -40)
 		else:
-			character.anim.play("flip_right")
+			character.play_anim("flip_right", 0, -40)
 	elif Input.is_action_pressed(character.input_prefix + "right"):
 		character.velocity.x = character.move_speed
 		if character.is_opponent_right:
-			character.anim.play("flip_right")
+			character.play_anim("flip_right", 0, -40)
 		else:
-			character.anim.play("flip_left")
+			character.play_anim("flip_left", 0, -40)
 	else:
-		character.anim.play("jump")
+		character.play_anim("jump", 0, -40)
 	character.velocity.y = -character.jump_velocity
 
 

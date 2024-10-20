@@ -9,7 +9,7 @@ func _ready() -> void:
 
 func enter() -> void:
 	super()
-	character.anim.play("idle")
+	character.play_anim("idle", 0, -40)
 
 
 func process_physics(delta: float) -> State:
