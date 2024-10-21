@@ -1328,7 +1328,7 @@ collision_mask = 2
 script = ExtResource("14_2csiw")
 damage = 40
 stun_hit_duration = 2.0
-stun_block_duration = 2.0
+stun_block_duration = 0.05
 pushback = Vector2(200, 200)
 animation_name = "attack_special1"
 input_name = "attack_special1"
@@ -1339,7 +1339,7 @@ ignore_gravity_hit = true
 reset_velocity = true
 impulse_startup = Vector2(200, -200)
 impulse_hit = Vector2(400, 400)
-impulse_recovery = Vector2(-350, -350)
+impulse_recovery = Vector2(100, -200)
 teleport_hit = Vector2(0, -150)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="attack_special1"]
