@@ -23,6 +23,9 @@ extends Area2D
 @export var impulse_startup: Vector2 = Vector2.ZERO
 @export var impulse_hit: Vector2 = Vector2.ZERO
 @export var impulse_recovery: Vector2 = Vector2.ZERO
+@export var teleport_startup: Vector2 = Vector2.ZERO
+@export var teleport_hit: Vector2 = Vector2.ZERO
+@export var teleport_recovery: Vector2 = Vector2.ZERO
 
 @onready var character: Character = get_parent() as Character
 @onready var hitbox: CollisionShape2D = $CollisionShape2D
@@ -44,7 +47,9 @@ func enter_startup():
 	if reset_velocity:
 		character.velocity = Vector2.ZERO
 	if impulse_startup != Vector2.ZERO:
-		character.velocity += impulse_startup
+		character.velocity += adjust_direction(impulse_startup)
+	if teleport_startup != Vector2.ZERO:
+		character.position += adjust_direction(teleport_startup)
 
 
 func exit_startup():
@@ -60,7 +65,9 @@ func enter_hit():
 	if reset_velocity:
 		character.velocity = Vector2.ZERO
 	if impulse_hit != Vector2.ZERO:
-		character.velocity += impulse_hit
+		character.velocity += adjust_direction(impulse_hit)
+	if teleport_hit != Vector2.ZERO:
+		character.position += adjust_direction(teleport_hit)
 
 
 func physics_hit():
@@ -79,7 +86,9 @@ func enter_recovery():
 	if reset_velocity:
 		character.velocity = Vector2.ZERO
 	if impulse_recovery != Vector2.ZERO:
-		character.velocity += impulse_recovery
+		character.velocity += adjust_direction(impulse_recovery)
+	if teleport_recovery != Vector2.ZERO:
+		character.position += adjust_direction(teleport_recovery)
 
 
 func exit_recovery():
@@ -109,3 +118,7 @@ func apply_pushback(opponent: Character, pushback_force: Vector2) -> void:
 	if opponent is CharacterBody2D:
 		opponent.velocity.x = pushback_direction * pushback_force.x
 		opponent.velocity.y = -pushback_force.y
+		
+		
+func adjust_direction(v: Vector2) -> Vector2:
+	return v if character.is_opponent_right else Vector2(-v.x, v.y)

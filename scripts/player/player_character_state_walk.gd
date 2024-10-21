@@ -28,6 +28,9 @@ func process_input(event: InputEvent) -> State:
 	elif event.is_action_pressed(character.input_prefix + "attack_ranged"):
 		state_attack_startup.current_attack = character.attacks["attack_ranged"]
 		return state_attack_startup
+	elif event.is_action_pressed(character.input_prefix + "attack_special1"):
+		state_attack_startup.current_attack = character.attacks["attack_special1"]
+		return state_attack_startup
 	elif event.is_action_pressed(character.input_prefix + "attack_special3"):
 		state_attack_startup.current_attack = character.attacks["attack_special3"]
 		return state_attack_startup
