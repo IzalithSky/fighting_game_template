@@ -3,40 +3,36 @@ class_name Attack
 extends Area2D
 
 
-@export var damage: int = 0
-@export var stun_hit_duration: float = 0
-@export var stun_block_duration: float = 0
-@export var pushback: Vector2 = Vector2.ZERO
 @export var animation_name: String
 @export var animation_offset: Vector2 = Vector2(0, -40)
 @export var sound_swing: AudioStreamPlayer2D
 @export var sound_hit: AudioStreamPlayer2D
 @export var input_name: String
-@export var duration_startup: float = 0
-@export var duration_hit: float = 0
-@export var duration_recovery: float = 0
-@export var ignore_gravity_startup: bool = false
-@export var ignore_gravity_hit: bool = false
-@export var ignore_gravity_recovery: bool = false
-@export var reset_velocity: bool = false
-@export var freeze_on_floor: bool = true
-@export var impulse_startup: Vector2 = Vector2.ZERO
-@export var impulse_hit: Vector2 = Vector2.ZERO
-@export var impulse_recovery: Vector2 = Vector2.ZERO
-@export var teleport_startup: Vector2 = Vector2.ZERO
-@export var teleport_hit: Vector2 = Vector2.ZERO
-@export var teleport_recovery: Vector2 = Vector2.ZERO
 
 @onready var character: Character = get_parent() as Character
-@onready var hitbox: CollisionShape2D = $CollisionShape2D
+
+var hitboxes: Dictionary = {}
+var hit_time: float = 0
 
 
 func _ready() -> void:
+	load_hitboxes()
 	area_entered.connect(on_area_entered)
-	hitbox.disabled = true
 
 
-func enter_startup():
+func load_hitboxes() -> void:
+	for node in get_children():
+		if node is Hitbox:
+			var hitbox_name = node.name
+			if hitbox_name != "":
+				hitboxes[hitbox_name] = node
+				node.disabled = true
+				node.visible = false
+			else:
+				printerr("Hitbox node has no name: ", node.name)
+
+
+func enter():
 	character.play_anim(
 		animation_name, 
 		animation_offset.x if character.is_opponent_right else -animation_offset.x, 
@@ -44,60 +40,30 @@ func enter_startup():
 		
 	if sound_swing:
 		sound_swing.play()
-	if reset_velocity:
-		character.velocity = Vector2.ZERO
-	if impulse_startup != Vector2.ZERO:
-		character.velocity += adjust_direction(impulse_startup)
-	if teleport_startup != Vector2.ZERO:
-		character.position += adjust_direction(teleport_startup)
 
 
-func exit_startup():
-	pass
+func physics(delta: float):
+	var is_active: bool = false
+	for n in hitboxes:
+		var h = n as Hitbox
+		if h.time_start >= hit_time and h.time_start + h.duration <= hit_time:
+			h.disabled = false
+			h.visible = true
+			is_active = true
+		else:
+			h.call_deferred("set_disabled", true)
+			h.call_deferred("set_visible", false)
+	hit_time += delta
 	
-	
-func physics_startup():
-	do_physics()
+	draw_activity(is_active)
 
 
-func enter_hit():
-	hitbox.disabled = false
-	if reset_velocity:
-		character.velocity = Vector2.ZERO
-	if impulse_hit != Vector2.ZERO:
-		character.velocity += adjust_direction(impulse_hit)
-	if teleport_hit != Vector2.ZERO:
-		character.position += adjust_direction(teleport_hit)
-
-
-func physics_hit():
-	do_physics()
-
-
-func exit_hit():
-	hitbox.call_deferred("set_disabled", true)
-
-
-func physics_recovery():
-	do_physics()
-
-
-func enter_recovery():
-	if reset_velocity:
-		character.velocity = Vector2.ZERO
-	if impulse_recovery != Vector2.ZERO:
-		character.velocity += adjust_direction(impulse_recovery)
-	if teleport_recovery != Vector2.ZERO:
-		character.position += adjust_direction(teleport_recovery)
-
-
-func exit_recovery():
-	pass
-
-
-func do_physics():
-	if freeze_on_floor and character.is_on_floor():
-		character.velocity.x = 0
+func exit():
+	hit_time = 0
+	for n in hitboxes:
+		var h = n as Hitbox
+		h.call_deferred("set_disabled", true)
+		h.call_deferred("set_visible", false)
 
 
 func on_area_entered(area: Area2D) -> void:
@@ -105,20 +71,28 @@ func on_area_entered(area: Area2D) -> void:
 		if character.opponent.is_invincible:
 			return
 		
-		if sound_swing and not character.opponent.is_blocking():
-			sound_hit.play()
-			
-		character.opponent.take_damage(damage, 
-			stun_block_duration if character.opponent.is_blocking() else stun_hit_duration)
-		apply_pushback(character.opponent, pushback)
+		var is_opponent_blocking = character.opponent.is_blocking()
+		for n in hitboxes:
+			var h = n as Hitbox
+			if not h.disabled:
+				character.opponent.take_damage(
+					h.damage_hit if is_opponent_blocking else h.damage_block,
+					h.stun_hit_duration if is_opponent_blocking else h.stun_block_duration)
+				
+				apply_pushback(character.opponent, h.pushback)
+				
+				if sound_hit and not character.opponent.is_blocking():
+					sound_hit.play()
 
 
-func apply_pushback(opponent: Character, pushback_force: Vector2) -> void:	
-	var pushback_direction = 1 if character.is_opponent_right else -1
-	if opponent is CharacterBody2D:
-		opponent.velocity.x = pushback_direction * pushback_force.x
-		opponent.velocity.y = -pushback_force.y
-		
-		
-func adjust_direction(v: Vector2) -> Vector2:
-	return v if character.is_opponent_right else Vector2(-v.x, v.y)
+func apply_pushback(opponent: Character, pushback_force: Vector2) -> void:
+	opponent.velocity.x = pushback_force.x * 1 if character.is_opponent_right else -1
+	opponent.velocity.y = -pushback_force.y
+
+
+func draw_activity(is_active: bool):
+	var color = Color(1, 0, 0) if is_active else Color(0, 1, 0)
+	if character.input_prefix == "p1_":
+		character.frame_data_bar.update_top_block_color(color)
+	else:
+		character.frame_data_bar.update_bot_block_color(color)

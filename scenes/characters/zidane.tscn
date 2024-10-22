@@ -1,4 +1,4 @@
-[gd_scene load_steps=179 format=3 uid="uid://62t2005fchbn"]
+[gd_scene load_steps=180 format=3 uid="uid://62t2005fchbn"]
 
 [ext_resource type="Script" path="res://scripts/character/character.gd" id="1_yecoy"]
 [ext_resource type="Texture2D" uid="uid://bh1ar8356co1g" path="res://sprites/characters/zidane/zidane_spritesheet.png" id="2_pb6ud"]
@@ -16,6 +16,7 @@
 [ext_resource type="Script" path="res://scripts/attack/attack_ranged.gd" id="12_hhpd5"]
 [ext_resource type="PackedScene" uid="uid://dj074m827hrck" path="res://scenes/characters/projectile_zidane.tscn" id="13_nyjhg"]
 [ext_resource type="Script" path="res://scripts/attack/attack.gd" id="14_2csiw"]
+[ext_resource type="Script" path="res://scripts/attack/hitbox.gd" id="17_drc2t"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_j6bar"]
 atlas = ExtResource("2_pb6ud")
@@ -1263,43 +1264,31 @@ horizontal_alignment = 1
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("14_2csiw")
-damage = 10
-stun_hit_duration = 0.3
-stun_block_duration = 0.1
-pushback = Vector2(40, 160)
 animation_name = "attack1"
 sound_swing = NodePath("../sound/swing")
 sound_hit = NodePath("../sound/hit1")
 input_name = "attack1"
-duration_startup = 0.1
-duration_hit = 0.1
-duration_recovery = 0.15
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="attack1"]
 position = Vector2(50, -29)
 shape = SubResource("RectangleShape2D_xotkn")
 debug_color = Color(0.92549, 0.239216, 0.341176, 0.419608)
+script = ExtResource("17_drc2t")
 
 [node name="attack2" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("14_2csiw")
-damage = 5
-stun_hit_duration = 0.5
-stun_block_duration = 0.1
-pushback = Vector2(80, 200)
 animation_name = "attack2"
 sound_swing = NodePath("../sound/swing")
 sound_hit = NodePath("../sound/hit2")
 input_name = "attack2"
-duration_startup = 0.05
-duration_hit = 0.1
-duration_recovery = 0.1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="attack2"]
 position = Vector2(40, -46)
 shape = SubResource("RectangleShape2D_xotkn")
 debug_color = Color(0.92549, 0.239216, 0.341176, 0.419608)
+script = ExtResource("17_drc2t")
 
 [node name="attack_ranged" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
 collision_layer = 4
@@ -1311,63 +1300,55 @@ stun_hit_duration = 0.4
 stun_block_duration = 0.2
 pushback = Vector2(40, 40)
 animation_name = "attack_ranged"
-sound_swing = NodePath("../sound/swing")
-sound_hit = NodePath("../sound/hit1")
+animation_offset = null
 input_name = "attack_ranged"
 duration_startup = 0.3
 duration_hit = 0.1
 duration_recovery = 0.2
+ignore_gravity_startup = null
+ignore_gravity_hit = null
+ignore_gravity_recovery = null
+reset_velocity = null
+freeze_on_floor = null
+impulse_startup = null
+impulse_hit = null
+impulse_recovery = null
+teleport_startup = null
+teleport_hit = null
+teleport_recovery = null
+sound_swing = NodePath("../sound/swing")
+sound_hit = NodePath("../sound/hit1")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="attack_ranged"]
 position = Vector2(45, -27)
 shape = SubResource("RectangleShape2D_ruig2")
+script = ExtResource("17_drc2t")
 
 [node name="attack_special1" type="Area2D" parent="."]
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("14_2csiw")
-damage = 40
-stun_hit_duration = 2.0
-stun_block_duration = 0.05
-pushback = Vector2(200, 200)
 animation_name = "attack_special1"
 input_name = "attack_special1"
-duration_startup = 0.31
-duration_hit = 0.38
-duration_recovery = 1.06
-ignore_gravity_hit = true
-reset_velocity = true
-impulse_startup = Vector2(200, -200)
-impulse_hit = Vector2(400, 400)
-impulse_recovery = Vector2(100, -200)
-teleport_hit = Vector2(0, -150)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="attack_special1"]
 position = Vector2(0, -30)
 scale = Vector2(5.8, 5.8)
 shape = SubResource("CircleShape2D_wyu7c")
 debug_color = Color(0.92549, 0.239216, 0.341176, 0.419608)
+script = ExtResource("17_drc2t")
 
 [node name="attack_special3" type="Area2D" parent="."]
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("14_2csiw")
-damage = 60
-stun_hit_duration = 3.0
-stun_block_duration = 0.3
-pushback = Vector2(200, 200)
 animation_name = "attack_special3"
 animation_offset = Vector2(100, 110)
 input_name = "attack_special3"
-duration_startup = 0.69
-duration_hit = 2.44
-duration_recovery = 0.93
-ignore_gravity_hit = true
-reset_velocity = true
-impulse_startup = Vector2(0, -650)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="attack_special3"]
 position = Vector2(100, 110)
 scale = Vector2(9.4, 9.4)
 shape = SubResource("CircleShape2D_etfsr")
 debug_color = Color(0.92549, 0.239216, 0.341176, 0.419608)
+script = ExtResource("17_drc2t")

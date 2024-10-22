@@ -11,6 +11,18 @@ func _ready() -> void:
 	state_name = "attack"
 
 
+func enter() -> void:
+	super()
+	current_attack.enter()
+
+
+func process_physics(delta: float) -> State:
+	super(delta)
+	current_attack.physics(delta)
+	return null
+
+
 func exit() -> void:
 	super()
+	current_attack.exit()
 	character.ignore_gravity = false

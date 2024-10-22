@@ -64,6 +64,7 @@ func _physics_process(delta: float) -> void:
 		jumps_left = max_jumps
 	state_label.text = fsm.state() + " " + str(jumps_left) if not is_invincible else "[i] " + fsm.state() + " " + str(jumps_left)
 
+
 func _input(event: InputEvent) -> void:
 	fsm.process_input(event)
 
@@ -76,7 +77,6 @@ func load_attack_data() -> void:
 				attacks[attack_name] = child
 			else:
 				printerr("Attack node has no name: ", child.name)
-	print("Attacks loaded successfully. Total attacks: ", attacks.size())
 
 
 func face_opponent() -> void:
