@@ -10,8 +10,6 @@ func _ready() -> void:
 func enter() -> void:
 	super()
 	character.play_anim("knockdown_up", 0, -40)
-	character.velocity.x = 0
-	character.velocity.y = 0
 
 
 func exit() -> void:
@@ -22,6 +20,10 @@ func exit() -> void:
 
 func process_physics(delta: float) -> State:
 	super(delta)
+
+	if character.is_on_floor():
+		character.velocity.x = 0
+		character.velocity.y = 0
 	
 	if character.knockdown_timer <= 0:
 		character.knockdown_timer = 0

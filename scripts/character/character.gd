@@ -48,6 +48,9 @@ func _physics_process(delta: float) -> void:
 	manage_active_invincibility(delta)
 	
 	if not (fsm.is_state("stun")
+		or fsm.is_state("knockdown_fall")
+		or fsm.is_state("knockdown_down")
+		or fsm.is_state("knockdown_up")
 		or fsm.is_state("attack_startup")
 		or fsm.is_state("attack_hit")
 		or fsm.is_state("attack_recovery")):
