@@ -1184,6 +1184,11 @@ animations = [{
 "name": &"stun",
 "speed": 5.0
 }, {
+"frames": [],
+"loop": false,
+"name": &"victory",
+"speed": 16.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_aatsk")
@@ -1227,7 +1232,7 @@ polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"attack_special1"
+animation = &"victory"
 autoplay = "idle"
 
 [node name="hurtbox" type="Area2D" parent="."]
