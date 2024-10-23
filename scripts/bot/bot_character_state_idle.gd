@@ -32,7 +32,7 @@ func process_physics(delta: float) -> State:
 		return state_attack
 
 	if params.is_in_attack_distance():
-		if character.opponent.fsm.is_state("attack_startup") or character.opponent.fsm.is_state("attack_hit"):
+		if character.opponent.fsm.is_state("attack"):
 			return state_block
 
 		if (character.opponent.fsm.is_state("block") or character.opponent.is_invincible) and character.is_on_floor():

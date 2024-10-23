@@ -1,4 +1,3 @@
-# attack.gd
 class_name Attack
 extends Area2D
 
@@ -37,19 +36,20 @@ func load_moves() -> void:
 			moves.append(node as Move)
 
 
-func enter():
+func enter() -> void:
 	character.play_anim(
 		animation_name, 
 		animation_offset.x if character.is_opponent_right else -animation_offset.x, 
 		animation_offset.y)
-		
+	
 	if sound_swing:
 		sound_swing.play()
 
 
-func physics(delta: float):
+func physics(delta: float) -> void:
 	var is_active: bool = false
 	
+	# Handle Hitboxes
 	for h in hitboxes:
 		if hit_time >= h.time_start and hit_time <= h.time_start + h.duration:
 			h.disabled = false
@@ -59,8 +59,11 @@ func physics(delta: float):
 			h.call_deferred("set_disabled", true)
 			h.call_deferred("set_visible", false)
 	
+	# Handle Moves
 	for m in moves:
 		if hit_time >= m.time_start and hit_time <= m.time_start + m.duration:
+			if hit_time >= m.time_start and not m.has_entered:
+				m.enter()
 			m.physics(delta)
 	
 	hit_time += delta
@@ -68,12 +71,16 @@ func physics(delta: float):
 	draw_activity(is_active)
 
 
-func exit():
+func exit() -> void:
 	hit_time = 0
 	for n in hitboxes:
 		var h = n as Hitbox
 		h.call_deferred("set_disabled", true)
 		h.call_deferred("set_visible", false)
+	
+	# Reset all moves
+	for m in moves:
+		m.reset_move()
 
 
 func on_area_entered(area: Area2D) -> void:
@@ -95,7 +102,7 @@ func on_area_entered(area: Area2D) -> void:
 
 
 func apply_pushback(opponent: Character, pushback_force: Vector2) -> void:
-	opponent.velocity.x = pushback_force.x * 1 if character.is_opponent_right else -1
+	opponent.velocity.x = pushback_force.x * (1 if character.is_opponent_right else -1)
 	opponent.velocity.y = -pushback_force.y
 
 

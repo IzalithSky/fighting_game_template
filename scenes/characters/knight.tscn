@@ -1,4 +1,4 @@
-[gd_scene load_steps=85 format=3 uid="uid://ckkbqrqtc0g77"]
+[gd_scene load_steps=86 format=3 uid="uid://ckkbqrqtc0g77"]
 
 [ext_resource type="Script" path="res://scripts/character/character.gd" id="1_6l4u0"]
 [ext_resource type="Texture2D" uid="uid://dajq780bxf8av" path="res://sprites/characters/Knight_player/Idle_KG_2.png" id="1_okya6"]
@@ -17,6 +17,7 @@
 [ext_resource type="Script" path="res://scripts/attack/attack_ranged.gd" id="15_ex06t"]
 [ext_resource type="PackedScene" uid="uid://bcfn8pe3p7idk" path="res://scenes/characters/projectile_knight.tscn" id="16_nvux6"]
 [ext_resource type="Script" path="res://scripts/attack/hitbox.gd" id="16_uav13"]
+[ext_resource type="Script" path="res://scripts/attack/move.gd" id="19_i02dt"]
 [ext_resource type="Script" path="res://scripts/attack/attack.gd" id="19_kgyee"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3pnbn"]
@@ -547,7 +548,7 @@ size = Vector2(28, 63)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xotkn"]
 size = Vector2(41, 34.5)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_uhff5"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kby16"]
 
 [node name="Character" type="CharacterBody2D"]
 script = ExtResource("1_6l4u0")
@@ -563,8 +564,9 @@ polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"attack_special3"
+animation = &"attack_ranged"
 autoplay = "idle"
+frame = 3
 
 [node name="hurtbox" type="Area2D" parent="."]
 collision_layer = 2
@@ -603,12 +605,24 @@ script = ExtResource("19_kgyee")
 animation_name = "attack1"
 sound_swing = NodePath("../sound/swing")
 sound_hit = NodePath("../sound/hit1")
+duration = 0.25
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="attack1"]
+[node name="hit" type="CollisionShape2D" parent="attack1"]
 position = Vector2(29.5, -46)
 shape = SubResource("RectangleShape2D_xotkn")
 debug_color = Color(0.92549, 0.239216, 0.341176, 0.419608)
 script = ExtResource("16_uav13")
+time_start = 0.1
+duration = 0.05
+damage_hit = 5
+damage_block = 1
+stun_hit_duration = 0.4
+stun_block_duration = 0.1
+pushback = Vector2(80, 80)
+
+[node name="move" type="Node" parent="attack1"]
+script = ExtResource("19_i02dt")
+duration = 0.25
 
 [node name="attack2" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
 collision_layer = 4
@@ -617,12 +631,24 @@ script = ExtResource("19_kgyee")
 animation_name = "attack2"
 sound_swing = NodePath("../sound/swing")
 sound_hit = NodePath("../sound/hit2")
+duration = 0.25
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="attack2"]
+[node name="hit" type="CollisionShape2D" parent="attack2"]
 position = Vector2(36, -27.25)
 shape = SubResource("RectangleShape2D_xotkn")
 debug_color = Color(0.92549, 0.239216, 0.341176, 0.419608)
 script = ExtResource("16_uav13")
+time_start = 0.05
+duration = 0.1
+damage_hit = 10
+damage_block = 2
+stun_hit_duration = 0.3
+stun_block_duration = 0.1
+pushback = Vector2(100, 100)
+
+[node name="move" type="Node" parent="attack2"]
+script = ExtResource("19_i02dt")
+duration = 0.25
 
 [node name="attack_ranged" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
 script = ExtResource("15_ex06t")
@@ -630,8 +656,19 @@ projectile_scene = ExtResource("16_nvux6")
 animation_name = "attack_ranged"
 sound_swing = NodePath("../sound/swing")
 sound_hit = NodePath("../sound/hit1")
+duration = 0.7
 
 [node name="spawn_point" type="CollisionShape2D" parent="attack_ranged"]
-position = Vector2(24, -47)
-shape = SubResource("RectangleShape2D_uhff5")
+position = Vector2(23, -46)
+shape = SubResource("RectangleShape2D_kby16")
 script = ExtResource("16_uav13")
+time_start = 0.4
+damage_hit = 10
+damage_block = 2
+stun_hit_duration = 0.3
+stun_block_duration = 0.1
+pushback = Vector2(100, 100)
+
+[node name="move" type="Node" parent="attack_ranged"]
+script = ExtResource("19_i02dt")
+duration = 0.7
