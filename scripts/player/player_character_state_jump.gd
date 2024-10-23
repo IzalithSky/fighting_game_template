@@ -35,11 +35,11 @@ func process_physics(delta: float) -> State:
 func process_input(event: InputEvent) -> State:
 	super(event)
 	if event.is_action_pressed(character.input_prefix + "attack1"):
-		state_attack_startup.current_attack = character.attacks["attack1"]
-		return state_attack_startup
+		state_attack.current_attack = character.attacks["attack1"]
+		return state_attack
 	elif event.is_action_pressed(character.input_prefix + "attack2"):
-		state_attack_startup.current_attack = character.attacks["attack2"]
-		return state_attack_startup
+		state_attack.current_attack = character.attacks["attack2"]
+		return state_attack
 	elif Input.is_action_just_pressed(character.input_prefix + "jump") and character.jumps_left > 0:
 		return state_jump
 	return null

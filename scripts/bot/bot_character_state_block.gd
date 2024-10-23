@@ -26,10 +26,10 @@ func process_physics(delta: float) -> State:
 			return null
 		else:
 			if randf() < 0.5:
-				state_attack_startup.current_attack = character.attacks["attack1"]
+				state_attack.current_attack = character.attacks["attack1"]
 			else:
-				state_attack_startup.current_attack = character.attacks["attack2"]
-			return state_attack_startup
+				state_attack.current_attack = character.attacks["attack2"]
+			return state_attack
 	else:
 		return state_walk
 	return null

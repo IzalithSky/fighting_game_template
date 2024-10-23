@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://b238h33cgofap"]
+[gd_scene load_steps=12 format=3 uid="uid://b238h33cgofap"]
 
 [ext_resource type="Script" path="res://scripts/character/character_state_machine.gd" id="1_wuvxo"]
 [ext_resource type="Script" path="res://scripts/character/character_state_stun.gd" id="2_dwao0"]
@@ -7,10 +7,8 @@
 [ext_resource type="Script" path="res://scripts/bot/bot_character_state_block.gd" id="5_d0gh8"]
 [ext_resource type="Script" path="res://scripts/bot/bot_character_state_idle.gd" id="6_mh7av"]
 [ext_resource type="Script" path="res://scripts/bot/bot_parameters.gd" id="7_eg2jo"]
-[ext_resource type="Script" path="res://scripts/character/character_state_attack_startup.gd" id="8_3v6wl"]
-[ext_resource type="Script" path="res://scripts/character/character_state_attack_hit.gd" id="9_kfupv"]
-[ext_resource type="Script" path="res://scripts/character/character_state_attack_recovery.gd" id="10_5vbv8"]
 [ext_resource type="Script" path="res://scripts/character/character_state_knockdown_down.gd" id="11_ia35h"]
+[ext_resource type="Script" path="res://scripts/character/character_state_attack.gd" id="11_n0gak"]
 [ext_resource type="Script" path="res://scripts/character/character_state_knockdown_fall.gd" id="11_u8yhm"]
 [ext_resource type="Script" path="res://scripts/character/character_state_knockdown_up.gd" id="13_3ne08"]
 
@@ -36,15 +34,6 @@ script = ExtResource("6_mh7av")
 [node name="BotParameters" type="Node" parent="."]
 script = ExtResource("7_eg2jo")
 
-[node name="AttackStartup" type="Node" parent="."]
-script = ExtResource("8_3v6wl")
-
-[node name="AttackHit" type="Node" parent="."]
-script = ExtResource("9_kfupv")
-
-[node name="AttackRecovery" type="Node" parent="."]
-script = ExtResource("10_5vbv8")
-
 [node name="KnockdownFall" type="Node" parent="."]
 script = ExtResource("11_u8yhm")
 
@@ -53,3 +42,6 @@ script = ExtResource("11_ia35h")
 
 [node name="KnockdownUp" type="Node" parent="."]
 script = ExtResource("13_3ne08")
+
+[node name="Attack" type="Node" parent="."]
+script = ExtResource("11_n0gak")

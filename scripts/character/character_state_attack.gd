@@ -13,13 +13,21 @@ func _ready() -> void:
 
 func enter() -> void:
 	super()
+	duration = current_attack.duration
 	current_attack.enter()
 
 
 func process_physics(delta: float) -> State:
 	super(delta)
+	
 	current_attack.physics(delta)
-	return null
+	
+	if duration <= 0:
+		duration = 0
+		return state_idle
+	else:
+		duration -= delta
+		return null
 
 
 func exit() -> void:

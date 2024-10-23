@@ -7,29 +7,34 @@ extends Area2D
 @export var animation_offset: Vector2 = Vector2(0, -40)
 @export var sound_swing: AudioStreamPlayer2D
 @export var sound_hit: AudioStreamPlayer2D
-@export var input_name: String
+@export var duration: float
 
 @onready var character: Character = get_parent() as Character
 
-var hitboxes: Dictionary = {}
+var hitboxes: Array[Hitbox] = []
+var moves: Array[Move] = []
 var hit_time: float = 0
 
 
 func _ready() -> void:
 	load_hitboxes()
+	load_moves()
 	area_entered.connect(on_area_entered)
 
 
 func load_hitboxes() -> void:
 	for node in get_children():
 		if node is Hitbox:
-			var hitbox_name = node.name
-			if hitbox_name != "":
-				hitboxes[hitbox_name] = node
-				node.disabled = true
-				node.visible = false
-			else:
-				printerr("Hitbox node has no name: ", node.name)
+			var h = node as Hitbox
+			hitboxes.append(h)
+			h.disabled = true
+			h.visible = false
+
+
+func load_moves() -> void:
+	for node in get_children():
+		if node is Move:
+			moves.append(node as Move)
 
 
 func enter():
@@ -44,15 +49,20 @@ func enter():
 
 func physics(delta: float):
 	var is_active: bool = false
-	for n in hitboxes:
-		var h = n as Hitbox
-		if h.time_start >= hit_time and h.time_start + h.duration <= hit_time:
+	
+	for h in hitboxes:
+		if hit_time >= h.time_start and hit_time <= h.time_start + h.duration:
 			h.disabled = false
 			h.visible = true
 			is_active = true
 		else:
 			h.call_deferred("set_disabled", true)
 			h.call_deferred("set_visible", false)
+	
+	for m in moves:
+		if hit_time >= m.time_start and hit_time <= m.time_start + m.duration:
+			m.physics(delta)
+	
 	hit_time += delta
 	
 	draw_activity(is_active)
@@ -72,12 +82,11 @@ func on_area_entered(area: Area2D) -> void:
 			return
 		
 		var is_opponent_blocking = character.opponent.is_blocking()
-		for n in hitboxes:
-			var h = n as Hitbox
+		for h in hitboxes:
 			if not h.disabled:
 				character.opponent.take_damage(
-					h.damage_hit if is_opponent_blocking else h.damage_block,
-					h.stun_hit_duration if is_opponent_blocking else h.stun_block_duration)
+					h.damage_block if is_opponent_blocking else h.damage_hit,
+					h.stun_block_duration if is_opponent_blocking else h.stun_hit_duration)
 				
 				apply_pushback(character.opponent, h.pushback)
 				

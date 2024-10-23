@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://c00n14agb6bxn"]
+[gd_scene load_steps=11 format=3 uid="uid://c00n14agb6bxn"]
 
 [ext_resource type="Script" path="res://scripts/character/character_state_machine.gd" id="1_vd7e4"]
 [ext_resource type="Script" path="res://scripts/character/character_state_stun.gd" id="2_x66ct"]
@@ -6,9 +6,7 @@
 [ext_resource type="Script" path="res://scripts/player/player_character_state_idle.gd" id="4_kmk8o"]
 [ext_resource type="Script" path="res://scripts/player/player_character_state_jump.gd" id="5_i3w04"]
 [ext_resource type="Script" path="res://scripts/player/player_character_state_walk.gd" id="6_5ff8q"]
-[ext_resource type="Script" path="res://scripts/character/character_state_attack_startup.gd" id="7_fuhfr"]
-[ext_resource type="Script" path="res://scripts/character/character_state_attack_hit.gd" id="8_sm20s"]
-[ext_resource type="Script" path="res://scripts/character/character_state_attack_recovery.gd" id="9_3ec82"]
+[ext_resource type="Script" path="res://scripts/character/character_state_attack.gd" id="10_1ejrb"]
 [ext_resource type="Script" path="res://scripts/character/character_state_knockdown_down.gd" id="10_je8ui"]
 [ext_resource type="Script" path="res://scripts/character/character_state_knockdown_fall.gd" id="10_vu72l"]
 [ext_resource type="Script" path="res://scripts/character/character_state_knockdown_up.gd" id="12_gltlk"]
@@ -32,15 +30,6 @@ script = ExtResource("5_i3w04")
 [node name="Walk" type="Node" parent="."]
 script = ExtResource("6_5ff8q")
 
-[node name="AttackStartup" type="Node" parent="."]
-script = ExtResource("7_fuhfr")
-
-[node name="AttackHit" type="Node" parent="."]
-script = ExtResource("8_sm20s")
-
-[node name="AttackRecovery" type="Node" parent="."]
-script = ExtResource("9_3ec82")
-
 [node name="KnockdownFall" type="Node" parent="."]
 script = ExtResource("10_vu72l")
 
@@ -49,3 +38,6 @@ script = ExtResource("10_je8ui")
 
 [node name="KnockdownUp" type="Node" parent="."]
 script = ExtResource("12_gltlk")
+
+[node name="Attack" type="Node" parent="."]
+script = ExtResource("10_1ejrb")

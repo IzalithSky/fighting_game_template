@@ -9,7 +9,8 @@ extends CharacterBody2D
 @onready var hitbox: Area2D = $hitbox
 @onready var timer: Timer = $Timer
 
-var damage: int
+var damage_hit: int
+var damage_block: int
 var stun_hit_duration: float
 var stun_block_duration: float
 var pushback: Vector2
@@ -56,7 +57,8 @@ func on_area_entered(area: Area2D) -> void:
 		if not character.opponent.is_blocking():
 			sound_hit.play()
 			
-		character.opponent.take_damage(damage, 
+		character.opponent.take_damage(
+			damage_block if character.opponent.is_blocking() else damage_hit, 
 			stun_block_duration if character.opponent.is_blocking() else stun_hit_duration)
 		apply_pushback(character.opponent, pushback)
 		

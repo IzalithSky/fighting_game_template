@@ -68,8 +68,8 @@ func spawn_players() -> void:
 	
 	player1.damaged.connect(on_player_1_damaged)
 	player2.damaged.connect(on_player_2_damaged)
-	player1.died.connect(on_player_1_died)
-	player2.died.connect(on_player_2_died)
+	player1.kod.connect(on_player_1_kod)
+	player2.kod.connect(on_player_2_kod)
 	
 	
 	fsm1.set_character(player1)
@@ -87,13 +87,13 @@ func on_player_2_damaged(amount: Variant) -> void:
 	hpbar2.hp = player2.current_hp
 
 
-func on_player_1_died() -> void:
+func on_player_1_kod() -> void:
 	score_p2 += 1
 	update_score()
 	reset_players()
 
 
-func on_player_2_died() -> void:
+func on_player_2_kod() -> void:
 	score_p1 += 1
 	update_score()
 	reset_players()

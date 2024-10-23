@@ -19,7 +19,7 @@ extends CharacterBody2D
 @export var fsm: CharacterStateMachine
 
 signal damaged(amount: int)
-signal died()
+signal kod()
 
 var current_hp: int = max_hp
 var attacks: Dictionary = {}
@@ -43,7 +43,10 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	fsm.process_physics(delta)			
+	if not ignore_gravity:
+		velocity.y += gravity * delta
+	
+	fsm.process_physics(delta)
 	
 	manage_active_invincibility(delta)
 	
@@ -56,8 +59,7 @@ func _physics_process(delta: float) -> void:
 		or fsm.is_state("attack_recovery")):
 		if always_face_opponent and opponent:
 			face_opponent()
-	if not ignore_gravity:
-		velocity.y += gravity * delta
+
 	move_and_slide()
 	
 	if is_on_floor():
@@ -89,21 +91,18 @@ func face_opponent() -> void:
 		flip_sprite(-1)
 
 
-func take_damage(amount: int, stun_duration: float = 0.0) -> void:
+func take_damage(damage: int, stun_duration: float = 0.0) -> void:
 	if is_invincible:
 		return
 	
-	var actual_damage = amount
-	
 	if is_blocking():
 		sound_block.play()
-		actual_damage = max(1, int(amount * 0.2))
 	
-	current_hp -= actual_damage
-	emit_signal("damaged", actual_damage)
+	current_hp -= damage
+	emit_signal("damaged", damage)
 
 	if current_hp <= 0:
-		die()
+		ko()
 	elif stun_duration > 0.0:
 		initiate_stun(stun_duration)
 
@@ -116,8 +115,8 @@ func is_blocking() -> bool:
 	return fsm.is_state("block")
 
 
-func die() -> void:
-	emit_signal("died")
+func ko() -> void:
+	emit_signal("kod")
 
 
 func flip_sprite(direction: float) -> void:	

@@ -41,10 +41,10 @@ func process_physics(delta: float) -> State:
 	
 	if params.is_in_attack_distance():
 		if randf() < 0.5 and not character.opponent.is_invincible:
-			state_attack_startup.current_attack = character.attacks["attack1"]
+			state_attack.current_attack = character.attacks["attack1"]
 		else:
-			state_attack_startup.current_attack = character.attacks["attack2"]
-		return state_attack_startup
+			state_attack.current_attack = character.attacks["attack2"]
+		return state_attack
 	
 	if character.is_on_floor() and character.velocity.y >= 0:
 		return state_idle
