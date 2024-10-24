@@ -1,3 +1,4 @@
+# attack.gd
 class_name Attack
 extends Area2D
 

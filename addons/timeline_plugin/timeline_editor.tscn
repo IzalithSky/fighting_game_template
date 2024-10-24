@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://dyoo2j5j638oy"]
+
+[ext_resource type="Script" path="res://addons/timeline_plugin/timeline_editor.gd" id="1_qspo3"]
+[ext_resource type="PackedScene" uid="uid://c4ol4ip2vtx2r" path="res://addons/timeline_plugin/box.tscn" id="2_e2qkf"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_qspo3")
+box_scene = ExtResource("2_e2qkf")
+
+[node name="TimelinePanel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="TimelinePanel"]
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TimelinePanel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TimelinePanel/ScrollContainer"]
+layout_mode = 2
