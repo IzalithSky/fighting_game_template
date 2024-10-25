@@ -18,12 +18,12 @@ func enter():
 func physics(delta: float):
 	var is_active: bool = false
 	
-	if not launched and hit_time >= spawn_point.time_start:
+	if not launched and frames >= spawn_point.frame_start:
 		is_active = true
 		launch()
 		launched = true
 	
-	hit_time += delta
+	frames += 1
 	
 	draw_activity(is_active)
 

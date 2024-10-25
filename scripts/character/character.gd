@@ -10,7 +10,7 @@ extends CharacterBody2D
 @export var knockdown_down_duration: float = 0.4
 @export var knockdown_duration: float = 2
 @export var active_invincibility_duration = 0.4
-@export var stun_to_knowkdown_duration: float = 1
+@export var stun_to_knowkdown_duration: int = 60
 @export var max_jumps: int = 2
 @export var input_prefix: String = "p1_"  # To switch between p1_ and p2_
 @export var opponent: Character
@@ -89,7 +89,7 @@ func face_opponent() -> void:
 		flip_sprite(-1)
 
 
-func take_damage(damage: int, stun_duration: float = 0.0) -> void:
+func take_damage(damage: int, stun_duration: int) -> void:
 	if is_invincible:
 		return
 	

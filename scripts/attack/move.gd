@@ -3,8 +3,8 @@ class_name Move
 extends Node
 
 
-@export var time_start: float = 0
-@export var duration: float = 0
+@export var frame_start: int = 0
+@export var duration: int = 0
 @export var reset_velocity: bool = false
 @export var freeze_on_floor: bool = true
 @export var ignore_gravity: bool = false

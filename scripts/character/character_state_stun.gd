@@ -3,8 +3,8 @@ class_name CharacterStateStun
 extends CharacterState
 
 
-var stun_timer: float = 0
-var total_stun_duration: float = 0
+var frames: int = 0
+var total_stun_duration: int = 0
 
 
 func _ready() -> void:
@@ -33,10 +33,10 @@ func process_physics(delta: float) -> State:
 	if total_stun_duration >= character.stun_to_knowkdown_duration:
 		return state_knockdown_fall
 	
-	if stun_timer <= 0:
-		stun_timer = 0
+	if frames <= 0:
+		frames = 0
 		total_stun_duration = 0
 		return state_idle
 	else:
-		stun_timer -= delta
+		frames -= 1
 		return null

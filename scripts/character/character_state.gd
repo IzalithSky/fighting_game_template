@@ -20,9 +20,9 @@ func enter() -> void:
 	print(character.input_prefix + state_name)
 
 
-func apply_stun(duration: float) -> State:
-	state_stun.stun_timer = duration
-	state_stun.total_stun_duration += duration
+func apply_stun(frames: int) -> State:
+	state_stun.frames = frames
+	state_stun.total_stun_duration += frames
 	
 	if fsm.is_state("stun"):
 		return null

@@ -4,7 +4,7 @@ extends CharacterState
 
 
 var current_attack: Attack
-var duration: float = 0
+var duration: int = 0
 
 
 func _ready() -> void:
@@ -26,7 +26,7 @@ func process_physics(delta: float) -> State:
 		duration = 0
 		return state_idle
 	else:
-		duration -= delta
+		duration -= 1
 		return null
 
 

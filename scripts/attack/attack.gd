@@ -6,13 +6,13 @@ extends Area2D
 @export var animation_offset: Vector2 = Vector2(0, -40)
 @export var sound_swing: AudioStreamPlayer2D
 @export var sound_hit: AudioStreamPlayer2D
-@export var duration: float
+@export var duration: int
 
 @onready var character: Character = get_parent() as Character
 
 var hitboxes: Array[Hitbox] = []
 var moves: Array[Move] = []
-var hit_time: float = 0
+var frames: int = 0
 
 
 func _ready() -> void:
@@ -51,7 +51,7 @@ func physics(delta: float) -> void:
 	
 	# Handle Hitboxes
 	for h in hitboxes:
-		if hit_time >= h.time_start and hit_time <= h.time_start + h.duration:
+		if frames >= h.frame_start and frames <= h.frame_start + h.duration:
 			h.disabled = false
 			h.visible = true
 			is_active = true
@@ -61,18 +61,18 @@ func physics(delta: float) -> void:
 	
 	# Handle Moves
 	for m in moves:
-		if hit_time >= m.time_start and hit_time <= m.time_start + m.duration:
-			if hit_time >= m.time_start and not m.has_entered:
+		if frames >= m.frame_start and frames <= m.frame_start + m.duration:
+			if frames >= m.frame_start and not m.has_entered:
 				m.enter()
 			m.physics(delta)
 	
-	hit_time += delta
+	frames += 1
 	
 	draw_activity(is_active)
 
 
 func exit() -> void:
-	hit_time = 0
+	frames = 0
 	for n in hitboxes:
 		var h = n as Hitbox
 		h.call_deferred("set_disabled", true)

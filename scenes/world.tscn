@@ -83,6 +83,7 @@ shadow_size = 2
 
 [node name="world" type="Node2D"]
 script = ExtResource("1_o1srd")
+time_scale = 0.1
 pause_menu_scene = ExtResource("2_mn27r")
 player1_scene = ExtResource("3_qb37m")
 player2_scene = ExtResource("3_iurch")

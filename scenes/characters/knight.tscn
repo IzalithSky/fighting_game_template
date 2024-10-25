@@ -557,6 +557,7 @@ knockdown_down_duration = 0.3
 knockdown_duration = 1.5
 
 [node name="collider" type="CollisionPolygon2D" parent="."]
+visible = false
 position = Vector2(0, -17)
 scale = Vector2(0.820312, 0.838542)
 polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
@@ -564,11 +565,11 @@ polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"attack_ranged"
+animation = &"attack2"
 autoplay = "idle"
-frame = 3
 
 [node name="hurtbox" type="Area2D" parent="."]
+visible = false
 collision_layer = 2
 collision_mask = 4
 
@@ -599,76 +600,80 @@ offset_bottom = -76.0
 horizontal_alignment = 1
 
 [node name="attack1" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
+visible = false
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("19_kgyee")
 animation_name = "attack1"
 sound_swing = NodePath("../sound/swing")
 sound_hit = NodePath("../sound/hit1")
-duration = 0.25
+duration = 15
 
 [node name="hit" type="CollisionShape2D" parent="attack1"]
 position = Vector2(29.5, -46)
 shape = SubResource("RectangleShape2D_xotkn")
 debug_color = Color(0.92549, 0.239216, 0.341176, 0.419608)
 script = ExtResource("16_uav13")
-time_start = 0.1
-duration = 0.05
+frame_start = 6
+duration = 3
 damage_hit = 5
 damage_block = 1
-stun_hit_duration = 0.4
-stun_block_duration = 0.1
+stun_hit_duration = 30
+stun_block_duration = 6
 pushback = Vector2(80, 80)
 
 [node name="move" type="Node" parent="attack1"]
 script = ExtResource("19_i02dt")
-duration = 0.25
+duration = 15
 
 [node name="attack2" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
+visible = false
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("19_kgyee")
 animation_name = "attack2"
 sound_swing = NodePath("../sound/swing")
 sound_hit = NodePath("../sound/hit2")
-duration = 0.25
+duration = 15
 
 [node name="hit" type="CollisionShape2D" parent="attack2"]
 position = Vector2(36, -27.25)
 shape = SubResource("RectangleShape2D_xotkn")
 debug_color = Color(0.92549, 0.239216, 0.341176, 0.419608)
 script = ExtResource("16_uav13")
-time_start = 0.05
-duration = 0.1
+frame_start = 3
+duration = 6
 damage_hit = 10
 damage_block = 2
-stun_hit_duration = 0.3
-stun_block_duration = 0.1
+stun_hit_duration = 18
+stun_block_duration = 6
 pushback = Vector2(100, 100)
 
 [node name="move" type="Node" parent="attack2"]
 script = ExtResource("19_i02dt")
-duration = 0.25
+duration = 15
 
 [node name="attack_ranged" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
+visible = false
 script = ExtResource("15_ex06t")
 projectile_scene = ExtResource("16_nvux6")
 animation_name = "attack_ranged"
 sound_swing = NodePath("../sound/swing")
 sound_hit = NodePath("../sound/hit1")
-duration = 0.7
+duration = 42
 
 [node name="spawn_point" type="CollisionShape2D" parent="attack_ranged"]
 position = Vector2(23, -46)
 shape = SubResource("RectangleShape2D_kby16")
 script = ExtResource("16_uav13")
-time_start = 0.4
+frame_start = 24
+duration = 1
 damage_hit = 10
 damage_block = 2
-stun_hit_duration = 0.3
-stun_block_duration = 0.1
+stun_hit_duration = 30
+stun_block_duration = 6
 pushback = Vector2(100, 100)
 
 [node name="move" type="Node" parent="attack_ranged"]
 script = ExtResource("19_i02dt")
-duration = 0.7
+duration = 42

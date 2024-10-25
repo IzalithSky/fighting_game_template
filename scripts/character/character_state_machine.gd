@@ -9,7 +9,7 @@ func set_character(character: Character):
 			child.character = character
 
 
-func apply_stun(duration: float) -> void:
-	var new_state: CharacterState = current_state.apply_stun(duration)
+func apply_stun(frames: int) -> void:
+	var new_state: CharacterState = current_state.apply_stun(frames)
 	if new_state:
 		change_state(new_state)
