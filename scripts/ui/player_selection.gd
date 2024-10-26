@@ -2,7 +2,7 @@
 extends Control
 
 
-@export var character_library_scene: PackedScene
+@export var items_library_scene: PackedScene
 @export var settings_scene: PackedScene
 
 @onready var player1 = $VBoxContainer/HBoxContainer/VBoxContainer1/Player1Slot
@@ -11,14 +11,17 @@ extends Control
 @onready var player2 = $VBoxContainer/HBoxContainer/VBoxContainer2/Player2Slot
 @onready var player2bot = $VBoxContainer/HBoxContainer/VBoxContainer2/Player2Bot
 
+@onready var stage_selector = $VBoxContainer/HBoxContainer/VBoxContainer/StageSelectionSlot
+
 var player1character: Dictionary
 var player2character: Dictionary
+var current_stage: Dictionary
 
 
 func _ready():
 	player1.connect("gui_input", Callable(self, "on_character_slot_click").bind(player1))
 	player2.connect("gui_input", Callable(self, "on_character_slot_click").bind(player2))
-	
+	stage_selector.connect("gui_input", Callable(self, "on_level_slot_click").bind(stage_selector))
 	var characters = CharactersList.get_all_characters()
 	player1character = characters[0]
 	player2character = characters[1]
@@ -27,6 +30,8 @@ func _ready():
 	player1.grab_focus()
 	player2bot.button_pressed = true
 
+	current_stage = CharactersList.get_all_levels()[0]
+	stage_selector.assign_character(current_stage)
 
 func refresh_character_slots():
 	player1.assign_character(player1character)
@@ -42,11 +47,11 @@ func on_character_slot_click(event: InputEvent, slot: CharacterSlot):
 
 
 func open_character_library(slot: CharacterSlot):
-	var character_library = character_library_scene.instantiate()
+	var character_library = items_library_scene.instantiate()
 	if (slot == player1):
-		character_library.set_player_data(1, player1character)
+		character_library.set_library_data("Choose Player 1", CharactersList.get_all_characters(), player1character)
 	else:
-		character_library.set_player_data(2, player2character)
+		character_library.set_library_data("Choose Player 2", CharactersList.get_all_characters(), player2character)
 	
 	add_child(character_library)
 	character_library.connect("character_selected", Callable(self, "on_character_selected").bind(slot))
@@ -61,7 +66,24 @@ func on_character_selected(selected_character: Dictionary, slot: CharacterSlot):
 	slot.grab_focus()
 	refresh_character_slots()
 
+func on_level_slot_click(event: InputEvent, slot: CharacterSlot):
+	if event is InputEventMouseButton and event.pressed:
+		open_levels_library()
+			
+	if event is InputEventKey and (event.is_action_pressed("ui_select") or event.is_action_pressed("ui_accept")):
+		open_levels_library()
 
+func open_levels_library():
+	var character_library = items_library_scene.instantiate()
+	character_library.set_library_data("Choose Stage", CharactersList.get_all_levels(), current_stage)
+	add_child(character_library)
+	character_library.connect("character_selected", Callable(self, "on_stage_selected").bind(stage_selector))
+
+func on_stage_selected(selected_level: Dictionary, slot: CharacterSlot):
+	slot.assign_character(selected_level)
+	slot.grab_focus()
+	current_stage = selected_level
+	
 func on_play_button_pressed() -> void:
 	var world_scene = preload("res://scenes/world.tscn")
 	var world = world_scene.instantiate()
@@ -77,7 +99,8 @@ func on_play_button_pressed() -> void:
 		world.fsm2_scene = load("res://scenes/characters/bot_character_state_machine.tscn")
 	else:
 		world.fsm2_scene = load("res://scenes/characters/player_character_state_machine.tscn")
-	
+		
+	world.background_scene = load(current_stage["scene_path"])
 	get_tree().get_root().add_child(world)
 	get_tree().get_root().remove_child(self)
 

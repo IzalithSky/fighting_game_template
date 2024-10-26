@@ -1,12 +1,14 @@
-[gd_scene load_steps=9 format=4 uid="uid://nt3u2y1dher8"]
+[gd_scene load_steps=11 format=4 uid="uid://nt3u2y1dher8"]
 
 [ext_resource type="Script" path="res://scripts/ui/player_selection.gd" id="1_1e2l4"]
 [ext_resource type="TileSet" uid="uid://vrst3418t234" path="res://sprites/locations/dungeon/dungeon.tres" id="1_r0t8j"]
 [ext_resource type="FontFile" uid="uid://1mina24aowrb" path="res://fonts/DungeonFont.ttf" id="2_bwah3"]
-[ext_resource type="PackedScene" uid="uid://dh0c853bfnjtv" path="res://scenes/ui/characters_catalog.tscn" id="2_bxrsw"]
+[ext_resource type="PackedScene" uid="uid://dh0c853bfnjtv" path="res://scenes/ui/items_catalog.tscn" id="2_bxrsw"]
 [ext_resource type="PackedScene" uid="uid://cyptfcrxg17lf" path="res://scenes/ui/settings.tscn" id="3_013ke"]
 [ext_resource type="PackedScene" uid="uid://c6cv3nff50giv" path="res://scenes/ui/character_slot.tscn" id="3_sv0tw"]
 [ext_resource type="AudioStream" uid="uid://bupa0ppu5yeqi" path="res://audio/menu_theme.ogg" id="6_yxjxl"]
+[ext_resource type="Texture2D" uid="uid://8f0scihit0e1" path="res://sprites/locations/dungeon/fight_white.png" id="7_x7lyh"]
+[ext_resource type="Texture2D" uid="uid://c16d0gso7hkpv" path="res://sprites/locations/dungeon/fight_red.png" id="8_5bbfu"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_822if"]
 font = ExtResource("2_bwah3")
@@ -20,7 +22,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_1e2l4")
-character_library_scene = ExtResource("2_bxrsw")
+items_library_scene = ExtResource("2_bxrsw")
 settings_scene = ExtResource("3_013ke")
 
 [node name="TileMap" type="TileMapLayer" parent="."]
@@ -28,7 +30,7 @@ tile_map_data = PackedByteArray("AAAAAAAAAAABAAcAAAAAAAEAAAABAAcAAAAAAAIAAAACAAc
 tile_set = ExtResource("1_r0t8j")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
-tile_map_data = PackedByteArray("AAADAAQAAAAEAA8AAAADAAUAAAAEABAAAAAQAAQAAAAGAA8AAAAQAAUAAAAGABAAAAA=")
+tile_map_data = PackedByteArray("AAABAAQAAAAEAA8AAAABAAUAAAAEABAAAAASAAQAAAAGAA8AAAASAAUAAAAGABAAAAA=")
 tile_set = ExtResource("1_r0t8j")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
@@ -37,9 +39,9 @@ anchors_preset = 13
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -185.0
-offset_right = 185.0
-offset_bottom = -45.0
+offset_left = -270.0
+offset_right = 270.0
+offset_bottom = -59.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 39
@@ -56,7 +58,7 @@ horizontal_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_constants/separation = 70
+theme_override_constants/separation = 40
 alignment = 1
 
 [node name="VBoxContainer1" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
@@ -86,6 +88,36 @@ theme_override_fonts/font = ExtResource("2_bwah3")
 theme_override_font_sizes/font_size = 21
 text = "bot
 "
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_bwah3")
+theme_override_font_sizes/font_size = 20
+text = "Stage
+"
+horizontal_alignment = 1
+
+[node name="StageSelectionSlot" parent="VBoxContainer/HBoxContainer/VBoxContainer" instance=ExtResource("3_sv0tw")]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_bwah3")
+theme_override_font_sizes/font_size = 20
+text = "
+"
+horizontal_alignment = 1
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -125,27 +157,25 @@ theme_override_font_sizes/font_size = 25
 text = "Settings
 "
 
-[node name="PlayButton" type="Button" parent="."]
+[node name="PlayButton" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(150, 60)
 layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
+anchors_preset = 7
+anchor_left = 0.5
 anchor_top = 1.0
-anchor_right = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -117.0
-offset_top = -59.0
-offset_right = -17.0
-offset_bottom = -19.0
-grow_horizontal = 0
+offset_left = -76.0
+offset_top = -99.0
+offset_right = 74.0
+offset_bottom = -39.0
+grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_hover_color = Color(1, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0.552962, 5.89602e-07, 4.81307e-07, 1)
-theme_override_colors/font_focus_color = Color(1, 0, 0, 1)
-theme_override_colors/font_color = Color(1, 0.425788, 0.357085, 1)
-theme_override_fonts/font = ExtResource("2_bwah3")
-theme_override_font_sizes/font_size = 30
-text = "Fight
-"
+texture_normal = ExtResource("7_x7lyh")
+texture_pressed = ExtResource("8_5bbfu")
+texture_hover = ExtResource("8_5bbfu")
+texture_focused = ExtResource("8_5bbfu")
+stretch_mode = 3
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_yxjxl")

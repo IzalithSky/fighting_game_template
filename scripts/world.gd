@@ -3,6 +3,7 @@ extends Node2D
 
 
 @export var time_scale: float = 1.0
+@export var background_scene: PackedScene
 @export var pause_menu_scene: PackedScene
 @export var player1_scene: PackedScene
 @export var player2_scene: PackedScene
@@ -29,6 +30,7 @@ var pause_menu: Control
 
 func _ready() -> void:
 	Engine.time_scale = time_scale
+	set_background()
 	
 	spawn_players()
 	reset_players()
@@ -46,6 +48,11 @@ func _ready() -> void:
 		touch_controls.visible = false
 		touch_controls.set_process(false)
 
+func set_background():
+	var background = background_scene.instantiate()
+	add_child(background)
+	move_child(background, 0)
+	
 
 func spawn_players() -> void:
 	fsm1 = fsm1_scene.instantiate()

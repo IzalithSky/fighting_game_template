@@ -18,13 +18,19 @@ func assign_character(character_data: Dictionary):
 	current_character_scene = load(character_data["scene_path"])
 	$NameLabel.text = character_data["name"]
 	
-	var character_instance = current_character_scene.instantiate()
-	var animated_sprite = character_instance.get_node("Animations") 
-	var sprite_frames: SpriteFrames = animated_sprite.sprite_frames
-	var frame_texture = sprite_frames.get_frame_texture("idle", 0)
-	$CharacterTextureRect.texture = frame_texture
-
-
+	if character_data.has("preview") and character_data["preview"].length() > 0:
+		var image_path = character_data["preview"]
+		var texture = load(image_path) as Texture2D
+		if texture:
+			$CharacterTextureRect.texture = texture
+	else:
+		var character_instance = current_character_scene.instantiate()
+		if character_instance.has_node("Animations"):
+			var animated_sprite = character_instance.get_node("Animations") 
+			var sprite_frames: SpriteFrames = animated_sprite.sprite_frames
+			var frame_texture = sprite_frames.get_frame_texture("idle", 0)
+			$CharacterTextureRect.texture = frame_texture
+	
 func on_mouse_entered():
 	set_blinking(true)
 
