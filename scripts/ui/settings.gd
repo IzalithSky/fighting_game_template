@@ -3,8 +3,8 @@ extends Control
 @onready var back_button = $BackButton
 @onready var player1_action_list = $ScrollContainer/MarginContainer/SettingsContainer/P1ActionList
 @onready var player2_action_list = $ScrollContainer/MarginContainer/SettingsContainer/P2ActionList
-@onready var fullscreen_checkbox = $ScrollContainer/MarginContainer/SettingsContainer/FullscreenContainer/FullscreenCheckBox
-@onready var mobile_controls_checkbox = $ScrollContainer/MarginContainer/SettingsContainer/MobileContainer/MobileCheckBox
+@onready var fullscreen_checkbox = $ScrollContainer/MarginContainer/SettingsContainer/FullscreenCheckBox
+@onready var mobile_controls_checkbox = $ScrollContainer/MarginContainer/SettingsContainer/MobileCheckBox
 
 @onready var music_volume_slider = $ScrollContainer/MarginContainer/SettingsContainer/MusicContainer/MusicSlider
 @onready var sfx_volume_slider = $ScrollContainer/MarginContainer/SettingsContainer/SFXContainer/SFXSlider

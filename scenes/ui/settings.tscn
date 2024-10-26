@@ -46,43 +46,32 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
-[node name="MobileContainer" type="HBoxContainer" parent="ScrollContainer/MarginContainer/SettingsContainer"]
-layout_mode = 2
-
-[node name="MobileLabel" type="Label" parent="ScrollContainer/MarginContainer/SettingsContainer/MobileContainer"]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("4_6ye7w")
-theme_override_font_sizes/font_size = 22
-text = "Mobile Controls"
-
-[node name="MobileCheckBox" type="CheckBox" parent="ScrollContainer/MarginContainer/SettingsContainer/MobileContainer"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("4_6ye7w")
-theme_override_font_sizes/font_size = 24
-
 [node name="VideoLabel" type="Label" parent="ScrollContainer/MarginContainer/SettingsContainer"]
 layout_mode = 2
-text = "Video
+text = "Window
 "
 label_settings = SubResource("LabelSettings_7crbw")
 
-[node name="FullscreenContainer" type="HBoxContainer" parent="ScrollContainer/MarginContainer/SettingsContainer"]
+[node name="MobileCheckBox" type="CheckBox" parent="ScrollContainer/MarginContainer/SettingsContainer"]
+custom_minimum_size = Vector2(230, 0)
+layout_direction = 3
 layout_mode = 2
-
-[node name="FullscreenLabel" type="Label" parent="ScrollContainer/MarginContainer/SettingsContainer/FullscreenContainer"]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
+size_flags_horizontal = 0
 theme_override_fonts/font = ExtResource("4_6ye7w")
-theme_override_font_sizes/font_size = 22
-text = "Windowed Fullscreen
-"
+theme_override_font_sizes/font_size = 24
+text = "Mobile Controls"
+alignment = 2
 
-[node name="FullscreenCheckBox" type="CheckBox" parent="ScrollContainer/MarginContainer/SettingsContainer/FullscreenContainer"]
+[node name="FullscreenCheckBox" type="CheckBox" parent="ScrollContainer/MarginContainer/SettingsContainer"]
+custom_minimum_size = Vector2(230, 0)
+layout_direction = 3
 layout_mode = 2
+size_flags_horizontal = 0
 theme_override_fonts/font = ExtResource("4_6ye7w")
 theme_override_font_sizes/font_size = 24
 button_pressed = true
+text = "Windowed Fullscreen"
+alignment = 2
 
 [node name="AudioLabel" type="Label" parent="ScrollContainer/MarginContainer/SettingsContainer"]
 layout_mode = 2
@@ -230,8 +219,8 @@ theme_override_fonts/font = ExtResource("4_6ye7w")
 theme_override_font_sizes/font_size = 24
 text = "Reset to Defaults"
 
-[connection signal="toggled" from="ScrollContainer/MarginContainer/SettingsContainer/MobileContainer/MobileCheckBox" to="." method="on_mobile_check_box_toggled"]
-[connection signal="toggled" from="ScrollContainer/MarginContainer/SettingsContainer/FullscreenContainer/FullscreenCheckBox" to="." method="on_fullscreen_check_box_toggled"]
+[connection signal="toggled" from="ScrollContainer/MarginContainer/SettingsContainer/MobileCheckBox" to="." method="on_mobile_check_box_toggled"]
+[connection signal="toggled" from="ScrollContainer/MarginContainer/SettingsContainer/FullscreenCheckBox" to="." method="on_fullscreen_check_box_toggled"]
 [connection signal="value_changed" from="ScrollContainer/MarginContainer/SettingsContainer/MusicContainer/MusicSlider" to="." method="on_music_slider_value_changed"]
 [connection signal="value_changed" from="ScrollContainer/MarginContainer/SettingsContainer/SFXContainer/SFXSlider" to="." method="on_sfx_slider_value_changed"]
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
