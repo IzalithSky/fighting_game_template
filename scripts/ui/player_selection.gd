@@ -77,7 +77,8 @@ func on_play_button_pressed() -> void:
 		world.fsm2_scene = load("res://scenes/characters/bot_character_state_machine.tscn")
 	else:
 		world.fsm2_scene = load("res://scenes/characters/player_character_state_machine.tscn")
-	
+		
+	world.background_scene = load("res://scenes/levels/dungeon_background.tscn")
 	get_tree().get_root().add_child(world)
 	get_tree().get_root().remove_child(self)
 
