@@ -23,9 +23,12 @@ func physics(delta: float):
 		launch()
 		launched = true
 	
-	hit_time += delta
+	if hit_time < spawn_point.time_start + spawn_point.duration:
+		character.draw_activity(is_active)
+	else:
+		character.draw_recovery()
 	
-	draw_activity(is_active)
+	hit_time += delta
 
 
 func on_area_entered(area: Area2D) -> void:

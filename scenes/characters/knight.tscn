@@ -557,6 +557,7 @@ knockdown_down_duration = 0.3
 knockdown_duration = 1.5
 
 [node name="collider" type="CollisionPolygon2D" parent="."]
+visible = false
 position = Vector2(0, -17)
 scale = Vector2(0.820312, 0.838542)
 polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
@@ -569,6 +570,7 @@ autoplay = "idle"
 frame = 3
 
 [node name="hurtbox" type="Area2D" parent="."]
+visible = false
 collision_layer = 2
 collision_mask = 4
 
@@ -599,6 +601,7 @@ offset_bottom = -76.0
 horizontal_alignment = 1
 
 [node name="attack1" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
+visible = false
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("19_kgyee")
@@ -625,6 +628,7 @@ script = ExtResource("19_i02dt")
 duration = 0.25
 
 [node name="attack2" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
+visible = false
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("19_kgyee")
@@ -651,6 +655,7 @@ script = ExtResource("19_i02dt")
 duration = 0.25
 
 [node name="attack_ranged" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
+visible = false
 script = ExtResource("15_ex06t")
 projectile_scene = ExtResource("16_nvux6")
 animation_name = "attack_ranged"

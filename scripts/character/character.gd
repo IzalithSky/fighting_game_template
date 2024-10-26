@@ -152,3 +152,18 @@ func reset(new_position: Vector2) -> void:
 	position = new_position
 	velocity = Vector2.ZERO
 	fsm.reset()
+
+
+func draw_activity(is_active: bool):
+	draw_framedata(Color.INDIAN_RED if is_active else Color.SEA_GREEN)
+
+
+func draw_recovery():
+	draw_framedata(Color.SKY_BLUE)
+
+
+func draw_framedata(color: Color):
+	if input_prefix == "p1_":
+		frame_data_bar.update_top_block_color(color)
+	else:
+		frame_data_bar.update_bot_block_color(color)

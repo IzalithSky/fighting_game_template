@@ -13,6 +13,7 @@ extends Area2D
 var hitboxes: Array[Hitbox] = []
 var moves: Array[Move] = []
 var hit_time: float = 0
+var latest_attack_end: float = 0
 
 
 func _ready() -> void:
@@ -28,6 +29,8 @@ func load_hitboxes() -> void:
 			hitboxes.append(h)
 			h.disabled = true
 			h.visible = false
+			if latest_attack_end < h.time_start + h.duration:
+				latest_attack_end = h.time_start + h.duration
 
 
 func load_moves() -> void:
@@ -66,10 +69,13 @@ func physics(delta: float) -> void:
 				m.enter()
 			m.physics(delta)
 	
-	hit_time += delta
 	
-	draw_activity(is_active)
+	if hit_time < latest_attack_end:
+		character.draw_activity(is_active)
+	else:
+		character.draw_recovery()
 
+	hit_time += delta
 
 func exit() -> void:
 	hit_time = 0
@@ -104,11 +110,3 @@ func on_area_entered(area: Area2D) -> void:
 func apply_pushback(opponent: Character, pushback_force: Vector2) -> void:
 	opponent.velocity.x = pushback_force.x * (1 if character.is_opponent_right else -1)
 	opponent.velocity.y = -pushback_force.y
-
-
-func draw_activity(is_active: bool):
-	var color = Color(1, 0, 0) if is_active else Color(0, 1, 0)
-	if character.input_prefix == "p1_":
-		character.frame_data_bar.update_top_block_color(color)
-	else:
-		character.frame_data_bar.update_bot_block_color(color)
