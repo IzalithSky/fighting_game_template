@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://e3s55snv558u"]
+
+[ext_resource type="Script" path="res://addons/attack_timeline_editor/attack_timeline_editor.gd" id="1_ptk5l"]
+
+[node name="AttackTimelineEditor" type="VBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_ptk5l")
+
+[node name="Toolbar" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="AddMoveButton" type="Button" parent="Toolbar"]
+layout_mode = 2
+
+[node name="AddHitboxButton" type="Button" parent="Toolbar"]
+layout_mode = 2
+
+[node name="TimelineCanvas" type="GraphEdit" parent="."]
+layout_mode = 2

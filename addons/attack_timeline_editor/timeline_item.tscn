@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://co2dmldlk4wdl"]
+
+[ext_resource type="Script" path="res://addons/attack_timeline_editor/timeline_item.gd" id="1_ovjaw"]
+
+[node name="TimelineItem" type="GraphNode"]
+offset_right = 9.0
+offset_bottom = 55.0
+script = ExtResource("1_ovjaw")
