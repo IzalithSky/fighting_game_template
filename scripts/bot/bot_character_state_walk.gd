@@ -53,7 +53,7 @@ func process_physics(delta: float) -> State:
 			return state_attack
 
 	if params.is_in_attack_distance():
-		if character.opponent.fsm.is_state("attack"):
+		if character.opponent.fsm.is_state("attack") and not character.opponent.fsm.is_recovery():
 			return state_block
 			
 		if params.is_opponent_above() and character.jumps_left > 0:

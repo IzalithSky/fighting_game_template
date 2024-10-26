@@ -13,3 +13,9 @@ func apply_stun(duration: float) -> void:
 	var new_state: CharacterState = current_state.apply_stun(duration)
 	if new_state:
 		change_state(new_state)
+
+
+func is_recovery() -> bool:
+	if not is_state("attack"):
+		return false
+	return (current_state as CharacterStateAttack).current_attack.is_recovery
