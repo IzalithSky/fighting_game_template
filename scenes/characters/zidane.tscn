@@ -1,4 +1,4 @@
-[gd_scene load_steps=216 format=3 uid="uid://62t2005fchbn"]
+[gd_scene load_steps=219 format=3 uid="uid://62t2005fchbn"]
 
 [ext_resource type="Script" path="res://scripts/character/character.gd" id="1_yecoy"]
 [ext_resource type="Texture2D" uid="uid://bh1ar8356co1g" path="res://sprites/characters/zidane/zidane_spritesheet.png" id="2_pb6ud"]
@@ -19,6 +19,9 @@
 [ext_resource type="Script" path="res://scripts/attack/attack.gd" id="14_2csiw"]
 [ext_resource type="Script" path="res://scripts/attack/move.gd" id="16_0368c"]
 [ext_resource type="Script" path="res://scripts/attack/hitbox.gd" id="17_drc2t"]
+[ext_resource type="AudioStream" uid="uid://8ngedm7a0mu8" path="res://audio/characters/zidane/zidane_special_tornado.wav" id="20_5uly6"]
+[ext_resource type="AudioStream" uid="uid://cxrjn1r8i2w4c" path="res://audio/characters/zidane/zidane_special_explosion.wav" id="20_cknky"]
+[ext_resource type="AudioStream" uid="uid://3f73sqmjq65y" path="res://audio/characters/zidane/zidane_special_symbols.wav" id="20_kcksq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7d66y"]
 atlas = ExtResource("2_pb6ud")
@@ -1584,13 +1587,19 @@ pushback = Vector2(100, 100)
 script = ExtResource("16_0368c")
 duration = 0.7
 
-[node name="attack_special1" type="Area2D" parent="."]
+[node name="attack_special1" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
 visible = false
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("14_2csiw")
 animation_name = "attack_special1"
+sound_swing = NodePath("sound")
+sound_hit = NodePath("../sound/hit2")
 duration = 1.75
+
+[node name="sound" type="AudioStreamPlayer2D" parent="attack_special1"]
+stream = ExtResource("20_cknky")
+volume_db = -12.0
 
 [node name="move1" type="Node" parent="attack_special1"]
 script = ExtResource("16_0368c")
@@ -1647,14 +1656,20 @@ reset_velocity = true
 freeze_on_floor = false
 impulse = Vector2(-200, 400)
 
-[node name="attack_special2" type="Area2D" parent="."]
+[node name="attack_special2" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
 visible = false
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("14_2csiw")
 animation_name = "attack_special2"
 animation_offset = Vector2(0, -50)
+sound_swing = NodePath("sound")
+sound_hit = NodePath("../sound/hit2")
 duration = 2.2
+
+[node name="sound" type="AudioStreamPlayer2D" parent="attack_special2"]
+stream = ExtResource("20_5uly6")
+volume_db = -12.0
 
 [node name="move1" type="Node" parent="attack_special2"]
 script = ExtResource("16_0368c")
@@ -1789,14 +1804,20 @@ script = ExtResource("16_0368c")
 time_start = 1.4
 reset_velocity = true
 
-[node name="attack_special3" type="Area2D" parent="."]
+[node name="attack_special3" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
 visible = false
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("14_2csiw")
 animation_name = "attack_special3"
 animation_offset = Vector2(100, 110)
+sound_swing = NodePath("sound")
+sound_hit = NodePath("../sound/hit2")
 duration = 4.0
+
+[node name="sound" type="AudioStreamPlayer2D" parent="attack_special3"]
+stream = ExtResource("20_kcksq")
+volume_db = -12.0
 
 [node name="move1" type="Node" parent="attack_special3"]
 script = ExtResource("16_0368c")
