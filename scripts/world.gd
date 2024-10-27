@@ -1,4 +1,5 @@
 # world.gd
+class_name World
 extends Node2D
 
 
@@ -9,8 +10,9 @@ extends Node2D
 @export var player2_scene: PackedScene
 @export var fsm1_scene: PackedScene
 @export var fsm2_scene: PackedScene
-@export var player1_respawn_pos: Vector2 = Vector2(100, 320)
-@export var player2_respawn_pos: Vector2 = Vector2(500, 320)
+@export var player1_respawn_pos: Vector2 = Vector2(224, 400)
+@export var player2_respawn_pos: Vector2 = Vector2(416, 400)
+@export var post_round_delay: float = 3
 
 @onready var hpbar1 = $hpbar1
 @onready var hpbar2 = $hpbar2
@@ -19,7 +21,7 @@ extends Node2D
 @onready var frame_data_bar = $framedatabar
 @onready var touch_controls = $MobileControl/TouchControls
 @onready var label_os = $LabelOS
-@onready var countdown_lable = $CounddownLabel
+@onready var countdown_label = $CountdownLabel
 
 var player1: Character
 var player2: Character
@@ -28,19 +30,21 @@ var fsm2: CharacterStateMachine
 var score_p1 = 0
 var score_p2 = 0
 var pause_menu: Control
+var countdown_timer: float = 0
+var countdown_stage: int = 0
+var is_countdown_active: bool = false
+var post_round_timer: float = 2.0  # Duration for the post-round phase
+var in_post_round_phase: bool = false
 
 
 func _ready() -> void:
 	Engine.time_scale = time_scale
 	set_background()
-	
 	spawn_players()
 	reset_players()
-	
 	hpbar1.init_hp(player1.max_hp)
 	hpbar2.init_hp(player2.max_hp)
 	score.text = "0 : 0"
-	
 	label_os.text = OS.get_name()
 	var is_mobile = ConfigHandler.load_settings("video").mobile_controls or OS.get_name() == "Android" or OS.get_name() == "iOS"
 	if is_mobile:
@@ -49,6 +53,7 @@ func _ready() -> void:
 	else:
 		touch_controls.visible = false
 		touch_controls.set_process(false)
+	start_round_with_countdown()
 
 
 func set_background():
@@ -60,13 +65,10 @@ func set_background():
 func spawn_players() -> void:
 	fsm1 = fsm1_scene.instantiate()
 	fsm2 = fsm2_scene.instantiate()
-
 	add_child(fsm1)
 	add_child(fsm2)
-
 	player1 = player1_scene.instantiate()
 	player2 = player2_scene.instantiate()
-	
 	player1.fsm = fsm1
 	player2.fsm = fsm2	
 	player1.opponent = player2
@@ -75,16 +77,12 @@ func spawn_players() -> void:
 	player2.input_prefix = "p2_"
 	player1.frame_data_bar = frame_data_bar
 	player2.frame_data_bar = frame_data_bar
-	
 	player1.damaged.connect(on_player_1_damaged)
 	player2.damaged.connect(on_player_2_damaged)
 	player1.kod.connect(on_player_1_kod)
 	player2.kod.connect(on_player_2_kod)
-	
-	
 	fsm1.set_character(player1)
 	fsm2.set_character(player2)
-
 	add_child(player1)
 	add_child(player2)
 
@@ -102,6 +100,7 @@ func on_player_1_kod() -> void:
 	update_score()
 	fsm1.end_round()
 	fsm2.end_round()
+	start_post_round_phase()
 
 
 func on_player_2_kod() -> void:
@@ -109,6 +108,7 @@ func on_player_2_kod() -> void:
 	update_score()
 	fsm1.end_round()
 	fsm2.end_round()
+	start_post_round_phase()
 
 
 func update_score() -> void:
@@ -118,15 +118,63 @@ func update_score() -> void:
 func reset_players() -> void:
 	player1.reset(player1_respawn_pos)
 	player2.reset(player2_respawn_pos)
-	
 	fsm1.start_intro()
 	fsm2.start_intro()
-	
 	hpbar1.hp = player1.max_hp
 	hpbar2.hp = player2.max_hp
 
 
+func start_round_with_countdown() -> void:
+	countdown_timer = 1.0
+	countdown_stage = 3
+	is_countdown_active = true
+	countdown_label.visible = true
+	update_countdown_label()
+
+
+func start_post_round_phase() -> void:
+	in_post_round_phase = true
+	post_round_timer = post_round_delay
+	countdown_label.visible = false
+
+
+func start_next_round() -> void:
+	reset_players()
+	start_round_with_countdown()
+
+
+func update_countdown_label() -> void:
+	match countdown_stage:
+		3:
+			countdown_label.text = "3"
+		2:
+			countdown_label.text = "2"
+		1:
+			countdown_label.text = "1"
+		0:
+			countdown_label.text = "Fight!"
+
+
 func _physics_process(delta: float) -> void:
+	if is_countdown_active:
+		countdown_timer -= delta
+		if countdown_timer <= 0:
+			countdown_stage -= 1
+			if countdown_stage < 0:
+				is_countdown_active = false
+				countdown_label.visible = false
+				fsm1.start_round()
+				fsm2.start_round()
+			else:
+				countdown_timer = 1.0
+				update_countdown_label()
+	
+	if in_post_round_phase:
+		post_round_timer -= delta
+		if post_round_timer <= 0:
+			in_post_round_phase = false
+			start_next_round()
+
 	var distance = abs(player1.position.x - player2.position.x)
 	label_distance.text = str(round(distance))
 

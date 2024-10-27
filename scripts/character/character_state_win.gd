@@ -19,6 +19,10 @@ func enter() -> void:
 func process_physics(delta: float) -> State:
 	super(delta)
 
+	if character.is_on_floor():
+		character.velocity.x = 0
+		character.velocity.y = 0
+
 	if win_anim_timer <= 0:
 		win_anim_timer = 0
 		character.play_anim("win_loop", 0, -40)
