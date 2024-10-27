@@ -13,6 +13,7 @@ extends Node2D
 @export var player1_respawn_pos: Vector2 = Vector2(224, 400)
 @export var player2_respawn_pos: Vector2 = Vector2(416, 400)
 @export var post_round_delay: float = 3
+@export var round_time_limit: float = 60
 
 @onready var hpbar1 = $hpbar1
 @onready var hpbar2 = $hpbar2
@@ -22,6 +23,7 @@ extends Node2D
 @onready var touch_controls = $MobileControl/TouchControls
 @onready var label_os = $LabelOS
 @onready var countdown_label = $CountdownLabel
+@onready var round_time_label = $LabelRoundTime
 
 var player1: Character
 var player2: Character
@@ -33,8 +35,9 @@ var pause_menu: Control
 var countdown_timer: float = 0
 var countdown_stage: int = 0
 var is_countdown_active: bool = false
-var post_round_timer: float = 2.0  # Duration for the post-round phase
+var post_round_timer: float = 2.0
 var in_post_round_phase: bool = false
+var round_timer: float = round_time_limit
 
 
 func _ready() -> void:
@@ -122,6 +125,7 @@ func reset_players() -> void:
 	fsm2.start_intro()
 	hpbar1.hp = player1.max_hp
 	hpbar2.hp = player2.max_hp
+	round_timer = round_time_limit  # Reset the round timer
 
 
 func start_round_with_countdown() -> void:
@@ -155,6 +159,20 @@ func update_countdown_label() -> void:
 			countdown_label.text = "Fight!"
 
 
+func end_round_due_to_timeout() -> void:
+	if player1.current_hp > player2.current_hp:
+		score_p1 += 1
+	elif player2.current_hp > player1.current_hp:
+		score_p2 += 1
+	else:
+		score_p1 += 1
+		score_p2 += 1
+	update_score()
+	fsm1.end_round()
+	fsm2.end_round()
+	start_post_round_phase()
+
+
 func _physics_process(delta: float) -> void:
 	if is_countdown_active:
 		countdown_timer -= delta
@@ -174,6 +192,12 @@ func _physics_process(delta: float) -> void:
 		if post_round_timer <= 0:
 			in_post_round_phase = false
 			start_next_round()
+
+	if !is_countdown_active and !in_post_round_phase:
+		round_timer -= delta
+		round_time_label.text = str(int(round_timer))  # Update displayed round time
+		if round_timer <= 0:
+			end_round_due_to_timeout()
 
 	var distance = abs(player1.position.x - player2.position.x)
 	label_distance.text = str(round(distance))

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://b238h33cgofap"]
+[gd_scene load_steps=16 format=3 uid="uid://b238h33cgofap"]
 
 [ext_resource type="Script" path="res://scripts/character/character_state_machine.gd" id="1_wuvxo"]
 [ext_resource type="Script" path="res://scripts/character/character_state_stun.gd" id="2_dwao0"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" path="res://scripts/character/character_state_knockdown_up.gd" id="13_3ne08"]
 [ext_resource type="Script" path="res://scripts/character/character_state_ko.gd" id="13_wue5y"]
 [ext_resource type="Script" path="res://scripts/character/character_state_intro.gd" id="14_rlyxr"]
+[ext_resource type="Script" path="res://scripts/character/character_state_idle_locked.gd" id="15_qi2ab"]
 
 [node name="CharacterStateMachine" type="Node" node_paths=PackedStringArray("starting_state")]
 script = ExtResource("1_wuvxo")
@@ -57,3 +58,6 @@ script = ExtResource("13_wue5y")
 
 [node name="Intro" type="Node" parent="."]
 script = ExtResource("14_rlyxr")
+
+[node name="IdleLocked" type="Node" parent="."]
+script = ExtResource("15_qi2ab")
