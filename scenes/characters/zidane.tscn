@@ -19,9 +19,9 @@
 [ext_resource type="Script" path="res://scripts/attack/attack.gd" id="14_2csiw"]
 [ext_resource type="Script" path="res://scripts/attack/move.gd" id="16_0368c"]
 [ext_resource type="Script" path="res://scripts/attack/hitbox.gd" id="17_drc2t"]
-[ext_resource type="AudioStream" uid="uid://8ngedm7a0mu8" path="res://audio/characters/zidane/zidane_special_tornado.wav" id="20_5uly6"]
-[ext_resource type="AudioStream" uid="uid://cxrjn1r8i2w4c" path="res://audio/characters/zidane/zidane_special_explosion.wav" id="20_cknky"]
-[ext_resource type="AudioStream" uid="uid://3f73sqmjq65y" path="res://audio/characters/zidane/zidane_special_symbols.wav" id="20_kcksq"]
+[ext_resource type="AudioStream" uid="uid://ch4q3j81d6xb6" path="res://audio/characters/zidane/zidane_special_explosion_e2.wav" id="20_yobje"]
+[ext_resource type="AudioStream" uid="uid://b4wscnoj8cevy" path="res://audio/characters/zidane/zidane_special_tornado_e1.wav" id="21_u82xv"]
+[ext_resource type="AudioStream" uid="uid://b2irld2e3mxm5" path="res://audio/characters/zidane/zidane_special_symbols_e1.wav" id="22_eau5w"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7d66y"]
 atlas = ExtResource("2_pb6ud")
@@ -1598,8 +1598,7 @@ sound_hit = NodePath("../sound/hit2")
 duration = 1.75
 
 [node name="sound" type="AudioStreamPlayer2D" parent="attack_special1"]
-stream = ExtResource("20_cknky")
-volume_db = -12.0
+stream = ExtResource("20_yobje")
 
 [node name="move1" type="Node" parent="attack_special1"]
 script = ExtResource("16_0368c")
@@ -1668,8 +1667,7 @@ sound_hit = NodePath("../sound/hit2")
 duration = 2.2
 
 [node name="sound" type="AudioStreamPlayer2D" parent="attack_special2"]
-stream = ExtResource("20_5uly6")
-volume_db = -12.0
+stream = ExtResource("21_u82xv")
 
 [node name="move1" type="Node" parent="attack_special2"]
 script = ExtResource("16_0368c")
@@ -1816,8 +1814,7 @@ sound_hit = NodePath("../sound/hit2")
 duration = 4.0
 
 [node name="sound" type="AudioStreamPlayer2D" parent="attack_special3"]
-stream = ExtResource("20_kcksq")
-volume_db = -12.0
+stream = ExtResource("22_eau5w")
 
 [node name="move1" type="Node" parent="attack_special3"]
 script = ExtResource("16_0368c")
