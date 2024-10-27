@@ -14,6 +14,7 @@ extends CharacterBody2D
 @export var max_jumps: int = 2
 @export var intro_anim_duration: float = 0
 @export var win_anim_duration: float = 0
+@export var character_intro_outro_anim_offset: Vector2 = Vector2(0, -40)
 @export var input_prefix: String = "p1_"  # To switch between p1_ and p2_
 @export var opponent: Character
 @export var always_face_opponent: bool = true

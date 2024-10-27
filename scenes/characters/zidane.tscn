@@ -1559,6 +1559,7 @@ knockdown_down_duration = 0.7
 knockdown_duration = 1.5
 intro_anim_duration = 0.57
 win_anim_duration = 0.25
+character_intro_outro_anim_offset = Vector2(0, -74)
 
 [node name="collider" type="CollisionPolygon2D" parent="."]
 visible = false

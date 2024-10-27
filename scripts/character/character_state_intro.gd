@@ -13,7 +13,7 @@ func _ready() -> void:
 func enter() -> void:
 	super()
 	intro_anim_timer = character.intro_anim_duration
-	character.play_anim("intro", 0, -40)
+	character.play_anim("intro", character.character_intro_outro_anim_offset.x, character.character_intro_outro_anim_offset.y)
 
 
 func process_physics(delta: float) -> State:
@@ -21,7 +21,7 @@ func process_physics(delta: float) -> State:
 
 	if intro_anim_timer <= 0:
 		intro_anim_timer = 0
-		character.play_anim("intro_loop", 0, -40)
+		character.play_anim("intro_loop", character.character_intro_outro_anim_offset.x, character.character_intro_outro_anim_offset.y)
 	else:
 		intro_anim_timer -= delta
 	return null
