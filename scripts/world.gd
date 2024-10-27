@@ -19,6 +19,7 @@ extends Node2D
 @onready var frame_data_bar = $framedatabar
 @onready var touch_controls = $MobileControl/TouchControls
 @onready var label_os = $LabelOS
+@onready var countdown_lable = $CounddownLabel
 
 var player1: Character
 var player2: Character
@@ -27,6 +28,7 @@ var fsm2: CharacterStateMachine
 var score_p1 = 0
 var score_p2 = 0
 var pause_menu: Control
+
 
 func _ready() -> void:
 	Engine.time_scale = time_scale
@@ -48,11 +50,12 @@ func _ready() -> void:
 		touch_controls.visible = false
 		touch_controls.set_process(false)
 
+
 func set_background():
 	var background = background_scene.instantiate()
 	add_child(background)
 	move_child(background, 0)
-	
+
 
 func spawn_players() -> void:
 	fsm1 = fsm1_scene.instantiate()
@@ -97,13 +100,15 @@ func on_player_2_damaged(amount: Variant) -> void:
 func on_player_1_kod() -> void:
 	score_p2 += 1
 	update_score()
-	reset_players()
+	fsm1.end_round()
+	fsm2.end_round()
 
 
 func on_player_2_kod() -> void:
 	score_p1 += 1
 	update_score()
-	reset_players()
+	fsm1.end_round()
+	fsm2.end_round()
 
 
 func update_score() -> void:
@@ -114,6 +119,9 @@ func reset_players() -> void:
 	player1.reset(player1_respawn_pos)
 	player2.reset(player2_respawn_pos)
 	
+	fsm1.start_intro()
+	fsm2.start_intro()
+	
 	hpbar1.hp = player1.max_hp
 	hpbar2.hp = player2.max_hp
 
@@ -122,9 +130,11 @@ func _physics_process(delta: float) -> void:
 	var distance = abs(player1.position.x - player2.position.x)
 	label_distance.text = str(round(distance))
 
+
 func _input(event: InputEvent):
 	if event.is_action_pressed("ui_cancel"):
 		toggle_pause()
+
 
 func toggle_pause():
 	if get_tree().paused:

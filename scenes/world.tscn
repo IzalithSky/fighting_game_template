@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://diksjuhs82jqo" path="res://scenes/ui/hpbar.tscn" id="4_sblbn"]
 [ext_resource type="PackedScene" uid="uid://b238h33cgofap" path="res://scenes/characters/bot_character_state_machine.tscn" id="5_fmefg"]
 [ext_resource type="Script" path="res://scripts/ui/frame_data_bar.gd" id="6_lrnrk"]
-[ext_resource type="PackedScene" path="res://scenes/ui/touch_controls.tscn" id="11_8r0x1"]
+[ext_resource type="PackedScene" uid="uid://dmbwk7qobd46s" path="res://scenes/ui/touch_controls.tscn" id="11_8r0x1"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_q2cft"]
 font_size = 20
@@ -74,3 +74,14 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="TouchControls" parent="MobileControl" instance=ExtResource("11_8r0x1")]
+
+[node name="CounddownLabel" type="Label" parent="."]
+visible = false
+offset_left = 256.0
+offset_top = 128.0
+offset_right = 384.0
+offset_bottom = 256.0
+theme_override_font_sizes/font_size = 64
+text = "00"
+horizontal_alignment = 1
+vertical_alignment = 1

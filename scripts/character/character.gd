@@ -12,6 +12,8 @@ extends CharacterBody2D
 @export var active_invincibility_duration = 0.4
 @export var stun_to_knowkdown_duration: float = 1
 @export var max_jumps: int = 2
+@export var intro_anim_duration: float = 0
+@export var win_anim_duration: float = 0
 @export var input_prefix: String = "p1_"  # To switch between p1_ and p2_
 @export var opponent: Character
 @export var always_face_opponent: bool = true

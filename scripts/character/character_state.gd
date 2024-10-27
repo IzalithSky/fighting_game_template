@@ -14,6 +14,9 @@ extends State
 @onready var state_walk: CharacterStateWalk = get_parent().get_node("Walk") as CharacterStateWalk
 @onready var state_jump: CharacterStateJump = get_parent().get_node("Jump") as CharacterStateJump
 @onready var state_block: CharacterStateBlock = get_parent().get_node("Block") as CharacterStateBlock
+@onready var state_intro: CharacterStateIntro = get_parent().get_node("Intro") as CharacterStateIntro
+@onready var state_ko: CharacterStateKO = get_parent().get_node("KO") as CharacterStateKO
+@onready var state_win: CharacterStateWin = get_parent().get_node("Win") as CharacterStateWin
 
 
 func enter() -> void:
@@ -28,3 +31,17 @@ func apply_stun(duration: float) -> State:
 		return null
 	else:
 		return state_stun
+
+
+func start_intro() -> State:
+	return state_intro
+
+
+func start_round() -> State:
+	return state_idle
+
+
+func end_round() -> State:
+	if character.current_hp <= 0:
+		return state_ko
+	return state_win

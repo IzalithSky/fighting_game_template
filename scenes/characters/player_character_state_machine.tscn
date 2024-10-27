@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c00n14agb6bxn"]
+[gd_scene load_steps=14 format=3 uid="uid://c00n14agb6bxn"]
 
 [ext_resource type="Script" path="res://scripts/character/character_state_machine.gd" id="1_vd7e4"]
 [ext_resource type="Script" path="res://scripts/character/character_state_stun.gd" id="2_x66ct"]
@@ -9,7 +9,10 @@
 [ext_resource type="Script" path="res://scripts/character/character_state_attack.gd" id="10_1ejrb"]
 [ext_resource type="Script" path="res://scripts/character/character_state_knockdown_down.gd" id="10_je8ui"]
 [ext_resource type="Script" path="res://scripts/character/character_state_knockdown_fall.gd" id="10_vu72l"]
+[ext_resource type="Script" path="res://scripts/character/character_state_intro.gd" id="11_1dtbj"]
+[ext_resource type="Script" path="res://scripts/character/character_state_ko.gd" id="12_6q13k"]
 [ext_resource type="Script" path="res://scripts/character/character_state_knockdown_up.gd" id="12_gltlk"]
+[ext_resource type="Script" path="res://scripts/character/character_state_win.gd" id="13_1mhwr"]
 
 [node name="CharacterStateMachine" type="Node" node_paths=PackedStringArray("starting_state")]
 script = ExtResource("1_vd7e4")
@@ -41,3 +44,12 @@ script = ExtResource("12_gltlk")
 
 [node name="Attack" type="Node" parent="."]
 script = ExtResource("10_1ejrb")
+
+[node name="Intro" type="Node" parent="."]
+script = ExtResource("11_1dtbj")
+
+[node name="KO" type="Node" parent="."]
+script = ExtResource("12_6q13k")
+
+[node name="Win" type="Node" parent="."]
+script = ExtResource("13_1mhwr")
