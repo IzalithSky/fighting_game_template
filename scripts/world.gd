@@ -17,6 +17,8 @@ extends Node2D
 
 @onready var hpbar1 = $hpbar1
 @onready var hpbar2 = $hpbar2
+@onready var mpbar1 = $mpbar1
+@onready var mpbar2 = $mpbar2
 @onready var score = $score
 @onready var label_distance = $LabelDistance
 @onready var frame_data_bar = $framedatabar
@@ -47,6 +49,8 @@ func _ready() -> void:
 	reset_players()
 	hpbar1.init_hp(player1.max_hp)
 	hpbar2.init_hp(player2.max_hp)
+	mpbar1.init_mp(player1.current_mp)
+	mpbar2.init_mp(player2.current_mp)
 	score.text = "0 : 0"
 	label_os.text = OS.get_name()
 	var is_mobile = ConfigHandler.load_settings("video").mobile_controls or OS.get_name() == "Android" or OS.get_name() == "iOS"
@@ -82,6 +86,8 @@ func spawn_players() -> void:
 	player2.frame_data_bar = frame_data_bar
 	player1.damaged.connect(on_player_1_damaged)
 	player2.damaged.connect(on_player_2_damaged)
+	player1.mpchanged.connect(on_player_1_mpchanged)
+	player2.mpchanged.connect(on_player_2_mpchanged)
 	player1.kod.connect(on_player_1_kod)
 	player2.kod.connect(on_player_2_kod)
 	fsm1.set_character(player1)
@@ -96,6 +102,14 @@ func on_player_1_damaged(amount: Variant) -> void:
 
 func on_player_2_damaged(amount: Variant) -> void:
 	hpbar2.hp = player2.current_hp
+
+
+func on_player_1_mpchanged(amount: Variant) -> void:
+	mpbar1.mp = amount
+
+
+func on_player_2_mpchanged(amount: Variant) -> void:
+	mpbar2.mp = amount
 
 
 func on_player_1_kod() -> void:

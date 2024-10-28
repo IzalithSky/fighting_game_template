@@ -3,6 +3,7 @@ extends Area2D
 
 
 @export var animation_name: String
+@export var mp_cost: int = 0
 @export var animation_offset: Vector2 = Vector2(0, -40)
 @export var sound_swing: AudioStreamPlayer2D
 @export var sound_hit: AudioStreamPlayer2D

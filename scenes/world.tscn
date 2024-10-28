@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c4kerx7igi33w"]
+[gd_scene load_steps=12 format=3 uid="uid://c4kerx7igi33w"]
 
 [ext_resource type="Script" path="res://scripts/world.gd" id="1_o1srd"]
 [ext_resource type="PackedScene" uid="uid://cfy0wqfr218rf" path="res://scenes/ui/pause_scene.tscn" id="2_mn27r"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://diksjuhs82jqo" path="res://scenes/ui/hpbar.tscn" id="4_sblbn"]
 [ext_resource type="PackedScene" uid="uid://b238h33cgofap" path="res://scenes/characters/bot_character_state_machine.tscn" id="5_fmefg"]
 [ext_resource type="Script" path="res://scripts/ui/frame_data_bar.gd" id="6_lrnrk"]
+[ext_resource type="PackedScene" uid="uid://b4nibc6evo5uw" path="res://scenes/ui/mpbar.tscn" id="8_xyber"]
 [ext_resource type="PackedScene" uid="uid://dmbwk7qobd46s" path="res://scenes/ui/touch_controls.tscn" id="11_8r0x1"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_q2cft"]
@@ -34,6 +35,19 @@ offset_left = 360.0
 offset_top = 32.0
 offset_right = 616.0
 offset_bottom = 64.0
+
+[node name="mpbar1" parent="." instance=ExtResource("8_xyber")]
+offset_left = 288.0
+offset_top = 72.0
+offset_right = 456.0
+offset_bottom = 88.0
+scale = Vector2(-1, 1)
+
+[node name="mpbar2" parent="." instance=ExtResource("8_xyber")]
+offset_left = 352.0
+offset_top = 72.0
+offset_right = 520.0
+offset_bottom = 88.0
 
 [node name="score" type="Label" parent="."]
 offset_left = 288.0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=228 format=3 uid="uid://62t2005fchbn"]
+[gd_scene load_steps=230 format=3 uid="uid://62t2005fchbn"]
 
 [ext_resource type="Script" path="res://scripts/character/character.gd" id="1_yecoy"]
 [ext_resource type="Texture2D" uid="uid://bh1ar8356co1g" path="res://sprites/characters/zidane/zidane_spritesheet.png" id="2_pb6ud"]
@@ -696,6 +696,14 @@ region = Rect2(1600, 0, 160, 160)
 atlas = ExtResource("4_p3mkr")
 region = Rect2(1760, 0, 160, 160)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_bpehj"]
+atlas = ExtResource("2_pb6ud")
+region = Rect2(160, 1120, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pt6ha"]
+atlas = ExtResource("2_pb6ud")
+region = Rect2(0, 1120, 160, 160)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_qrq3t"]
 atlas = ExtResource("2_pb6ud")
 region = Rect2(0, 160, 160, 160)
@@ -1370,6 +1378,17 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_bpehj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pt6ha")
+}],
+"loop": true,
+"name": &"focus",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_qrq3t")
 }, {
 "duration": 1.0,
@@ -1570,8 +1589,9 @@ polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"intro"
+animation = &"focus"
 autoplay = "idle"
+frame_progress = 0.311812
 
 [node name="hurtbox" type="Area2D" parent="."]
 visible = false
@@ -1690,6 +1710,7 @@ collision_layer = 4
 collision_mask = 2
 script = ExtResource("14_2csiw")
 animation_name = "attack_special1"
+mp_cost = 80
 sound_swing = NodePath("sound")
 sound_hit = NodePath("../sound/hit2")
 duration = 1.75
@@ -1758,6 +1779,7 @@ collision_layer = 4
 collision_mask = 2
 script = ExtResource("14_2csiw")
 animation_name = "attack_special2"
+mp_cost = 50
 animation_offset = Vector2(0, -50)
 sound_swing = NodePath("sound")
 sound_hit = NodePath("../sound/hit2")
@@ -1905,6 +1927,7 @@ collision_layer = 4
 collision_mask = 2
 script = ExtResource("14_2csiw")
 animation_name = "attack_special3"
+mp_cost = 90
 animation_offset = Vector2(100, 110)
 sound_swing = NodePath("sound")
 sound_hit = NodePath("../sound/hit2")

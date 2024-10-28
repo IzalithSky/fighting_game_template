@@ -8,6 +8,7 @@ extends State
 @onready var fsm: CharacterStateMachine = get_parent() as CharacterStateMachine
 @onready var state_idle: CharacterStateIdle = get_parent().get_node("Idle") as CharacterStateIdle
 @onready var state_idle_locked: CharacterStateIdleLocked = get_parent().get_node("IdleLocked") as CharacterStateIdleLocked
+@onready var state_focus: CharacterStateFocus = get_parent().get_node("Focus") as CharacterStateFocus
 @onready var state_stun: CharacterStateStun = get_parent().get_node("Stun") as CharacterStateStun
 @onready var state_knockdown_fall: CharacterStateKnockdownFall = get_parent().get_node("KnockdownFall") as CharacterStateKnockdownFall
 @onready var state_knockdown_down: CharacterStateKnockdownDown = get_parent().get_node("KnockdownDown") as CharacterStateKnockdownDown
@@ -55,3 +56,10 @@ func end_round() -> State:
 	if character.current_hp <= 0:
 		return state_ko
 	return state_win
+
+
+func has_mp_for_attack(attack: Attack) -> bool:
+	if attack.mp_cost <= character.current_mp:
+		character.spend_mp(attack.mp_cost)
+		return true
+	return false

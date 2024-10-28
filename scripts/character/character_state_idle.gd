@@ -17,4 +17,5 @@ func process_physics(delta: float) -> State:
 	if character.is_on_floor():
 		character.velocity.x = 0
 		character.velocity.y = 0
+	character.gain_mp(character.idle_mp_gain_rate * delta)
 	return null

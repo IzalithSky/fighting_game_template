@@ -4,6 +4,9 @@ extends CharacterBody2D
 
 
 @export var max_hp: int = 100
+@export var max_mp: float = 100
+@export var focus_mp_gain_rate: float = 20
+@export var idle_mp_gain_rate: float = 1
 @export var move_speed: float = 275
 @export var jump_velocity: float = 400.0
 @export var knockdown_fall_duration: float = 0.4
@@ -23,8 +26,10 @@ extends CharacterBody2D
 
 signal damaged(amount: int)
 signal kod()
+signal mpchanged(current_mp: float)
 
 var current_hp: int = max_hp
+var current_mp: float = 0
 var attacks: Dictionary = {}
 var is_opponent_right: bool = true
 var is_invincible: bool = false
@@ -106,6 +111,24 @@ func take_damage(damage: int, stun_duration: float = 0.0) -> void:
 		ko()
 	elif stun_duration > 0.0:
 		initiate_stun(stun_duration)
+
+
+func spend_mp(amount: float) -> bool:
+	if amount <= 0:
+		return false
+	if current_mp >= amount:
+		current_mp -= amount
+		emit_signal("mpchanged", current_mp)
+		return true
+	else:
+		return false
+
+
+func gain_mp(amount: float) -> void:
+	if amount <= 0:
+		return
+	current_mp = min(max_mp, current_mp + amount)
+	emit_signal("mpchanged", current_mp)
 
 
 func initiate_stun(stun_duration: float) -> void:

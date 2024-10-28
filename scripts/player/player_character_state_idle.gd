@@ -25,15 +25,21 @@ func process_input(event: InputEvent) -> State:
 		state_attack.current_attack = character.attacks["attack_ranged"]
 		return state_attack
 	elif event.is_action_pressed(character.input_prefix + "attack_special1"):
-		state_attack.current_attack = character.attacks["attack_special1"]
-		return state_attack
+		if has_mp_for_attack(character.attacks["attack_special1"]):
+			state_attack.current_attack = character.attacks["attack_special1"]
+			return state_attack
 	elif event.is_action_pressed(character.input_prefix + "attack_special2"):
-		state_attack.current_attack = character.attacks["attack_special2"]
-		return state_attack
+		if has_mp_for_attack(character.attacks["attack_special2"]):
+			state_attack.current_attack = character.attacks["attack_special2"]
+			return state_attack
 	elif event.is_action_pressed(character.input_prefix + "attack_special3"):
-		state_attack.current_attack = character.attacks["attack_special3"]
-		return state_attack
+		if has_mp_for_attack(character.attacks["attack_special3"]):
+			state_attack.current_attack = character.attacks["attack_special3"]
+			return state_attack
 	elif event.is_action_pressed(character.input_prefix + "attack_special4"):
-		state_attack.current_attack = character.attacks["attack_special4"]
-		return state_attack
+		if has_mp_for_attack(character.attacks["attack_special4"]):
+			state_attack.current_attack = character.attacks["attack_special4"]
+			return state_attack
+	elif event.is_action_pressed(character.input_prefix + "focus"):
+		return state_focus
 	return null
