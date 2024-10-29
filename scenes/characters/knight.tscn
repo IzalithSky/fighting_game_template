@@ -808,7 +808,7 @@ polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"focus"
+animation = &"attack2"
 autoplay = "idle"
 
 [node name="hurtbox" type="Area2D" parent="."]
@@ -919,3 +919,6 @@ pushback = Vector2(100, 100)
 [node name="move" type="Node" parent="attack_ranged"]
 script = ExtResource("19_i02dt")
 duration = 0.7
+
+[node name="HitboxProbe" type="ShapeCast2D" parent="."]
+collision_mask = 4

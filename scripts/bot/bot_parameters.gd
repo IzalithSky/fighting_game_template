@@ -39,6 +39,8 @@ func _physics_process(delta: float) -> void:
 	projectile_warning = get_projectile_warning()
 	next_rng(delta)
 	next_jump(delta)
+	if is_in_enemy_attack_range("attack1"):
+		print("in range")
 
 
 func is_in_jump_distance() -> bool:
@@ -92,7 +94,15 @@ func rng() -> float:
 func next_jump(delta: float):
 	if until_can_jump > 0:
 		until_can_jump -= delta
-		
-		
+
+
 func is_past_jump_cd() -> bool:
 	return until_can_jump <= 0
+
+
+func is_in_enemy_attack_range(attack_name: String) -> bool:
+	for h in character.opponent.attacks["attack1"].hitboxes:
+		character.hitbox_probe.shape = h.shape
+		character.hitbox_probe.global_position = h.global_position
+		return character.hitbox_probe.is_colliding()
+	return false

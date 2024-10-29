@@ -41,13 +41,17 @@ var ignore_gravity: bool = false
 @onready var anim: AnimatedSprite2D = $Animations
 @onready var sound_block = $sound/block
 @onready var state_label = $StateLabel
-@onready var hurtbox: Area2D = $hurtbox
+@onready var hurtbox = $hurtbox
+@onready var hitbox_probe: ShapeCast2D = $HitboxProbe
 @onready var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity", -9.8)
 
 
 func _ready() -> void:
 	load_attack_data()
 	fsm.init()
+	hitbox_probe.shape = $hurtbox/collider.shape
+	hitbox_probe.target_position = Vector2.ZERO
+	#hitbox_probe.add_exception(hurtbox)
 
 
 func _physics_process(delta: float) -> void:
