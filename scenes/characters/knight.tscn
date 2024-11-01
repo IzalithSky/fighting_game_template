@@ -812,7 +812,6 @@ animation = &"attack2"
 autoplay = "idle"
 
 [node name="hurtbox" type="Area2D" parent="."]
-visible = false
 collision_layer = 2
 collision_mask = 4
 
@@ -820,6 +819,11 @@ collision_mask = 4
 position = Vector2(0, -40)
 shape = SubResource("RectangleShape2D_j4y4m")
 debug_color = Color(0.356863, 0.615686, 0.14902, 0.419608)
+
+[node name="HitboxProbe" type="ShapeCast2D" parent="hurtbox"]
+collision_mask = 2
+collide_with_areas = true
+collide_with_bodies = false
 
 [node name="sound" type="Node" parent="."]
 
@@ -919,6 +923,3 @@ pushback = Vector2(100, 100)
 [node name="move" type="Node" parent="attack_ranged"]
 script = ExtResource("19_i02dt")
 duration = 0.7
-
-[node name="HitboxProbe" type="ShapeCast2D" parent="."]
-collision_mask = 4

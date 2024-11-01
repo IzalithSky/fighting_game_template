@@ -10,12 +10,14 @@ extends Area2D
 @export var duration: float
 
 @onready var character: Character = get_parent() as Character
+@onready var latest_attack_end: float = duration
 
 var hitboxes: Array[Hitbox] = []
 var moves: Array[Move] = []
 var hit_time: float = 0
-var latest_attack_end: float = 0
+var earliest_attack_start: float = 0
 var is_recovery: bool = false
+var is_startup: bool = false
 
 
 func _ready() -> void:
@@ -31,6 +33,8 @@ func load_hitboxes() -> void:
 			hitboxes.append(h)
 			h.disabled = true
 			h.visible = false
+			if earliest_attack_start > h.time_start:
+				earliest_attack_start = h.time_start
 			if latest_attack_end < h.time_start + h.duration:
 				latest_attack_end = h.time_start + h.duration
 
@@ -50,6 +54,7 @@ func enter() -> void:
 	if sound_swing:
 		sound_swing.play()
 		
+	is_startup = true
 	is_recovery = false
 
 
@@ -73,6 +78,9 @@ func physics(delta: float) -> void:
 				m.enter()
 			m.physics(delta)
 	
+	
+	if hit_time >= earliest_attack_start:
+		is_startup = false
 	
 	if hit_time < latest_attack_end:
 		character.draw_activity(is_active)

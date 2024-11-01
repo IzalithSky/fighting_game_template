@@ -1593,7 +1593,6 @@ animation = &"attack1"
 autoplay = "idle"
 
 [node name="hurtbox" type="Area2D" parent="."]
-visible = false
 collision_layer = 2
 collision_mask = 4
 
@@ -1601,6 +1600,11 @@ collision_mask = 4
 position = Vector2(-1, -21.75)
 shape = SubResource("RectangleShape2D_j4y4m")
 debug_color = Color(0.355039, 0.616281, 0.149107, 0.42)
+
+[node name="HitboxProbe" type="ShapeCast2D" parent="hurtbox"]
+collision_mask = 2
+collide_with_areas = true
+collide_with_bodies = false
 
 [node name="sound" type="Node" parent="."]
 
@@ -2029,6 +2033,3 @@ damage_block = 4
 stun_hit_duration = 1.2
 stun_block_duration = 0.2
 pushback = Vector2(200, 200)
-
-[node name="HitboxProbe" type="ShapeCast2D" parent="."]
-collision_mask = 4

@@ -42,7 +42,7 @@ var ignore_gravity: bool = false
 @onready var sound_block = $sound/block
 @onready var state_label = $StateLabel
 @onready var hurtbox = $hurtbox
-@onready var hitbox_probe: ShapeCast2D = $HitboxProbe
+@onready var hitbox_probe: ShapeCast2D = $hurtbox/HitboxProbe
 @onready var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity", -9.8)
 
 
@@ -51,7 +51,9 @@ func _ready() -> void:
 	fsm.init()
 	hitbox_probe.shape = $hurtbox/collider.shape
 	hitbox_probe.target_position = Vector2.ZERO
-	#hitbox_probe.add_exception(hurtbox)
+	hitbox_probe.enabled = false
+	hitbox_probe.visible = false
+	hitbox_probe.exclude_parent = false
 
 
 func _physics_process(delta: float) -> void:

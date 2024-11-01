@@ -33,7 +33,20 @@ func end_round() -> void:
 		change_state(new_state)
 
 
+func is_startup() -> bool:
+	if not is_state("attack"):
+		return false
+	return (current_state as CharacterStateAttack).current_attack.is_startup
+
+
 func is_recovery() -> bool:
 	if not is_state("attack"):
 		return false
 	return (current_state as CharacterStateAttack).current_attack.is_recovery
+
+
+func get_current_attack_name() -> String:
+	if not is_state("attack"):
+		return ""
+	else:
+		return (current_state as CharacterStateAttack).current_attack.name	

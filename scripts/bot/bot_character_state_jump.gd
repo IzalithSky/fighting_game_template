@@ -34,12 +34,12 @@ func process_physics(delta: float) -> State:
 	super(delta)
 	
 	if (params.projectile_warning == params.ProjectileWarning.WARNING 
-			and not params.is_in_attack_distance() 
+			and not params.can_reach_opponent() 
 			and character.jumps_left > 0
 			and params.is_past_jump_cd()):
 		return state_jump
 	
-	if params.is_in_attack_distance():
+	if params.can_reach_opponent():
 		if randf() < 0.5 and not character.opponent.is_invincible:
 			state_attack.current_attack = character.attacks["attack1"]
 		else:
