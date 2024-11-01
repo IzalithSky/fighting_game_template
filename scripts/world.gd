@@ -137,8 +137,10 @@ func reset_players() -> void:
 	player2.reset(player2_respawn_pos)
 	fsm1.start_intro()
 	fsm2.start_intro()
-	hpbar1.hp = player1.max_hp
-	hpbar2.hp = player2.max_hp
+	hpbar1.hp = player1.current_hp
+	hpbar2.hp = player2.current_hp
+	mpbar1.mp = player1.current_mp
+	mpbar2.mp = player2.current_mp
 	round_timer = round_time_limit  # Reset the round timer
 
 

@@ -6,7 +6,7 @@ extends CharacterBody2D
 @export var max_hp: int = 100
 @export var max_mp: float = 100
 @export var focus_mp_gain_rate: float = 20
-@export var idle_mp_gain_rate: float = 1
+@export var idle_mp_gain_rate: float = 4
 @export var move_speed: float = 275
 @export var jump_velocity: float = 400.0
 @export var knockdown_fall_duration: float = 0.4
@@ -180,6 +180,7 @@ func play_anim(anim_name: String, offset_x: float, offset_y: float):
 
 func reset(new_position: Vector2) -> void:
 	current_hp = max_hp
+	current_mp = 0
 	position = new_position
 	velocity = Vector2.ZERO
 	fsm.reset()
