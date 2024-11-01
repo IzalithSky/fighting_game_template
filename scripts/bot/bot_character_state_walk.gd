@@ -58,6 +58,9 @@ func process_physics(delta: float) -> State:
 		return state_block
 
 	if params.rng() < 0.75 and not character.opponent.is_invincible:
+		#if has_mp_for_attack(character.attacks["attack_special2"]) and params.is_enemy_in_attack_range("attack_special2"):
+			#state_attack.current_attack = character.attacks["attack_special2"]
+			#return state_attack
 		if params.is_enemy_in_attack_range("attack1"):
 			state_attack.current_attack = character.attacks["attack1"]
 			return state_attack
@@ -68,17 +71,13 @@ func process_physics(delta: float) -> State:
 	if params.is_opponent_above() and character.jumps_left > 0:
 		return state_jump
 		
-	if params.rng() < 0.5 and character.jumps_left > 0:
+	var r = params.rng()
+	if r < 0.1 and character.jumps_left > 0:
 		return state_jump
-	else:
+	elif r < 0.2:
 		return state_block
-
-	if params.rng() < 0.95:
-		do_move(get_dir_towards_opponent())
-		return null
-	elif character.jumps_left > 0:
-		return state_jump
-		
+	
+	do_move(get_dir_towards_opponent())
 	return null
 
 

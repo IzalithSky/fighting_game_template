@@ -10,12 +10,12 @@ extends Area2D
 @export var duration: float
 
 @onready var character: Character = get_parent() as Character
-@onready var latest_attack_end: float = duration
+@onready var earliest_attack_start: float = duration
 
 var hitboxes: Array[Hitbox] = []
 var moves: Array[Move] = []
 var hit_time: float = 0
-var earliest_attack_start: float = 0
+var latest_attack_end: float = 0
 var is_recovery: bool = false
 var is_startup: bool = false
 
@@ -82,10 +82,12 @@ func physics(delta: float) -> void:
 	if hit_time >= earliest_attack_start:
 		is_startup = false
 	
+	if hit_time >= latest_attack_end:
+		is_recovery = true
+		
 	if hit_time < latest_attack_end:
 		character.draw_activity(is_active)
 	else:
-		is_recovery = true
 		character.draw_recovery()
 
 	hit_time += delta

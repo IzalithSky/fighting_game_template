@@ -50,9 +50,10 @@ func process_physics(delta: float) -> State:
 	if params.is_opponent_above() and character.jumps_left > 0:
 		return state_jump
 		
-	if params.rng() < 0.5 and character.jumps_left > 0:
+	var r = params.rng()
+	if r < 0.1 and character.jumps_left > 0:
 		return state_jump
-	else:
+	elif r < 0.2:
 		return state_block
 
 	return state_walk
