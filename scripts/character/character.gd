@@ -102,12 +102,14 @@ func face_opponent() -> void:
 		flip_sprite(-1)
 
 
-func take_damage(damage: int, stun_duration: float = 0.0) -> void:
+func take_damage(damage: int, stun_duration: float, attack_sound) -> void:
 	if is_invincible:
 		return
 	
 	if is_blocking():
 		sound_block.play()
+	elif attack_sound:
+		attack_sound.play()
 	
 	current_hp -= damage
 	emit_signal("damaged", damage)

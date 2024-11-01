@@ -112,12 +112,10 @@ func on_area_entered(area: Area2D) -> void:
 			if not h.disabled:
 				character.opponent.take_damage(
 					h.damage_block if is_opponent_blocking else h.damage_hit,
-					h.stun_block_duration if is_opponent_blocking else h.stun_hit_duration)
+					h.stun_block_duration if is_opponent_blocking else h.stun_hit_duration,
+					sound_hit)
 				
 				apply_pushback(character.opponent, h.pushback)
-				
-				if sound_hit and not character.opponent.is_blocking():
-					sound_hit.play()
 
 
 func apply_pushback(opponent: Character, pushback_force: Vector2) -> void:
