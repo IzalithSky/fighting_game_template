@@ -24,13 +24,14 @@ func process_physics(delta: float) -> State:
 	if params.opponent_can_reach() and not character.opponent.fsm.is_recovery():
 		return null
 
-	if params.can_reach_opponent():
-		if randf() < 0.5:
+	if not character.opponent.is_invincible:
+		if params.is_enemy_in_attack_range("attack1"):
 			state_attack.current_attack = character.attacks["attack1"]
-		else:
+			return state_attack
+		if params.is_enemy_in_attack_range("attack2"):
 			state_attack.current_attack = character.attacks["attack2"]
-		return state_attack
-	else:
-		return state_walk
+			return state_attack
+	
+	return state_walk
 	
 	return null

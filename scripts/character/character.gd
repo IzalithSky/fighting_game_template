@@ -53,7 +53,6 @@ func _ready() -> void:
 	hitbox_probe.target_position = Vector2.ZERO
 	hitbox_probe.enabled = false
 	hitbox_probe.visible = false
-	hitbox_probe.exclude_parent = false
 
 
 func _physics_process(delta: float) -> void:

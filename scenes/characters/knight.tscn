@@ -812,6 +812,7 @@ animation = &"attack2"
 autoplay = "idle"
 
 [node name="hurtbox" type="Area2D" parent="."]
+visible = false
 collision_layer = 2
 collision_mask = 4
 

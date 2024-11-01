@@ -20,7 +20,7 @@ func process_physics(delta: float) -> State:
 	if params.projectile_warning == params.ProjectileWarning.IMMINENT:
 		return state_block
 		
-	if character.opponent.fsm.is_state("jump"):
+	if params.rng() < 0.5 and character.opponent.fsm.is_state("jump"):
 		state_attack.current_attack = character.attacks["attack_ranged"]
 		return state_attack
 
@@ -36,23 +36,23 @@ func process_physics(delta: float) -> State:
 	if opponent_can_reach and not character.opponent.fsm.is_recovery():
 		return state_block
 
-	if params.can_reach_opponent():
-		if (character.opponent.fsm.is_state("block") or character.opponent.is_invincible) and character.is_on_floor():
-			return state_walk
-
-		if params.is_opponent_above() and character.jumps_left > 0:
-			return state_jump
-
-		if params.rng() < 0.95 and not character.opponent.is_invincible:
-			if randf() < 0.5:
-				state_attack.current_attack = character.attacks["attack1"]
-			else:
-				state_attack.current_attack = character.attacks["attack2"]
+	if params.rng() < 0.8 and not character.opponent.is_invincible:
+		if params.is_enemy_in_attack_range("attack1"):
+			state_attack.current_attack = character.attacks["attack1"]
 			return state_attack
-			
-		if params.rng() < 0.5 and character.jumps_left > 0:
-			return state_jump
-		else:
-			return state_block
+		if params.is_enemy_in_attack_range("attack2"):
+			state_attack.current_attack = character.attacks["attack2"]
+			return state_attack
+		
+	if (character.opponent.fsm.is_state("block") or character.opponent.is_invincible) and character.is_on_floor():
+		return state_walk
+
+	if params.is_opponent_above() and character.jumps_left > 0:
+		return state_jump
+		
+	if params.rng() < 0.5 and character.jumps_left > 0:
+		return state_jump
+	else:
+		return state_block
 
 	return state_walk
