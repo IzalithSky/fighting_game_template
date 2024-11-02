@@ -35,6 +35,6 @@ func get_selected_value_as_number() -> int:
 	var value_str = get_selected_value_as_string()
 	var numeric_part = ""
 	for char in value_str:
-		if char.is_digit():
+		if char.is_valid_int():
 			numeric_part += char
 	return int(numeric_part) if numeric_part != "" else 0

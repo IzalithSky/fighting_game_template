@@ -12,6 +12,8 @@ extends Control
 @onready var player2bot = $VBoxContainer/HBoxContainer/VBoxContainer2/Player2Bot
 
 @onready var stage_selector = $HBoxContainer/VBoxContainer/VBoxContainer/StageSelectionSlot
+@onready var rounds_picker = $HBoxContainer/VBoxContainer2/RoundsNumberPicker
+@onready var round_timer_picker = $HBoxContainer/VBoxContainer3/TimerNumberPicker
 
 var player1character: Dictionary
 var player2character: Dictionary
@@ -101,6 +103,8 @@ func on_play_button_pressed() -> void:
 		world.fsm2_scene = load("res://scenes/characters/player_character_state_machine.tscn")
 		
 	world.background_scene = load(current_stage["scene_path"])
+	var round_time_sec = round_timer_picker.get_selected_value_as_number()
+	world.round_time_limit = round_time_sec if round_time_sec != 0 else 60
 	get_tree().get_root().add_child(world)
 	get_tree().get_root().remove_child(self)
 
