@@ -1,14 +1,15 @@
-[gd_scene load_steps=11 format=4 uid="uid://nt3u2y1dher8"]
+[gd_scene load_steps=12 format=4 uid="uid://nt3u2y1dher8"]
 
 [ext_resource type="Script" path="res://scripts/ui/player_selection.gd" id="1_1e2l4"]
 [ext_resource type="TileSet" uid="uid://vrst3418t234" path="res://sprites/locations/dungeon/dungeon.tres" id="1_r0t8j"]
 [ext_resource type="FontFile" uid="uid://1mina24aowrb" path="res://fonts/DungeonFont.ttf" id="2_bwah3"]
-[ext_resource type="PackedScene" path="res://scenes/ui/items_catalog.tscn" id="2_bxrsw"]
+[ext_resource type="PackedScene" uid="uid://dh0c853bfnjtv" path="res://scenes/ui/items_catalog.tscn" id="2_bxrsw"]
 [ext_resource type="PackedScene" uid="uid://cyptfcrxg17lf" path="res://scenes/ui/settings.tscn" id="3_013ke"]
 [ext_resource type="PackedScene" uid="uid://c6cv3nff50giv" path="res://scenes/ui/character_slot.tscn" id="3_sv0tw"]
 [ext_resource type="AudioStream" uid="uid://bupa0ppu5yeqi" path="res://audio/menu_theme.ogg" id="6_yxjxl"]
 [ext_resource type="Texture2D" uid="uid://8f0scihit0e1" path="res://sprites/locations/dungeon/fight_white.png" id="7_x7lyh"]
 [ext_resource type="Texture2D" uid="uid://c16d0gso7hkpv" path="res://sprites/locations/dungeon/fight_red.png" id="8_5bbfu"]
+[ext_resource type="PackedScene" uid="uid://dusm8b0ffiiu4" path="res://scenes/ui/number_picker.tscn" id="9_7awy7"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_822if"]
 font = ExtResource("2_bwah3")
@@ -30,21 +31,23 @@ tile_map_data = PackedByteArray("AAAAAAAAAAABAAcAAAAAAAEAAAABAAcAAAAAAAIAAAACAAc
 tile_set = ExtResource("1_r0t8j")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
-tile_map_data = PackedByteArray("AAABAAQAAAAEAA8AAAABAAUAAAAEABAAAAASAAQAAAAGAA8AAAASAAUAAAAGABAAAAA=")
+tile_map_data = PackedByteArray("AAACAAMAAAAEAA8AAAACAAQAAAAEABAAAAARAAMAAAAGAA8AAAARAAQAAAAGABAAAAA=")
 tile_set = ExtResource("1_r0t8j")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 13
+anchors_preset = 8
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -270.0
-offset_right = 270.0
-offset_bottom = -59.0
+anchor_bottom = 0.5
+offset_left = -201.0
+offset_top = -214.0
+offset_right = 201.0
+offset_bottom = 80.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 39
+theme_override_constants/separation = 20
 alignment = 1
 
 [node name="Label" type="Label" parent="VBoxContainer"]
@@ -56,9 +59,7 @@ horizontal_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_constants/separation = 40
 alignment = 1
 
 [node name="VBoxContainer1" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
@@ -89,39 +90,18 @@ theme_override_font_sizes/font_size = 21
 text = "bot
 "
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 8
-theme_override_constants/separation = 10
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
-texture_filter = 1
-layout_mode = 2
+size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2_bwah3")
 theme_override_font_sizes/font_size = 20
-text = "Stage
-"
-horizontal_alignment = 1
-
-[node name="StageSelectionSlot" parent="VBoxContainer/HBoxContainer/VBoxContainer" instance=ExtResource("3_sv0tw")]
-custom_minimum_size = Vector2(100, 100)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 8
-
-[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
-texture_filter = 1
-custom_minimum_size = Vector2(0, 30)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2_bwah3")
-theme_override_font_sizes/font_size = 20
-text = "
-"
+text = "vs"
 horizontal_alignment = 1
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 10
+alignment = 1
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
 texture_filter = 1
@@ -144,6 +124,85 @@ theme_override_font_sizes/font_size = 21
 text = "bot
 "
 
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+offset_left = 27.0
+offset_top = 332.0
+offset_right = 375.0
+offset_bottom = 456.0
+theme_override_constants/separation = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/VBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_bwah3")
+theme_override_font_sizes/font_size = 20
+text = "Arena
+"
+horizontal_alignment = 1
+
+[node name="StageSelectionSlot" parent="HBoxContainer/VBoxContainer/VBoxContainer" instance=ExtResource("3_sv0tw")]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+
+[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer"]
+visible = false
+texture_filter = 1
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_bwah3")
+theme_override_font_sizes/font_size = 20
+text = "
+"
+horizontal_alignment = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 3
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_bwah3")
+theme_override_font_sizes/font_size = 20
+text = "Rounds"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NumberPicker" parent="HBoxContainer/VBoxContainer2" instance=ExtResource("9_7awy7")]
+layout_mode = 2
+values = Array[String](["1", "3", "5", "7", "9", "11", "13", "15", "17", "19", "21", "23", "25"])
+selected_index = 1
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 3
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_bwah3")
+theme_override_font_sizes/font_size = 20
+text = "Round Timer"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NumberPicker" parent="HBoxContainer/VBoxContainer3" instance=ExtResource("9_7awy7")]
+layout_mode = 2
+values = Array[String](["60s", "99s", "120s"])
+
 [node name="SettingsButton" type="Button" parent="."]
 layout_mode = 1
 offset_left = 10.0
@@ -158,17 +217,12 @@ text = "Settings
 "
 
 [node name="PlayButton" type="TextureButton" parent="."]
-custom_minimum_size = Vector2(150, 60)
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -76.0
-offset_top = -99.0
-offset_right = 74.0
-offset_bottom = -39.0
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+offset_left = 411.0
+offset_top = 355.0
+offset_right = 580.0
+offset_bottom = 436.0
 grow_horizontal = 2
 grow_vertical = 0
 texture_normal = ExtResource("7_x7lyh")

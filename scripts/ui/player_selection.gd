@@ -11,7 +11,7 @@ extends Control
 @onready var player2 = $VBoxContainer/HBoxContainer/VBoxContainer2/Player2Slot
 @onready var player2bot = $VBoxContainer/HBoxContainer/VBoxContainer2/Player2Bot
 
-@onready var stage_selector = $VBoxContainer/HBoxContainer/VBoxContainer/StageSelectionSlot
+@onready var stage_selector = $HBoxContainer/VBoxContainer/VBoxContainer/StageSelectionSlot
 
 var player1character: Dictionary
 var player2character: Dictionary
