@@ -1,7 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://dusm8b0ffiiu4"]
+[gd_scene load_steps=5 format=3 uid="uid://dusm8b0ffiiu4"]
 
 [ext_resource type="FontFile" uid="uid://1mina24aowrb" path="res://fonts/DungeonFont.ttf" id="1_3qqhc"]
 [ext_resource type="Script" path="res://scenes/ui/number_picker.gd" id="1_cpup8"]
+[ext_resource type="FontFile" uid="uid://bsmb72ttf3jlo" path="res://fonts/Bitfantasy.ttf" id="3_2xew1"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_2dyhg"]
+font = ExtResource("3_2xew1")
+font_size = 24
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 0.611765)
 
 [node name="NumberPicker" type="VBoxContainer"]
 custom_minimum_size = Vector2(0, 100)
@@ -53,6 +60,7 @@ horizontal_alignment = 1
 
 [node name="ValueLabel" type="Label" parent="."]
 layout_mode = 2
+label_settings = SubResource("LabelSettings_2dyhg")
 horizontal_alignment = 1
 
 [node name="Control2" type="Control" parent="."]

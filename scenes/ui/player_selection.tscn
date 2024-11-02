@@ -201,7 +201,8 @@ vertical_alignment = 1
 
 [node name="TimerNumberPicker" parent="HBoxContainer/VBoxContainer3" instance=ExtResource("9_7awy7")]
 layout_mode = 2
-values = Array[String](["60s", "99s", "120s"])
+values = Array[String](["30s", "60s", "99s", "120s"])
+selected_index = 1
 
 [node name="SettingsButton" type="Button" parent="."]
 layout_mode = 1

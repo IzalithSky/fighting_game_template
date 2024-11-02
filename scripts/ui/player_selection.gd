@@ -93,7 +93,10 @@ func on_play_button_pressed() -> void:
 	world.player1name = player1character["name"]
 	world.player2_scene = load(player2character["scene_path"])
 	world.player2name = player2character["name"]
-	
+	if player1character["name"] == player2character["name"]:
+		world.player1name = player1character["name"] + " 1"
+		world.player2name = player1character["name"] + " 2"
+		
 	if (player1bot.button_pressed):
 		world.fsm1_scene = load("res://scenes/characters/bot_character_state_machine.tscn")
 	else:
