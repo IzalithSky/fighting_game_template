@@ -800,7 +800,6 @@ intro_anim_duration = 1.43
 win_anim_duration = 1.43
 
 [node name="collider" type="CollisionPolygon2D" parent="."]
-visible = false
 position = Vector2(0, -17)
 scale = Vector2(0.820312, 0.838542)
 polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
@@ -812,7 +811,6 @@ animation = &"attack2"
 autoplay = "idle"
 
 [node name="hurtbox" type="Area2D" parent="."]
-visible = false
 collision_layer = 2
 collision_mask = 4
 
@@ -820,11 +818,6 @@ collision_mask = 4
 position = Vector2(0, -40)
 shape = SubResource("RectangleShape2D_j4y4m")
 debug_color = Color(0.356863, 0.615686, 0.14902, 0.419608)
-
-[node name="HitboxProbe" type="ShapeCast2D" parent="hurtbox"]
-collision_mask = 2
-collide_with_areas = true
-collide_with_bodies = false
 
 [node name="sound" type="Node" parent="."]
 
@@ -848,7 +841,6 @@ offset_bottom = -76.0
 horizontal_alignment = 1
 
 [node name="attack1" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
-visible = false
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("19_kgyee")
@@ -866,7 +858,7 @@ time_start = 0.1
 duration = 0.05
 damage_hit = 5
 stun_hit_duration = 0.4
-stun_block_duration = 0.1
+stun_block_duration = 0.05
 pushback = Vector2(80, 80)
 
 [node name="move" type="Node" parent="attack1"]
@@ -874,7 +866,6 @@ script = ExtResource("19_i02dt")
 duration = 0.25
 
 [node name="attack2" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
-visible = false
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("19_kgyee")
@@ -892,7 +883,7 @@ time_start = 0.05
 duration = 0.1
 damage_hit = 10
 stun_hit_duration = 0.3
-stun_block_duration = 0.1
+stun_block_duration = 0.05
 pushback = Vector2(100, 100)
 
 [node name="move" type="Node" parent="attack2"]
@@ -900,7 +891,6 @@ script = ExtResource("19_i02dt")
 duration = 0.25
 
 [node name="attack_ranged" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
-visible = false
 script = ExtResource("15_ex06t")
 projectile_scene = ExtResource("16_nvux6")
 animation_name = "attack_ranged"

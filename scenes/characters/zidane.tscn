@@ -1561,7 +1561,7 @@ animations = [{
 size = Vector2(24, 42.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xotkn"]
-size = Vector2(59.5, 72)
+size = Vector2(35.6875, 36.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ruig2"]
 
@@ -1581,7 +1581,6 @@ win_anim_duration = 0.25
 character_intro_outro_anim_offset = Vector2(0, -74)
 
 [node name="collider" type="CollisionPolygon2D" parent="."]
-visible = false
 position = Vector2(5.68434e-14, -9)
 scale = Vector2(0.742188, 0.859375)
 polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
@@ -1589,11 +1588,11 @@ polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"attack1"
+animation = &"attack2"
 autoplay = "idle"
+frame = 2
 
 [node name="hurtbox" type="Area2D" parent="."]
-visible = false
 collision_layer = 2
 collision_mask = 4
 
@@ -1601,11 +1600,6 @@ collision_mask = 4
 position = Vector2(-1, -21.75)
 shape = SubResource("RectangleShape2D_j4y4m")
 debug_color = Color(0.355039, 0.616281, 0.149107, 0.42)
-
-[node name="HitboxProbe" type="ShapeCast2D" parent="hurtbox"]
-collision_mask = 2
-collide_with_areas = true
-collide_with_bodies = false
 
 [node name="sound" type="Node" parent="."]
 
@@ -1629,7 +1623,6 @@ offset_bottom = -76.0
 horizontal_alignment = 1
 
 [node name="attack1" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
-visible = false
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("14_2csiw")
@@ -1639,7 +1632,7 @@ sound_hit = NodePath("../sound/hit1")
 duration = 0.25
 
 [node name="hit" type="CollisionShape2D" parent="attack1"]
-position = Vector2(50, -29)
+position = Vector2(32, -31)
 shape = SubResource("RectangleShape2D_xotkn")
 debug_color = Color(0.92549, 0.239216, 0.341176, 0.419608)
 script = ExtResource("17_drc2t")
@@ -1647,15 +1640,14 @@ time_start = 0.05
 duration = 0.1
 damage_hit = 5
 stun_hit_duration = 0.5
-stun_block_duration = 0.1
-pushback = Vector2(150, 150)
+stun_block_duration = 0.05
+pushback = Vector2(50, 100)
 
 [node name="move" type="Node" parent="attack1"]
 script = ExtResource("16_0368c")
 duration = 0.25
 
 [node name="attack2" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
-visible = false
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("14_2csiw")
@@ -1665,7 +1657,7 @@ sound_hit = NodePath("../sound/hit2")
 duration = 0.35
 
 [node name="hit" type="CollisionShape2D" parent="attack2"]
-position = Vector2(40, -46)
+position = Vector2(40, -43)
 shape = SubResource("RectangleShape2D_xotkn")
 debug_color = Color(0.92549, 0.239216, 0.341176, 0.419608)
 script = ExtResource("17_drc2t")
@@ -1673,8 +1665,8 @@ time_start = 0.1
 duration = 0.1
 damage_hit = 10
 stun_hit_duration = 0.3
-stun_block_duration = 0.1
-pushback = Vector2(50, 200)
+stun_block_duration = 0.05
+pushback = Vector2(50, 100)
 
 [node name="move" type="Node" parent="attack2"]
 script = ExtResource("16_0368c")

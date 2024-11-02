@@ -11,6 +11,8 @@ func process_physics(delta: float) -> State:
 	
 	var opponent_can_reach = params.opponent_can_reach()
 	
+	#return null
+	
 	if params.projectile_warning == params.ProjectileWarning.WARNING and not opponent_can_reach:
 		if character.jumps_left > 0:
 			return state_jump

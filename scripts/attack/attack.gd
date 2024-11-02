@@ -1,3 +1,4 @@
+# attack.gd
 class_name Attack
 extends Area2D
 
@@ -11,6 +12,7 @@ extends Area2D
 
 @onready var character: Character = get_parent() as Character
 @onready var earliest_attack_start: float = duration
+@onready var hitbox_probe: ShapeCast2D = ShapeCast2D.new()
 
 var hitboxes: Array[Hitbox] = []
 var moves: Array[Move] = []
@@ -24,6 +26,44 @@ func _ready() -> void:
 	load_hitboxes()
 	load_moves()
 	area_entered.connect(on_area_entered)
+	
+	hitbox_probe.exclude_parent = true
+	hitbox_probe.enabled = false
+	hitbox_probe.visible = false
+	hitbox_probe.target_position = Vector2.ZERO
+	hitbox_probe.collision_mask = collision_mask
+	hitbox_probe.collide_with_bodies = false
+	hitbox_probe.collide_with_areas = true
+	hitbox_probe.modulate = Color.BLUE_VIOLET
+	add_child(hitbox_probe)
+
+
+func _draw():
+	draw_line(Vector2.ZERO, hitbox_probe.target_position, Color.BLUE_VIOLET, 2)
+
+
+func is_enemy_in_attack_range() -> bool:
+	hitbox_probe.add_exception(character.hurtbox)
+	hitbox_probe.enabled = true
+	hitbox_probe.visible = true
+	
+	var extrapolated_target = character.velocity * earliest_attack_start
+	hitbox_probe.target_position = extrapolated_target
+	
+	for h in hitboxes:
+		hitbox_probe.shape = h.shape
+		hitbox_probe.global_position = h.global_position
+		hitbox_probe.scale = h.scale
+		hitbox_probe.force_shapecast_update()
+		
+		if hitbox_probe.is_colliding():
+			hitbox_probe.enabled = false
+			hitbox_probe.visible = false
+			return true
+	
+	hitbox_probe.enabled = false
+	hitbox_probe.visible = false
+	return false
 
 
 func load_hitboxes() -> void:

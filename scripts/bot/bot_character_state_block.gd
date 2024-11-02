@@ -17,6 +17,8 @@ func process_physics(delta: float) -> State:
 	if params.current_block_time > 0:
 		params.current_block_time -= delta
 		return null
+	else:
+		params.current_block_time = params.block_duration
 	
 	if not character.opponent.is_invincible and character.opponent.fsm.is_recovery():
 		if params.is_enemy_in_attack_range("attack1"):
@@ -32,6 +34,6 @@ func process_physics(delta: float) -> State:
 	if params.opponent_can_reach() and not character.opponent.fsm.is_recovery():
 		return null
 	
-	return state_walk
+	return state_idle
 	
 	return null

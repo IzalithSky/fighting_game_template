@@ -10,11 +10,11 @@ var projectile_distance: float = 128
 var projectile_warning_distance: float = 128
 var projectile_imminent_distance: float = 32
 var opponent_height_threshold: float = 128
-var block_duration: float = 0.5
+var block_duration: float = 0.2
 var rng_persist_duration: float = 0.5
 var jump_delay: float = 0.5
 
-var current_block_time: float = 0.0
+var current_block_time: float = block_duration
 var current_rng_time: float = 0.0
 var until_can_jump: float = 0.0
 
@@ -104,41 +104,11 @@ func is_past_jump_cd() -> bool:
 
 func is_in_enemy_attack_range(attack_name: String) -> bool:
 	if attack_name.is_empty() or not attack_name:
-		character.hitbox_probe.enabled = false
-		character.hitbox_probe.visible = false
 		return false
-		
-	character.hitbox_probe.enabled = true
-	character.hitbox_probe.visible = true
-	character.hitbox_probe.exclude_parent = false
-	character.hitbox_probe.add_exception(character.opponent.hurtbox)
-	
-	for h in character.opponent.attacks[attack_name].hitboxes:
-		character.hitbox_probe.shape = h.shape
-		character.hitbox_probe.global_position = h.global_position
-		character.hitbox_probe.scale = h.scale
-		character.hitbox_probe.force_shapecast_update()
-		if character.hitbox_probe.is_colliding():
-			return true
-	return false
+	return character.opponent.attacks[attack_name].is_enemy_in_attack_range()
 
 
 func is_enemy_in_attack_range(attack_name: String) -> bool:
 	if attack_name.is_empty() or not attack_name:
-		character.hitbox_probe.enabled = false
-		character.hitbox_probe.visible = false
 		return false
-		
-	character.hitbox_probe.enabled = true
-	character.hitbox_probe.visible = true
-	character.hitbox_probe.exclude_parent = true
-	character.hitbox_probe.remove_exception(character.opponent.hurtbox)
-	
-	for h in character.attacks[attack_name].hitboxes:
-		character.hitbox_probe.shape = h.shape
-		character.hitbox_probe.global_position = h.global_position
-		character.hitbox_probe.scale = h.scale
-		character.hitbox_probe.force_shapecast_update()
-		if character.hitbox_probe.is_colliding():
-			return true
-	return false
+	return character.attacks[attack_name].is_enemy_in_attack_range()

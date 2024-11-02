@@ -42,17 +42,12 @@ var ignore_gravity: bool = false
 @onready var sound_block = $sound/block
 @onready var state_label = $StateLabel
 @onready var hurtbox = $hurtbox
-@onready var hitbox_probe: ShapeCast2D = $hurtbox/HitboxProbe
 @onready var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity", -9.8)
 
 
 func _ready() -> void:
 	load_attack_data()
 	fsm.init()
-	hitbox_probe.shape = $hurtbox/collider.shape
-	hitbox_probe.target_position = Vector2.ZERO
-	hitbox_probe.enabled = false
-	hitbox_probe.visible = false
 
 
 func _physics_process(delta: float) -> void:
@@ -67,6 +62,7 @@ func _physics_process(delta: float) -> void:
 		or fsm.is_state("knockdown_fall")
 		or fsm.is_state("knockdown_down")
 		or fsm.is_state("knockdown_up")
+		or fsm.is_state("KO")
 		or fsm.is_state("attack")):
 		if always_face_opponent and opponent:
 			face_opponent()
