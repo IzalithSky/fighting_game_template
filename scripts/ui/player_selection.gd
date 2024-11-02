@@ -11,7 +11,9 @@ extends Control
 @onready var player2 = $VBoxContainer/HBoxContainer/VBoxContainer2/Player2Slot
 @onready var player2bot = $VBoxContainer/HBoxContainer/VBoxContainer2/Player2Bot
 
-@onready var stage_selector = $VBoxContainer/HBoxContainer/VBoxContainer/StageSelectionSlot
+@onready var stage_selector = $HBoxContainer/VBoxContainer/VBoxContainer/StageSelectionSlot
+@onready var rounds_picker = $HBoxContainer/VBoxContainer2/RoundsNumberPicker
+@onready var round_timer_picker = $HBoxContainer/VBoxContainer3/TimerNumberPicker
 
 var player1character: Dictionary
 var player2character: Dictionary
@@ -88,8 +90,13 @@ func on_play_button_pressed() -> void:
 	var world_scene = preload("res://scenes/world.tscn")
 	var world = world_scene.instantiate()
 	world.player1_scene = load(player1character["scene_path"])
+	world.player1name = player1character["name"]
 	world.player2_scene = load(player2character["scene_path"])
-	
+	world.player2name = player2character["name"]
+	if player1character["name"] == player2character["name"]:
+		world.player1name = player1character["name"] + " 1"
+		world.player2name = player1character["name"] + " 2"
+		
 	if (player1bot.button_pressed):
 		world.fsm1_scene = load("res://scenes/characters/bot_character_state_machine.tscn")
 	else:
@@ -101,6 +108,10 @@ func on_play_button_pressed() -> void:
 		world.fsm2_scene = load("res://scenes/characters/player_character_state_machine.tscn")
 		
 	world.background_scene = load(current_stage["scene_path"])
+	var rounds = rounds_picker.get_selected_value_as_number()
+	world.total_rounds = rounds
+	var round_time_sec = round_timer_picker.get_selected_value_as_number()
+	world.round_time_limit = round_time_sec if round_time_sec != 0 else 60
 	get_tree().get_root().add_child(world)
 	get_tree().get_root().remove_child(self)
 

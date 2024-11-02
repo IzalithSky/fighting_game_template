@@ -20,17 +20,22 @@ extends Node2D
 @onready var mpbar1 = $mpbar1
 @onready var mpbar2 = $mpbar2
 @onready var score = $score
-@onready var label_distance = $LabelDistance
+@onready var label_distance = $DebugLabelsControl/LabelDistance
 @onready var frame_data_bar = $framedatabar
 @onready var touch_controls = $MobileControl/TouchControls
-@onready var label_os = $LabelOS
+@onready var label_os = $DebugLabelsControl/LabelOS
 @onready var countdown_label = $CountdownLabel
 @onready var round_time_label = $LabelRoundTime
+
+@onready var player_1_name_label = $player1label
+@onready var player_2_name_label = $player2label
 
 var player1: Character
 var player2: Character
 var fsm1: CharacterStateMachine
 var fsm2: CharacterStateMachine
+var player1name: String = ""
+var player2name: String = ""
 var score_p1 = 0
 var score_p2 = 0
 var pause_menu: Control
@@ -40,7 +45,8 @@ var is_countdown_active: bool = false
 var post_round_timer: float = 2.0
 var in_post_round_phase: bool = false
 var round_timer: float = round_time_limit
-
+var total_rounds: int = 3
+var current_round: int = 1
 
 func _ready() -> void:
 	Engine.time_scale = time_scale
@@ -52,6 +58,8 @@ func _ready() -> void:
 	mpbar1.init_mp(player1.current_mp)
 	mpbar2.init_mp(player2.current_mp)
 	score.text = "0 : 0"
+	player_1_name_label.text = player1name
+	player_2_name_label.text = player2name
 	label_os.text = OS.get_name()
 	var is_mobile = ConfigHandler.load_settings("video").mobile_controls or OS.get_name() == "Android" or OS.get_name() == "iOS"
 	if is_mobile:
@@ -115,17 +123,13 @@ func on_player_2_mpchanged(amount: Variant) -> void:
 func on_player_1_kod() -> void:
 	score_p2 += 1
 	update_score()
-	fsm1.end_round()
-	fsm2.end_round()
-	start_post_round_phase()
+	end_round()
 
 
 func on_player_2_kod() -> void:
 	score_p1 += 1
 	update_score()
-	fsm1.end_round()
-	fsm2.end_round()
-	start_post_round_phase()
+	end_round()
 
 
 func update_score() -> void:
@@ -146,25 +150,43 @@ func reset_players() -> void:
 
 func start_round_with_countdown() -> void:
 	countdown_timer = 1.0
-	countdown_stage = 3
+	countdown_stage = 4
 	is_countdown_active = true
 	countdown_label.visible = true
 	update_countdown_label()
 
 
 func start_post_round_phase() -> void:
+	if current_round > total_rounds:
+		show_winner()
+	else: 
+		countdown_label.visible = false		
 	in_post_round_phase = true
 	post_round_timer = post_round_delay
-	countdown_label.visible = false
 
 
 func start_next_round() -> void:
 	reset_players()
 	start_round_with_countdown()
 
+func show_winner():
+	if score_p1 > score_p2:
+		countdown_label.text = player1name + " Wins!"
+	elif score_p1 < score_p2:
+		countdown_label.text = player2name + " Wins!"
+	else: 
+		countdown_label.text = "It’s a Draw!"
+	countdown_label.visible = true
 
 func update_countdown_label() -> void:
 	match countdown_stage:
+		4: 
+			if total_rounds == 1:
+				countdown_label.text = "One Chance"
+			elif current_round == total_rounds:
+				countdown_label.text = "Final Round"
+			else: 
+				countdown_label.text = "Round " + str(current_round)
 		3:
 			countdown_label.text = "3"
 		2:
@@ -174,6 +196,11 @@ func update_countdown_label() -> void:
 		0:
 			countdown_label.text = "Fight!"
 
+func end_round():
+	current_round += 1
+	fsm1.end_round()
+	fsm2.end_round()
+	start_post_round_phase()
 
 func end_round_due_to_timeout() -> void:
 	if player1.current_hp > player2.current_hp:
@@ -184,9 +211,7 @@ func end_round_due_to_timeout() -> void:
 		score_p1 += 1
 		score_p2 += 1
 	update_score()
-	fsm1.end_round()
-	fsm2.end_round()
-	start_post_round_phase()
+	end_round()
 
 
 func _physics_process(delta: float) -> void:
@@ -207,7 +232,10 @@ func _physics_process(delta: float) -> void:
 		post_round_timer -= delta
 		if post_round_timer <= 0:
 			in_post_round_phase = false
-			start_next_round()
+			if current_round > total_rounds:
+				to_main_menu()
+			else:
+				start_next_round()
 
 	if !is_countdown_active and !in_post_round_phase:
 		round_timer -= delta
@@ -235,3 +263,10 @@ func toggle_pause():
 		pause_menu = pause_menu_scene.instantiate()
 		get_tree().get_root().add_child(pause_menu)
 		pause_menu.grab_focus()
+
+func to_main_menu():
+	var world = get_tree().get_root().get_node("world")  # Replace "world" with the name of the node added as the game level
+	if world:
+		world.queue_free()
+	queue_free()
+	get_tree().change_scene_to_file("res://scenes/ui/player_selection.tscn")

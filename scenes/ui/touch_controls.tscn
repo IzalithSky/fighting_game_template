@@ -1,8 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://dmbwk7qobd46s"]
+[gd_scene load_steps=2 format=3 uid="uid://vsab1nbyjv7w"]
 
 [ext_resource type="Texture2D" uid="uid://cwna6njv1qffl" path="res://sprites/misc/icon.svg" id="1_nbrt7"]
 
 [node name="TouchControls" type="CanvasLayer"]
+
+[node name="pause" type="TouchScreenButton" parent="."]
+position = Vector2(3, 3)
+scale = Vector2(0.445312, 0.421875)
+texture_normal = ExtResource("1_nbrt7")
+action = "ui_cancel"
 
 [node name="left" type="TouchScreenButton" parent="."]
 position = Vector2(8, 424)
