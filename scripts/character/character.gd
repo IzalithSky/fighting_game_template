@@ -4,6 +4,9 @@ extends CharacterBody2D
 
 
 @export var max_hp: int = 100
+@export var max_mp: float = 100
+@export var focus_mp_gain_rate: float = 20
+@export var idle_mp_gain_rate: float = 4
 @export var move_speed: float = 275
 @export var jump_velocity: float = 400.0
 @export var knockdown_fall_duration: float = 0.4
@@ -12,6 +15,9 @@ extends CharacterBody2D
 @export var active_invincibility_duration = 0.4
 @export var stun_to_knowkdown_duration: float = 1
 @export var max_jumps: int = 2
+@export var intro_anim_duration: float = 0
+@export var win_anim_duration: float = 0
+@export var character_intro_outro_anim_offset: Vector2 = Vector2(0, -40)
 @export var input_prefix: String = "p1_"  # To switch between p1_ and p2_
 @export var opponent: Character
 @export var always_face_opponent: bool = true
@@ -20,8 +26,10 @@ extends CharacterBody2D
 
 signal damaged(amount: int)
 signal kod()
+signal mpchanged(current_mp: float)
 
 var current_hp: int = max_hp
+var current_mp: float = 0
 var attacks: Dictionary = {}
 var is_opponent_right: bool = true
 var is_invincible: bool = false
@@ -33,13 +41,18 @@ var ignore_gravity: bool = false
 @onready var anim: AnimatedSprite2D = $Animations
 @onready var sound_block = $sound/block
 @onready var state_label = $StateLabel
-@onready var hurtbox: Area2D = $hurtbox
+@onready var hurtbox = $hurtbox
+@onready var hitbox_probe: ShapeCast2D = $hurtbox/HitboxProbe
 @onready var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity", -9.8)
 
 
 func _ready() -> void:
 	load_attack_data()
 	fsm.init()
+	hitbox_probe.shape = $hurtbox/collider.shape
+	hitbox_probe.target_position = Vector2.ZERO
+	hitbox_probe.enabled = false
+	hitbox_probe.visible = false
 
 
 func _physics_process(delta: float) -> void:
@@ -89,12 +102,14 @@ func face_opponent() -> void:
 		flip_sprite(-1)
 
 
-func take_damage(damage: int, stun_duration: float = 0.0) -> void:
+func take_damage(damage: int, stun_duration: float, attack_sound) -> void:
 	if is_invincible:
 		return
 	
 	if is_blocking():
 		sound_block.play()
+	elif attack_sound:
+		attack_sound.play()
 	
 	current_hp -= damage
 	emit_signal("damaged", damage)
@@ -103,6 +118,24 @@ func take_damage(damage: int, stun_duration: float = 0.0) -> void:
 		ko()
 	elif stun_duration > 0.0:
 		initiate_stun(stun_duration)
+
+
+func spend_mp(amount: float) -> bool:
+	if amount <= 0:
+		return false
+	if current_mp >= amount:
+		current_mp -= amount
+		emit_signal("mpchanged", current_mp)
+		return true
+	else:
+		return false
+
+
+func gain_mp(amount: float) -> void:
+	if amount <= 0:
+		return
+	current_mp = min(max_mp, current_mp + amount)
+	emit_signal("mpchanged", current_mp)
 
 
 func initiate_stun(stun_duration: float) -> void:
@@ -149,6 +182,22 @@ func play_anim(anim_name: String, offset_x: float, offset_y: float):
 
 func reset(new_position: Vector2) -> void:
 	current_hp = max_hp
+	current_mp = 0
 	position = new_position
 	velocity = Vector2.ZERO
 	fsm.reset()
+
+
+func draw_activity(is_active: bool):
+	draw_framedata(Color.INDIAN_RED if is_active else Color.SEA_GREEN)
+
+
+func draw_recovery():
+	draw_framedata(Color.SKY_BLUE)
+
+
+func draw_framedata(color: Color):
+	if input_prefix == "p1_":
+		frame_data_bar.update_top_block_color(color)
+	else:
+		frame_data_bar.update_bot_block_color(color)

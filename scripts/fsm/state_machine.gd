@@ -10,11 +10,11 @@ var current_state: State
 
 func init() -> void:
 	change_state(starting_state)
-	
-	
+
+
 func reset() -> void:
 	init()
-
+ 
 
 func process_physics(delta: float) -> void:
 	var new_state: State = current_state.process_physics(delta)

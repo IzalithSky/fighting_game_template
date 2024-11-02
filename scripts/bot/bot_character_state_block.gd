@@ -18,18 +18,20 @@ func process_physics(delta: float) -> State:
 		params.current_block_time -= delta
 		return null
 	
+	if not character.opponent.is_invincible and character.opponent.fsm.is_recovery():
+		if params.is_enemy_in_attack_range("attack1"):
+			state_attack.current_attack = character.attacks["attack1"]
+			return state_attack
+		if params.is_enemy_in_attack_range("attack2"):
+			state_attack.current_attack = character.attacks["attack2"]
+			return state_attack
+	
 	if params.is_in_jump_distance() and character.is_on_floor():
 		return state_jump
 	
-	if params.is_in_attack_distance():
-		if character.opponent.fsm.is_state("attack"):
-			return null
-		else:
-			if randf() < 0.5:
-				state_attack.current_attack = character.attacks["attack1"]
-			else:
-				state_attack.current_attack = character.attacks["attack2"]
-			return state_attack
-	else:
-		return state_walk
+	if params.opponent_can_reach() and not character.opponent.fsm.is_recovery():
+		return null
+	
+	return state_walk
+	
 	return null

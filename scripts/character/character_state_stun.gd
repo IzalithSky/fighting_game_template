@@ -24,7 +24,7 @@ func exit() -> void:
 func process_physics(delta: float) -> State:
 	super(delta)
 	
-	var color = Color(1, 1, 0)
+	var color = Color.CORAL
 	if character.input_prefix == "p1_":
 		character.frame_data_bar.update_top_block_color(color)
 	else:

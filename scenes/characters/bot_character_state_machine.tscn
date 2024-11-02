@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://b238h33cgofap"]
+[gd_scene load_steps=17 format=3 uid="uid://b238h33cgofap"]
 
 [ext_resource type="Script" path="res://scripts/character/character_state_machine.gd" id="1_wuvxo"]
 [ext_resource type="Script" path="res://scripts/character/character_state_stun.gd" id="2_dwao0"]
@@ -10,7 +10,12 @@
 [ext_resource type="Script" path="res://scripts/character/character_state_knockdown_down.gd" id="11_ia35h"]
 [ext_resource type="Script" path="res://scripts/character/character_state_attack.gd" id="11_n0gak"]
 [ext_resource type="Script" path="res://scripts/character/character_state_knockdown_fall.gd" id="11_u8yhm"]
+[ext_resource type="Script" path="res://scripts/character/character_state_win.gd" id="12_d5k8t"]
 [ext_resource type="Script" path="res://scripts/character/character_state_knockdown_up.gd" id="13_3ne08"]
+[ext_resource type="Script" path="res://scripts/character/character_state_ko.gd" id="13_wue5y"]
+[ext_resource type="Script" path="res://scripts/character/character_state_intro.gd" id="14_rlyxr"]
+[ext_resource type="Script" path="res://scripts/character/character_state_idle_locked.gd" id="15_qi2ab"]
+[ext_resource type="Script" path="res://scripts/character/character_state_focus.gd" id="16_4xi2m"]
 
 [node name="CharacterStateMachine" type="Node" node_paths=PackedStringArray("starting_state")]
 script = ExtResource("1_wuvxo")
@@ -45,3 +50,18 @@ script = ExtResource("13_3ne08")
 
 [node name="Attack" type="Node" parent="."]
 script = ExtResource("11_n0gak")
+
+[node name="Win" type="Node" parent="."]
+script = ExtResource("12_d5k8t")
+
+[node name="KO" type="Node" parent="."]
+script = ExtResource("13_wue5y")
+
+[node name="Intro" type="Node" parent="."]
+script = ExtResource("14_rlyxr")
+
+[node name="IdleLocked" type="Node" parent="."]
+script = ExtResource("15_qi2ab")
+
+[node name="Focus" type="Node" parent="."]
+script = ExtResource("16_4xi2m")

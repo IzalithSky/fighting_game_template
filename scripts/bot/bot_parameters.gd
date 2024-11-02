@@ -45,8 +45,12 @@ func is_in_jump_distance() -> bool:
 	return abs(character.global_position.x - character.opponent.global_position.x) >= jump_distance
 
 
-func is_in_attack_distance() -> bool:
-	return abs(character.global_position.x - character.opponent.global_position.x) <= attack_distance
+func opponent_can_reach() -> bool:
+	var n = character.opponent.fsm.get_current_attack_name()
+	if n.is_empty() or not n:
+		return false
+	else:
+		return is_in_enemy_attack_range(n)
 
 
 func is_in_ranged_distance() -> bool:
@@ -92,7 +96,49 @@ func rng() -> float:
 func next_jump(delta: float):
 	if until_can_jump > 0:
 		until_can_jump -= delta
-		
-		
+
+
 func is_past_jump_cd() -> bool:
 	return until_can_jump <= 0
+
+
+func is_in_enemy_attack_range(attack_name: String) -> bool:
+	if attack_name.is_empty() or not attack_name:
+		character.hitbox_probe.enabled = false
+		character.hitbox_probe.visible = false
+		return false
+		
+	character.hitbox_probe.enabled = true
+	character.hitbox_probe.visible = true
+	character.hitbox_probe.exclude_parent = false
+	character.hitbox_probe.add_exception(character.opponent.hurtbox)
+	
+	for h in character.opponent.attacks[attack_name].hitboxes:
+		character.hitbox_probe.shape = h.shape
+		character.hitbox_probe.global_position = h.global_position
+		character.hitbox_probe.scale = h.scale
+		character.hitbox_probe.force_shapecast_update()
+		if character.hitbox_probe.is_colliding():
+			return true
+	return false
+
+
+func is_enemy_in_attack_range(attack_name: String) -> bool:
+	if attack_name.is_empty() or not attack_name:
+		character.hitbox_probe.enabled = false
+		character.hitbox_probe.visible = false
+		return false
+		
+	character.hitbox_probe.enabled = true
+	character.hitbox_probe.visible = true
+	character.hitbox_probe.exclude_parent = true
+	character.hitbox_probe.remove_exception(character.opponent.hurtbox)
+	
+	for h in character.attacks[attack_name].hitboxes:
+		character.hitbox_probe.shape = h.shape
+		character.hitbox_probe.global_position = h.global_position
+		character.hitbox_probe.scale = h.scale
+		character.hitbox_probe.force_shapecast_update()
+		if character.hitbox_probe.is_colliding():
+			return true
+	return false

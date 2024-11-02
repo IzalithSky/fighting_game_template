@@ -14,6 +14,7 @@ func enter() -> void:
 
 func process_physics(delta: float) -> State:
 	super(delta)
+	character.gain_mp(character.idle_mp_gain_rate * delta)
 	return state_idle
 
 

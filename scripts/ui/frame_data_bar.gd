@@ -17,9 +17,9 @@ func _ready():
 
 func _physics_process(delta: float) -> void:
 	if top_frame_counter > bottom_frame_counter:
-		_update_bot_block_color(Color(1, 1, 1))
+		_update_bot_block_color(Color.WEB_GRAY)
 	elif top_frame_counter < bottom_frame_counter:
-		_update_top_block_color(Color(1, 1, 1))
+		_update_top_block_color(Color.WEB_GRAY)
 		
 	since_update += 1
 	if since_update > clear_timeout:
@@ -38,7 +38,8 @@ func create_progress_bar():
 
 	for i in range(block_count):
 		var block = ColorRect.new()
-		block.custom_minimum_size = Vector2(3, 10)  # Size of individual blocks
+		block.custom_minimum_size = Vector2(3, 10)
+		block.color = Color.WEB_GRAY
 		top_container.add_child(block)
 
 	bottom_container = HBoxContainer.new()
@@ -47,7 +48,8 @@ func create_progress_bar():
 
 	for i in range(block_count):
 		var block = ColorRect.new()
-		block.custom_minimum_size = Vector2(3, 10)  # Size of individual blocks
+		block.custom_minimum_size = Vector2(3, 10)
+		block.color = Color.WEB_GRAY
 		bottom_container.add_child(block)
 
 
@@ -94,8 +96,8 @@ func clearblocks():
 	
 	for i in range(top_container.get_child_count()):
 		var block = top_container.get_child(i) as ColorRect
-		block.color = Color(1, 1, 1)
+		block.color = Color.WEB_GRAY
 
 	for i in range(bottom_container.get_child_count()):
 		var block = bottom_container.get_child(i) as ColorRect
-		block.color = Color(1, 1, 1) 
+		block.color = Color.WEB_GRAY 

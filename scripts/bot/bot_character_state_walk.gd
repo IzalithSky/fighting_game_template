@@ -9,7 +9,9 @@ extends CharacterStateWalk
 func process_physics(delta: float) -> State:
 	super(delta)
 	
-	if params.projectile_warning == params.ProjectileWarning.WARNING and not params.is_in_attack_distance():
+	var opponent_can_reach = params.opponent_can_reach()
+	
+	if params.projectile_warning == params.ProjectileWarning.WARNING and not opponent_can_reach:
 		if character.jumps_left > 0:
 			return state_jump
 		else:
@@ -18,7 +20,7 @@ func process_physics(delta: float) -> State:
 	if params.projectile_warning == params.ProjectileWarning.IMMINENT:
 		return state_block
 
-	if not params.is_in_attack_distance() and character.opponent.fsm.is_state("jump"):
+	if params.rng() < 0.5 and character.opponent.fsm.is_state("jump"):
 		state_attack.current_attack = character.attacks["attack_ranged"]
 		return state_attack
 
@@ -52,30 +54,30 @@ func process_physics(delta: float) -> State:
 			state_attack.current_attack = character.attacks["attack_ranged"]
 			return state_attack
 
-	if params.is_in_attack_distance():
-		if character.opponent.fsm.is_state("attack"):
-			return state_block
-			
-		if params.is_opponent_above() and character.jumps_left > 0:
-			return state_jump
-			
-		if params.rng() < 0.75 and not character.opponent.is_invincible:
-			if randf() < 0.5:
-				state_attack.current_attack = character.attacks["attack1"]
-			else:
-				state_attack.current_attack = character.attacks["attack2"]
-			return state_attack
-		if params.rng() < 0.5 and character.jumps_left > 0:
-			return state_jump
-		else:
-			return state_block
+	if opponent_can_reach and not character.opponent.fsm.is_recovery():
+		return state_block
 
-	if params.rng() < 0.95:
-		do_move(get_dir_towards_opponent())
-		return null
-	elif character.jumps_left > 0:
+	if params.rng() < 0.75 and not character.opponent.is_invincible:
+		#if has_mp_for_attack(character.attacks["attack_special2"]) and params.is_enemy_in_attack_range("attack_special2"):
+			#state_attack.current_attack = character.attacks["attack_special2"]
+			#return state_attack
+		if params.is_enemy_in_attack_range("attack1"):
+			state_attack.current_attack = character.attacks["attack1"]
+			return state_attack
+		if params.is_enemy_in_attack_range("attack2"):
+			state_attack.current_attack = character.attacks["attack2"]
+			return state_attack
+	
+	if params.is_opponent_above() and character.jumps_left > 0:
 		return state_jump
 		
+	var r = params.rng()
+	if r < 0.1 and character.jumps_left > 0:
+		return state_jump
+	elif r < 0.2:
+		return state_block
+	
+	do_move(get_dir_towards_opponent())
 	return null
 
 

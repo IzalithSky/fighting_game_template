@@ -1,21 +1,23 @@
-# character_state_idle.gd
-class_name CharacterStateIdle
+# character_state_ko.gd
+class_name CharacterStateKO
 extends CharacterState
 
 
 func _ready() -> void:
-	state_name = "idle"
+	state_name = "KO"
 
 
 func enter() -> void:
 	super()
-	character.play_anim("idle", 0, -40)
+	if character.anim.animation != "knockdown_down":
+		character.play_anim("knockdown_down", 0, -40)
 
 
 func process_physics(delta: float) -> State:
 	super(delta)
+	
 	if character.is_on_floor():
 		character.velocity.x = 0
 		character.velocity.y = 0
-	character.gain_mp(character.idle_mp_gain_rate * delta)
+		
 	return null

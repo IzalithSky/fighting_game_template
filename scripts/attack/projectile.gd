@@ -54,12 +54,10 @@ func on_area_entered(area: Area2D) -> void:
 		if character.opponent.is_invincible:
 			return
 		
-		if not character.opponent.is_blocking():
-			sound_hit.play()
-			
 		character.opponent.take_damage(
 			damage_block if character.opponent.is_blocking() else damage_hit, 
-			stun_block_duration if character.opponent.is_blocking() else stun_hit_duration)
+			stun_block_duration if character.opponent.is_blocking() else stun_hit_duration,
+			sound_hit)
 		apply_pushback(character.opponent, pushback)
 		
 		remove_from_group(group_name)
