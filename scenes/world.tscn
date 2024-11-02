@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c4kerx7igi33w"]
+[gd_scene load_steps=13 format=3 uid="uid://c4kerx7igi33w"]
 
 [ext_resource type="Script" path="res://scripts/world.gd" id="1_o1srd"]
 [ext_resource type="PackedScene" uid="uid://cfy0wqfr218rf" path="res://scenes/ui/pause_scene.tscn" id="2_mn27r"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://b238h33cgofap" path="res://scenes/characters/bot_character_state_machine.tscn" id="5_fmefg"]
 [ext_resource type="Script" path="res://scripts/ui/frame_data_bar.gd" id="6_lrnrk"]
 [ext_resource type="PackedScene" uid="uid://b4nibc6evo5uw" path="res://scenes/ui/mpbar.tscn" id="8_xyber"]
+[ext_resource type="FontFile" uid="uid://1mina24aowrb" path="res://fonts/DungeonFont.ttf" id="9_k75hx"]
 [ext_resource type="PackedScene" uid="uid://vsab1nbyjv7w" path="res://scenes/ui/touch_controls.tscn" id="11_8r0x1"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_q2cft"]
@@ -49,11 +50,32 @@ offset_top = 72.0
 offset_right = 518.0
 offset_bottom = 88.0
 
+[node name="player2label" type="Label" parent="."]
+offset_left = 367.0
+offset_top = 2.0
+offset_right = 444.0
+offset_bottom = 33.0
+theme_override_fonts/font = ExtResource("9_k75hx")
+text = "Player 2"
+label_settings = SubResource("LabelSettings_q2cft")
+vertical_alignment = 1
+
+[node name="player1label" type="Label" parent="."]
+offset_left = 198.0
+offset_top = 2.0
+offset_right = 275.0
+offset_bottom = 33.0
+theme_override_fonts/font = ExtResource("9_k75hx")
+text = "Player 1"
+label_settings = SubResource("LabelSettings_q2cft")
+horizontal_alignment = 2
+vertical_alignment = 1
+
 [node name="score" type="Label" parent="."]
 offset_left = 288.0
-offset_top = 32.0
+offset_top = 2.0
 offset_right = 352.0
-offset_bottom = 63.0
+offset_bottom = 33.0
 text = "0 : 0"
 label_settings = SubResource("LabelSettings_q2cft")
 horizontal_alignment = 1
@@ -66,29 +88,12 @@ offset_right = 632.0
 offset_bottom = 472.0
 script = ExtResource("6_lrnrk")
 
-[node name="LabelOS" type="Label" parent="."]
-offset_left = 80.0
-offset_top = 8.0
-offset_right = 560.0
-offset_bottom = 31.0
-horizontal_alignment = 1
-
 [node name="LabelRoundTime" type="Label" parent="."]
 offset_left = 280.0
-offset_top = 66.0
+offset_top = 29.0
 offset_right = 360.0
-offset_bottom = 89.0
+offset_bottom = 74.0
 theme_override_font_sizes/font_size = 32
-text = "00"
-horizontal_alignment = 1
-vertical_alignment = 2
-
-[node name="LabelDistance" type="Label" parent="."]
-offset_left = 280.0
-offset_top = 114.0
-offset_right = 360.0
-offset_bottom = 137.0
-text = "0"
 horizontal_alignment = 1
 vertical_alignment = 2
 
@@ -99,6 +104,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="TouchControls" parent="MobileControl" instance=ExtResource("11_8r0x1")]
+visible = false
 
 [node name="CountdownLabel" type="Label" parent="."]
 visible = false
@@ -110,3 +116,26 @@ theme_override_font_sizes/font_size = 64
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="DebugLabelsControl" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="LabelDistance" type="Label" parent="DebugLabelsControl"]
+layout_mode = 0
+offset_left = 551.0
+offset_top = 414.0
+offset_right = 631.0
+offset_bottom = 437.0
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="LabelOS" type="Label" parent="DebugLabelsControl"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 418.0
+offset_right = 104.0
+offset_bottom = 441.0

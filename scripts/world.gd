@@ -20,17 +20,22 @@ extends Node2D
 @onready var mpbar1 = $mpbar1
 @onready var mpbar2 = $mpbar2
 @onready var score = $score
-@onready var label_distance = $LabelDistance
+@onready var label_distance = $DebugLabelsControl/LabelDistance
 @onready var frame_data_bar = $framedatabar
 @onready var touch_controls = $MobileControl/TouchControls
-@onready var label_os = $LabelOS
+@onready var label_os = $DebugLabelsControl/LabelOS
 @onready var countdown_label = $CountdownLabel
 @onready var round_time_label = $LabelRoundTime
+
+@onready var player_1_name_label = $player1label
+@onready var player_2_name_label = $player2label
 
 var player1: Character
 var player2: Character
 var fsm1: CharacterStateMachine
 var fsm2: CharacterStateMachine
+var player1name: String = ""
+var player2name: String = ""
 var score_p1 = 0
 var score_p2 = 0
 var pause_menu: Control
@@ -40,6 +45,7 @@ var is_countdown_active: bool = false
 var post_round_timer: float = 2.0
 var in_post_round_phase: bool = false
 var round_timer: float = round_time_limit
+var total_rounds: int = 3
 
 
 func _ready() -> void:
@@ -52,6 +58,8 @@ func _ready() -> void:
 	mpbar1.init_mp(player1.current_mp)
 	mpbar2.init_mp(player2.current_mp)
 	score.text = "0 : 0"
+	player_1_name_label.text = player1name
+	player_2_name_label.text = player2name
 	label_os.text = OS.get_name()
 	var is_mobile = ConfigHandler.load_settings("video").mobile_controls or OS.get_name() == "Android" or OS.get_name() == "iOS"
 	if is_mobile:
