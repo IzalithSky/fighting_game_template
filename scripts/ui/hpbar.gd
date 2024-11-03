@@ -2,7 +2,7 @@
 extends ProgressBar
 
 
-@onready var timer =$Timer
+@onready var timer = $Timer
 @onready var dmgbar = $dmgbar
 
 var hp = 0 : set = set_hp

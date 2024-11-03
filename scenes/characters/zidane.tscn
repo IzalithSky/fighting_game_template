@@ -1622,14 +1622,16 @@ offset_right = 21.0
 offset_bottom = -76.0
 horizontal_alignment = 1
 
-[node name="attack1" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
+[node name="attack1" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit", "hitbox_probe")]
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("14_2csiw")
 animation_name = "attack1"
 sound_swing = NodePath("../sound/swing")
 sound_hit = NodePath("../sound/hit1")
+hitbox_probe = NodePath("")
 duration = 0.25
+extrapolate = true
 
 [node name="hit" type="CollisionShape2D" parent="attack1"]
 position = Vector2(32, -31)
@@ -1647,14 +1649,16 @@ pushback = Vector2(50, 100)
 script = ExtResource("16_0368c")
 duration = 0.25
 
-[node name="attack2" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
+[node name="attack2" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit", "hitbox_probe")]
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("14_2csiw")
 animation_name = "attack2"
 sound_swing = NodePath("../sound/swing")
 sound_hit = NodePath("../sound/hit2")
+hitbox_probe = NodePath("")
 duration = 0.35
+extrapolate = true
 
 [node name="hit" type="CollisionShape2D" parent="attack2"]
 position = Vector2(40, -43)
@@ -1682,6 +1686,7 @@ animation_name = "attack_ranged"
 sound_swing = NodePath("../sound/swing")
 sound_hit = NodePath("../sound/hit1")
 duration = 0.7
+exclude_probe = true
 
 [node name="spawn_point" type="CollisionShape2D" parent="attack_ranged"]
 position = Vector2(45, -27)

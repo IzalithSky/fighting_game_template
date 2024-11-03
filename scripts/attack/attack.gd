@@ -8,11 +8,13 @@ extends Area2D
 @export var animation_offset: Vector2 = Vector2(0, -40)
 @export var sound_swing: AudioStreamPlayer2D
 @export var sound_hit: AudioStreamPlayer2D
+@export var hitbox_probe: ShapeCast2D
 @export var duration: float
+@export var extrapolate: bool = false
+@export var exclude_probe: bool = false
 
 @onready var character: Character = get_parent() as Character
 @onready var earliest_attack_start: float = duration
-@onready var hitbox_probe: ShapeCast2D = ShapeCast2D.new()
 
 var hitboxes: Array[Hitbox] = []
 var moves: Array[Move] = []
@@ -20,50 +22,68 @@ var hit_time: float = 0
 var latest_attack_end: float = 0
 var is_recovery: bool = false
 var is_startup: bool = false
+var probe_preexists = false
 
 
 func _ready() -> void:
 	load_hitboxes()
 	load_moves()
 	area_entered.connect(on_area_entered)
+	init_probe()
+
+
+func init_probe() -> void:
+	if exclude_probe:
+		return
 	
+	if hitbox_probe:
+		probe_preexists = true
+	else:
+		hitbox_probe = ShapeCast2D.new()
 	hitbox_probe.exclude_parent = true
 	hitbox_probe.enabled = false
-	hitbox_probe.visible = false
 	hitbox_probe.target_position = Vector2.ZERO
 	hitbox_probe.collision_mask = collision_mask
 	hitbox_probe.collide_with_bodies = false
 	hitbox_probe.collide_with_areas = true
-	hitbox_probe.modulate = Color.BLUE_VIOLET
-	add_child(hitbox_probe)
-
-
-func _draw():
-	draw_line(Vector2.ZERO, hitbox_probe.target_position, Color.BLUE_VIOLET, 2)
+	if not probe_preexists:
+		add_child(hitbox_probe)
 
 
 func is_enemy_in_attack_range() -> bool:
-	hitbox_probe.add_exception(character.hurtbox)
+	if exclude_probe:
+		return false
+	
 	hitbox_probe.enabled = true
-	hitbox_probe.visible = true
+	if probe_preexists:
+		return is_enemy_in_attack_range_premade()
+	else:
+		return is_enemy_in_attack_range_calculated()
+
+
+func is_enemy_in_attack_range_calculated() -> bool:
+	hitbox_probe.add_exception(character.hurtbox)
 	
-	var extrapolated_target = character.velocity * earliest_attack_start
-	hitbox_probe.target_position = extrapolated_target
-	
+	if extrapolate:
+		var extrapolated_target = character.velocity * earliest_attack_start
+		hitbox_probe.target_position = extrapolated_target
+	else:
+		hitbox_probe.target_position = Vector2.ZERO
+		
 	for h in hitboxes:
 		hitbox_probe.shape = h.shape
 		hitbox_probe.global_position = h.global_position
 		hitbox_probe.scale = h.scale
-		hitbox_probe.force_shapecast_update()
 		
 		if hitbox_probe.is_colliding():
-			hitbox_probe.enabled = false
-			hitbox_probe.visible = false
 			return true
 	
-	hitbox_probe.enabled = false
-	hitbox_probe.visible = false
 	return false
+
+
+func is_enemy_in_attack_range_premade() -> bool:
+	hitbox_probe.add_exception(character.hurtbox)
+	return hitbox_probe.is_colliding()
 
 
 func load_hitboxes() -> void:
@@ -96,12 +116,14 @@ func enter() -> void:
 		
 	is_startup = true
 	is_recovery = false
+	
+	if not exclude_probe:
+		hitbox_probe.visible = true
 
 
 func physics(delta: float) -> void:
 	var is_active: bool = false
 	
-	# Handle Hitboxes
 	for h in hitboxes:
 		if hit_time >= h.time_start and hit_time <= h.time_start + h.duration:
 			h.disabled = false
@@ -111,7 +133,6 @@ func physics(delta: float) -> void:
 			h.call_deferred("set_disabled", true)
 			h.call_deferred("set_visible", false)
 	
-	# Handle Moves
 	for m in moves:
 		if hit_time >= m.time_start and hit_time <= m.time_start + m.duration:
 			if hit_time >= m.time_start and not m.has_entered:
@@ -139,9 +160,11 @@ func exit() -> void:
 		h.call_deferred("set_disabled", true)
 		h.call_deferred("set_visible", false)
 	
-	# Reset all moves
 	for m in moves:
 		m.reset_move()
+		
+	if not exclude_probe:
+		hitbox_probe.visible = false
 
 
 func on_area_entered(area: Area2D) -> void:

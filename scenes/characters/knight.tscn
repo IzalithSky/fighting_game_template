@@ -848,6 +848,7 @@ animation_name = "attack1"
 sound_swing = NodePath("../sound/swing")
 sound_hit = NodePath("../sound/hit1")
 duration = 0.25
+extrapolate = true
 
 [node name="hit" type="CollisionShape2D" parent="attack1"]
 position = Vector2(29.5, -46)
@@ -873,6 +874,7 @@ animation_name = "attack2"
 sound_swing = NodePath("../sound/swing")
 sound_hit = NodePath("../sound/hit2")
 duration = 0.25
+extrapolate = true
 
 [node name="hit" type="CollisionShape2D" parent="attack2"]
 position = Vector2(36, -27.25)
@@ -897,6 +899,7 @@ animation_name = "attack_ranged"
 sound_swing = NodePath("../sound/swing")
 sound_hit = NodePath("../sound/hit1")
 duration = 0.7
+exclude_probe = true
 
 [node name="spawn_point" type="CollisionShape2D" parent="attack_ranged"]
 position = Vector2(23, -46)
