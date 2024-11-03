@@ -12,6 +12,10 @@ var input_actions = {
 	"attack1": "Attack 1",
 	"attack2": "Attack 2",
 	"attack_ranged": "Attack ranged",
+	"attack_special1": "Special Attack 1",
+	"attack_special2": "Special Attack 2",
+	"attack_special3": "Special Attack 3",
+	"focus": "Focus",
 	"block": "Block",
 }
 
