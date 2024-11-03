@@ -109,7 +109,7 @@ func on_play_button_pressed() -> void:
 		
 	world.background_scene = load(current_stage["scene_path"])
 	var rounds = rounds_picker.get_selected_value_as_number()
-	world.total_rounds = rounds
+	world.wins_required = rounds
 	var round_time_sec = round_timer_picker.get_selected_value_as_number()
 	world.round_time_limit = round_time_sec if round_time_sec != 0 else 60
 	get_tree().get_root().add_child(world)

@@ -45,7 +45,7 @@ var is_countdown_active: bool = false
 var post_round_timer: float = 2.0
 var in_post_round_phase: bool = false
 var round_timer: float = round_time_limit
-var total_rounds: int = 3
+var wins_required: int = 3
 var current_round: int = 1
 
 func _ready() -> void:
@@ -157,10 +157,10 @@ func start_round_with_countdown() -> void:
 
 
 func start_post_round_phase() -> void:
-	if current_round > total_rounds:
+	if score_p1 == wins_required or score_p2 == wins_required:
 		show_winner()
 	else: 
-		countdown_label.visible = false		
+		countdown_label.visible = false
 	in_post_round_phase = true
 	post_round_timer = post_round_delay
 
@@ -181,9 +181,9 @@ func show_winner():
 func update_countdown_label() -> void:
 	match countdown_stage:
 		4: 
-			if total_rounds == 1:
+			if wins_required == 1:
 				countdown_label.text = "One Chance"
-			elif current_round == total_rounds:
+			elif score_p1 == (wins_required - 1) and score_p2 == (wins_required - 1):
 				countdown_label.text = "Final Round"
 			else: 
 				countdown_label.text = "Round " + str(current_round)
@@ -232,7 +232,7 @@ func _physics_process(delta: float) -> void:
 		post_round_timer -= delta
 		if post_round_timer <= 0:
 			in_post_round_phase = false
-			if current_round > total_rounds:
+			if score_p1 == wins_required or score_p2 == wins_required:
 				to_main_menu()
 			else:
 				start_next_round()
