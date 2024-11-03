@@ -175,7 +175,7 @@ func show_winner():
 	elif score_p1 < score_p2:
 		countdown_label.text = player2name + " Wins!"
 	else: 
-		countdown_label.text = "It’s a Draw!"
+		countdown_label.text = "Draw!"
 	countdown_label.visible = true
 
 func update_countdown_label() -> void:
