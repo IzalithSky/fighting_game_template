@@ -58,8 +58,5 @@ func end_round() -> State:
 	return state_win
 
 
-func has_mp_for_attack(attack: Attack) -> bool:
-	if attack.mp_cost <= character.current_mp:
-		character.spend_mp(attack.mp_cost)
-		return true
-	return false
+func has_mp_for_attack(attack_name: String) -> bool:
+	return character.has_mp_for_attack(attack_name)

@@ -197,3 +197,14 @@ func draw_framedata(color: Color):
 		frame_data_bar.update_top_block_color(color)
 	else:
 		frame_data_bar.update_bot_block_color(color)
+
+
+func has_mp_for_attack(attack_name: String) -> bool:
+	if not attacks.has(attack_name):
+		return false
+	var a = attacks[attack_name]
+	if not a:
+		return false
+	if a.mp_cost <= current_mp:
+		return true
+	return false

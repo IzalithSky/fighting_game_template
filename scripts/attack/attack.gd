@@ -42,7 +42,6 @@ func init_probe() -> void:
 		hitbox_probe = ShapeCast2D.new()
 	hitbox_probe.exclude_parent = true
 	hitbox_probe.enabled = false
-	hitbox_probe.target_position = Vector2.ZERO
 	hitbox_probe.collision_mask = collision_mask
 	hitbox_probe.collide_with_bodies = false
 	hitbox_probe.collide_with_areas = true
@@ -119,6 +118,9 @@ func enter() -> void:
 	
 	if not exclude_probe:
 		hitbox_probe.visible = true
+		
+	if mp_cost > 0:
+		character.current_mp -= mp_cost
 
 
 func physics(delta: float) -> void:

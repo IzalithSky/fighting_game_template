@@ -28,9 +28,11 @@ func process_physics(delta: float) -> State:
 		var r = params.rng()
 		if r < 0.15 and character.jumps_left > 0:
 			return state_jump
-		if r < 0.85:
+		if r < 0.65:
 			do_move(get_dir_towards_opponent())
 			return null
+		if r < 0.85:
+			return state_focus
 		state_attack.current_attack = character.attacks["attack_ranged"]
 		return state_attack
 
@@ -57,10 +59,22 @@ func process_physics(delta: float) -> State:
 	if opponent_can_reach and not character.opponent.fsm.is_recovery():
 		return state_block
 
+	if character.current_mp < 60:
+		return state_focus
+
 	if params.rng() < 0.75 and not character.opponent.is_invincible:
-		#if has_mp_for_attack(character.attacks["attack_special2"]) and params.is_enemy_in_attack_range("attack_special2"):
-			#state_attack.current_attack = character.attacks["attack_special2"]
-			#return state_attack
+		if has_mp_for_attack("attack_special1") and params.is_enemy_in_attack_range("attack_special1"):
+			state_attack.current_attack = character.attacks["attack_special1"]
+			return state_attack
+		if has_mp_for_attack("attack_special2") and params.is_enemy_in_attack_range("attack_special2"):
+			state_attack.current_attack = character.attacks["attack_special2"]
+			return state_attack
+		if has_mp_for_attack("attack_special3") and params.is_enemy_in_attack_range("attack_special3"):
+			state_attack.current_attack = character.attacks["attack_special3"]
+			return state_attack
+		if has_mp_for_attack("attack_special4") and params.is_enemy_in_attack_range("attack_special4"):
+			state_attack.current_attack = character.attacks["attack_special4"]
+			return state_attack
 		if params.is_enemy_in_attack_range("attack1"):
 			state_attack.current_attack = character.attacks["attack1"]
 			return state_attack

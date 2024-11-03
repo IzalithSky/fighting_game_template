@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/ui/player_selection.gd" id="1_1e2l4"]
 [ext_resource type="TileSet" uid="uid://vrst3418t234" path="res://sprites/locations/dungeon/dungeon.tres" id="1_r0t8j"]
 [ext_resource type="FontFile" uid="uid://1mina24aowrb" path="res://fonts/DungeonFont.ttf" id="2_bwah3"]
-[ext_resource type="PackedScene" uid="uid://dh0c853bfnjtv" path="res://scenes/ui/items_catalog.tscn" id="2_bxrsw"]
+[ext_resource type="PackedScene" path="res://scenes/ui/items_catalog.tscn" id="2_bxrsw"]
 [ext_resource type="PackedScene" uid="uid://cyptfcrxg17lf" path="res://scenes/ui/settings.tscn" id="3_013ke"]
 [ext_resource type="PackedScene" uid="uid://c6cv3nff50giv" path="res://scenes/ui/character_slot.tscn" id="3_sv0tw"]
 [ext_resource type="AudioStream" uid="uid://bupa0ppu5yeqi" path="res://audio/menu_theme.ogg" id="6_yxjxl"]

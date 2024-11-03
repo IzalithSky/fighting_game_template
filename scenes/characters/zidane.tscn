@@ -1,4 +1,4 @@
-[gd_scene load_steps=230 format=3 uid="uid://62t2005fchbn"]
+[gd_scene load_steps=233 format=3 uid="uid://62t2005fchbn"]
 
 [ext_resource type="Script" path="res://scripts/character/character.gd" id="1_yecoy"]
 [ext_resource type="Texture2D" uid="uid://bh1ar8356co1g" path="res://sprites/characters/zidane/zidane_spritesheet.png" id="2_pb6ud"]
@@ -1567,10 +1567,16 @@ size = Vector2(35.6875, 36.5)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wyu7c"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_bubxf"]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lmcks"]
 size = Vector2(75, 115)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o43o4"]
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_etfsr"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rschu"]
 
 [node name="Character" type="CharacterBody2D"]
 script = ExtResource("1_yecoy")
@@ -1623,6 +1629,7 @@ offset_bottom = -76.0
 horizontal_alignment = 1
 
 [node name="attack1" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
+visible = false
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("14_2csiw")
@@ -1649,6 +1656,7 @@ script = ExtResource("16_0368c")
 duration = 0.25
 
 [node name="attack2" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
+visible = false
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("14_2csiw")
@@ -1701,7 +1709,7 @@ pushback = Vector2(100, 100)
 script = ExtResource("16_0368c")
 duration = 0.7
 
-[node name="attack_special1" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
+[node name="attack_special1" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit", "hitbox_probe")]
 visible = false
 collision_layer = 4
 collision_mask = 2
@@ -1710,6 +1718,7 @@ animation_name = "attack_special1"
 mp_cost = 80
 sound_swing = NodePath("sound")
 sound_hit = NodePath("../sound/hit2")
+hitbox_probe = NodePath("ShapeCast2D")
 duration = 1.75
 
 [node name="sound" type="AudioStreamPlayer2D" parent="attack_special1"]
@@ -1748,7 +1757,6 @@ freeze_on_floor = false
 impulse = Vector2(600, -200)
 
 [node name="hit2" type="CollisionShape2D" parent="attack_special1"]
-visible = false
 position = Vector2(0, -30)
 scale = Vector2(5.8, 5.8)
 shape = SubResource("CircleShape2D_wyu7c")
@@ -1770,7 +1778,16 @@ reset_velocity = true
 freeze_on_floor = false
 impulse = Vector2(-200, 400)
 
-[node name="attack_special2" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
+[node name="ShapeCast2D" type="ShapeCast2D" parent="attack_special1"]
+position = Vector2(0, -180)
+scale = Vector2(3.08, 3.08)
+shape = SubResource("CircleShape2D_bubxf")
+target_position = Vector2(150, 50)
+collision_mask = 2
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="attack_special2" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit", "hitbox_probe")]
 visible = false
 collision_layer = 4
 collision_mask = 2
@@ -1780,6 +1797,7 @@ mp_cost = 50
 animation_offset = Vector2(0, -50)
 sound_swing = NodePath("sound")
 sound_hit = NodePath("../sound/hit2")
+hitbox_probe = NodePath("ShapeCast2D")
 duration = 2.2
 
 [node name="sound" type="AudioStreamPlayer2D" parent="attack_special2"]
@@ -1918,7 +1936,16 @@ script = ExtResource("16_0368c")
 time_start = 1.4
 reset_velocity = true
 
-[node name="attack_special3" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit")]
+[node name="ShapeCast2D" type="ShapeCast2D" parent="attack_special2"]
+position = Vector2(80, -58)
+scale = Vector2(4.24, 5.76)
+shape = SubResource("RectangleShape2D_o43o4")
+target_position = Vector2(0, 0)
+collision_mask = 2
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="attack_special3" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit", "hitbox_probe")]
 visible = false
 collision_layer = 4
 collision_mask = 2
@@ -1928,6 +1955,7 @@ mp_cost = 90
 animation_offset = Vector2(100, 110)
 sound_swing = NodePath("sound")
 sound_hit = NodePath("../sound/hit2")
+hitbox_probe = NodePath("ShapeCast2D")
 duration = 4.0
 
 [node name="sound" type="AudioStreamPlayer2D" parent="attack_special3"]
@@ -2027,3 +2055,12 @@ damage_block = 4
 stun_hit_duration = 1.2
 stun_block_duration = 0.2
 pushback = Vector2(200, 200)
+
+[node name="ShapeCast2D" type="ShapeCast2D" parent="attack_special3"]
+position = Vector2(100, -96)
+scale = Vector2(9.32, 9.32)
+shape = SubResource("CircleShape2D_rschu")
+target_position = Vector2(0, 0)
+collision_mask = 2
+collide_with_areas = true
+collide_with_bodies = false

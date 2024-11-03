@@ -15,7 +15,7 @@
 [ext_resource type="Script" path="res://scripts/character/character_state_ko.gd" id="13_wue5y"]
 [ext_resource type="Script" path="res://scripts/character/character_state_intro.gd" id="14_rlyxr"]
 [ext_resource type="Script" path="res://scripts/character/character_state_idle_locked.gd" id="15_qi2ab"]
-[ext_resource type="Script" path="res://scripts/character/character_state_focus.gd" id="16_4xi2m"]
+[ext_resource type="Script" path="res://scripts/bot/bot_character_state_focus.gd" id="16_fqd21"]
 
 [node name="CharacterStateMachine" type="Node" node_paths=PackedStringArray("starting_state")]
 script = ExtResource("1_wuvxo")
@@ -64,4 +64,4 @@ script = ExtResource("14_rlyxr")
 script = ExtResource("15_qi2ab")
 
 [node name="Focus" type="Node" parent="."]
-script = ExtResource("16_4xi2m")
+script = ExtResource("16_fqd21")
