@@ -21,7 +21,10 @@ func process_physics(delta: float) -> State:
 
 	if params.projectile_warning == params.ProjectileWarning.IMMINENT:
 		return state_block
-		
+	
+	if character.opponent.fsm.is_state("knockdown_fall") or character.opponent.fsm.is_state("knockdown_down"):
+		return state_focus
+
 	if params.rng() < 0.5 and character.opponent.fsm.is_state("jump"):
 		state_attack.current_attack = character.attacks["attack_ranged"]
 		return state_attack
@@ -39,9 +42,6 @@ func process_physics(delta: float) -> State:
 
 	if opponent_can_reach and not character.opponent.fsm.is_recovery():
 		return state_block
-
-	if character.current_mp < 60:
-		return state_focus
 
 	if params.rng() < 0.8 and not character.opponent.is_invincible:
 		if has_mp_for_attack("attack_special1") and params.is_enemy_in_attack_range("attack_special1"):
