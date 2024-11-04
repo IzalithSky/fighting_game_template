@@ -21,6 +21,8 @@ extends Node2D
 @onready var mpbar2 = $mpbar2
 @onready var score = $score
 @onready var label_distance = $DebugLabelsControl/LabelDistance
+@onready var label_fps = $DebugLabelsControl/LabelFPS
+@onready var label_pps = $DebugLabelsControl/LabelPPS
 @onready var frame_data_bar = $framedatabar
 @onready var touch_controls = $MobileControl/TouchControls
 @onready var label_os = $DebugLabelsControl/LabelOS
@@ -48,6 +50,7 @@ var round_timer: float = round_time_limit
 var wins_required: int = 3
 var current_round: int = 1
 
+
 func _ready() -> void:
 	Engine.time_scale = time_scale
 	set_background()
@@ -69,6 +72,11 @@ func _ready() -> void:
 		touch_controls.visible = false
 		touch_controls.set_process(false)
 	start_round_with_countdown()
+
+
+func _process(delta: float) -> void:
+	label_fps.text = str(Engine.get_frames_per_second()) + " FPS"
+	label_pps.text = str(Engine.physics_ticks_per_second) + " PPS"
 
 
 func set_background():
@@ -169,6 +177,7 @@ func start_next_round() -> void:
 	reset_players()
 	start_round_with_countdown()
 
+
 func show_winner():
 	if score_p1 > score_p2:
 		countdown_label.text = player1name + " Wins!"
@@ -177,6 +186,7 @@ func show_winner():
 	else: 
 		countdown_label.text = "Draw!"
 	countdown_label.visible = true
+
 
 func update_countdown_label() -> void:
 	match countdown_stage:
@@ -196,11 +206,13 @@ func update_countdown_label() -> void:
 		0:
 			countdown_label.text = "Fight!"
 
+
 func end_round():
 	current_round += 1
 	fsm1.end_round()
 	fsm2.end_round()
 	start_post_round_phase()
+
 
 func end_round_due_to_timeout() -> void:
 	if player1.current_hp > player2.current_hp:
@@ -263,6 +275,7 @@ func toggle_pause():
 		pause_menu = pause_menu_scene.instantiate()
 		get_tree().get_root().add_child(pause_menu)
 		pause_menu.grab_focus()
+
 
 func to_main_menu():
 	var world = get_tree().get_root().get_node("world")  # Replace "world" with the name of the node added as the game level
