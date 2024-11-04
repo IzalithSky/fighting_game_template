@@ -1248,10 +1248,10 @@ time_start = 1.46
 reset_velocity = true
 
 [node name="ShapeCast2D" type="ShapeCast2D" parent="attack_special1"]
-position = Vector2(134, -42)
+position = Vector2(145, -100)
 scale = Vector2(4.36, 2.04)
 shape = SubResource("RectangleShape2D_2vp3h")
-target_position = Vector2(100, 0)
+target_position = Vector2(60, 0)
 
 [node name="attack_special2" type="Area2D" parent="." node_paths=PackedStringArray("sound_swing", "sound_hit", "hitbox_probe")]
 visible = false
@@ -1365,7 +1365,7 @@ hitbox_probe = NodePath("ShapeCast2D")
 duration = 1.0
 
 [node name="spawn_point" type="CollisionShape2D" parent="attack_special3"]
-position = Vector2(139, -213)
+position = Vector2(55, -223)
 shape = SubResource("RectangleShape2D_vr15g")
 script = ExtResource("16_uav13")
 time_start = 0.5
@@ -1380,7 +1380,7 @@ script = ExtResource("19_i02dt")
 duration = 1.0
 
 [node name="ShapeCast2D" type="ShapeCast2D" parent="attack_special3"]
-position = Vector2(140, -199)
+position = Vector2(56, -209)
 scale = Vector2(5.28, 2.16)
 shape = SubResource("RectangleShape2D_5htqq")
 target_position = Vector2(20, 100)
