@@ -3,7 +3,7 @@ class_name Projectile
 extends CharacterBody2D
 
 
-@export var speed: float = 400
+@export var speed: Vector2 = Vector2(400, 0)
 @export var ttl: float = 4
 
 @onready var hitbox: Area2D = $hitbox
@@ -34,10 +34,10 @@ func _ready() -> void:
 	
 	
 	if not character.is_opponent_right:
-		speed = -speed
+		speed.x = -speed.x
 		scale.x = -1
 	
-	velocity.x = speed
+	velocity = speed
 
 
 func _physics_process(delta: float) -> void:

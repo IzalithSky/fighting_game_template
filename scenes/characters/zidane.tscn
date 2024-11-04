@@ -1587,6 +1587,7 @@ win_anim_duration = 0.25
 character_intro_outro_anim_offset = Vector2(0, -74)
 
 [node name="collider" type="CollisionPolygon2D" parent="."]
+visible = false
 position = Vector2(5.68434e-14, -9)
 scale = Vector2(0.742188, 0.859375)
 polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
@@ -1594,11 +1595,11 @@ polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"attack2"
+animation = &"block"
 autoplay = "idle"
-frame = 2
 
 [node name="hurtbox" type="Area2D" parent="."]
+visible = false
 collision_layer = 2
 collision_mask = 4
 
