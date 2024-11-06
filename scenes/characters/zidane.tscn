@@ -1,4 +1,4 @@
-[gd_scene load_steps=233 format=3 uid="uid://62t2005fchbn"]
+[gd_scene load_steps=234 format=3 uid="uid://62t2005fchbn"]
 
 [ext_resource type="Script" path="res://scripts/character/character.gd" id="1_yecoy"]
 [ext_resource type="Texture2D" uid="uid://bh1ar8356co1g" path="res://sprites/characters/zidane/zidane_spritesheet.png" id="2_pb6ud"]
@@ -15,6 +15,7 @@
 [ext_resource type="AudioStream" uid="uid://dlw2cg3qghboe" path="res://audio/hit2.wav" id="7_7aj4a"]
 [ext_resource type="Texture2D" uid="uid://dxwvf3vht3xkg" path="res://sprites/characters/zidane/stun.png" id="7_66xt5"]
 [ext_resource type="Texture2D" uid="uid://ces2gyeqweoja" path="res://sprites/characters/zidane/victory.png" id="11_a1m1o"]
+[ext_resource type="PackedScene" uid="uid://cgt8vqrxsc1us" path="res://scenes/effects/hit_sparks.tscn" id="12_g3ss7"]
 [ext_resource type="Script" path="res://scripts/attack/attack_ranged.gd" id="12_hhpd5"]
 [ext_resource type="PackedScene" uid="uid://dj074m827hrck" path="res://scenes/characters/projectile_zidane.tscn" id="13_nyjhg"]
 [ext_resource type="Script" path="res://scripts/attack/attack.gd" id="14_2csiw"]
@@ -1598,8 +1599,10 @@ sprite_frames = SubResource("SpriteFrames_jhcdv")
 animation = &"block"
 autoplay = "idle"
 
+[node name="hit_sparks" parent="." instance=ExtResource("12_g3ss7")]
+animation = &"block"
+
 [node name="hurtbox" type="Area2D" parent="."]
-visible = false
 collision_layer = 2
 collision_mask = 4
 

@@ -42,6 +42,7 @@ var ignore_gravity: bool = false
 @onready var sound_block = $sound/block
 @onready var state_label = $StateLabel
 @onready var hurtbox = $hurtbox
+@onready var hit_sparks_effect: AnimatedSprite2D = $hit_sparks
 @onready var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity", -9.8)
 
 
@@ -148,7 +149,7 @@ func ko() -> void:
 
 func flip_sprite(direction: float) -> void:	
 	anim.scale.x = direction
-	
+	hit_sparks_effect.scale.x = direction
 	for attack in attacks.values():
 		attack.scale.x = direction
 

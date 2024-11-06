@@ -1,4 +1,4 @@
-[gd_scene load_steps=139 format=3 uid="uid://ckkbqrqtc0g77"]
+[gd_scene load_steps=140 format=3 uid="uid://ckkbqrqtc0g77"]
 
 [ext_resource type="Script" path="res://scripts/character/character.gd" id="1_6l4u0"]
 [ext_resource type="Texture2D" uid="uid://dajq780bxf8av" path="res://sprites/characters/Knight_player/Idle_KG_2.png" id="1_okya6"]
@@ -19,6 +19,7 @@
 [ext_resource type="AudioStream" uid="uid://dlw2cg3qghboe" path="res://audio/hit2.wav" id="12_25yp3"]
 [ext_resource type="Texture2D" uid="uid://b5pgil2a53e7i" path="res://sprites/characters/Knight_player/knight_win.png" id="12_nqkb2"]
 [ext_resource type="Script" path="res://scripts/attack/attack_ranged.gd" id="15_ex06t"]
+[ext_resource type="PackedScene" uid="uid://cgt8vqrxsc1us" path="res://scenes/effects/hit_sparks.tscn" id="15_qdkl1"]
 [ext_resource type="PackedScene" uid="uid://bcfn8pe3p7idk" path="res://scenes/characters/projectile_knight.tscn" id="16_nvux6"]
 [ext_resource type="Script" path="res://scripts/attack/hitbox.gd" id="16_uav13"]
 [ext_resource type="Script" path="res://scripts/attack/move.gd" id="19_i02dt"]
@@ -1055,13 +1056,14 @@ polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"attack_special3"
+animation = &"attack1"
 autoplay = "idle"
-frame = 11
-frame_progress = 1.0
+frame = 2
+
+[node name="hit_sparks" parent="." instance=ExtResource("15_qdkl1")]
+animation = &"block"
 
 [node name="hurtbox" type="Area2D" parent="."]
-visible = false
 collision_layer = 2
 collision_mask = 4
 
