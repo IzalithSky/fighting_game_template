@@ -42,12 +42,13 @@ var ignore_gravity: bool = false
 @onready var sound_block = $sound/block
 @onready var state_label = $StateLabel
 @onready var hurtbox = $hurtbox
-@onready var hit_sparks_effect: AnimatedSprite2D = $hit_sparks
+@onready var hit_sparks_effect: AnimatedSprite2D = $hurtbox/hit_sparks
 @onready var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity", -9.8)
 
 
 func _ready() -> void:
 	load_attack_data()
+	hit_sparks_effect.visible = false
 	fsm.init()
 
 
@@ -103,10 +104,13 @@ func take_damage(damage: int, stun_duration: float, attack_sound) -> void:
 	if is_invincible:
 		return
 	
+	hit_sparks_effect.visible = true
 	if is_blocking():
 		sound_block.play()
+		hit_sparks_effect.play("block")
 	elif attack_sound:
 		attack_sound.play()
+		hit_sparks_effect.play("hit")
 	
 	current_hp -= damage
 	emit_signal("damaged", damage)
@@ -149,7 +153,7 @@ func ko() -> void:
 
 func flip_sprite(direction: float) -> void:	
 	anim.scale.x = direction
-	hit_sparks_effect.scale.x = direction
+	hurtbox.scale.x = direction
 	for attack in attacks.values():
 		attack.scale.x = direction
 

@@ -1056,16 +1056,18 @@ polygon = PackedVector2Array(0, -40, -16, -16, 0, 8, 16, -16)
 [node name="Animations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -40)
 sprite_frames = SubResource("SpriteFrames_jhcdv")
-animation = &"attack1"
-autoplay = "idle"
-frame = 2
-
-[node name="hit_sparks" parent="." instance=ExtResource("15_qdkl1")]
 animation = &"block"
+autoplay = "idle"
 
 [node name="hurtbox" type="Area2D" parent="."]
 collision_layer = 2
 collision_mask = 4
+
+[node name="hit_sparks" parent="hurtbox" instance=ExtResource("15_qdkl1")]
+visible = true
+position = Vector2(21, -38)
+scale = Vector2(-1, 1)
+animation = &"block"
 
 [node name="collider" type="CollisionShape2D" parent="hurtbox"]
 position = Vector2(0, -40)

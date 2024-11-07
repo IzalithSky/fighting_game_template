@@ -1599,12 +1599,15 @@ sprite_frames = SubResource("SpriteFrames_jhcdv")
 animation = &"block"
 autoplay = "idle"
 
-[node name="hit_sparks" parent="." instance=ExtResource("12_g3ss7")]
-animation = &"block"
-
 [node name="hurtbox" type="Area2D" parent="."]
 collision_layer = 2
 collision_mask = 4
+
+[node name="hit_sparks" parent="hurtbox" instance=ExtResource("12_g3ss7")]
+visible = true
+position = Vector2(18, -20)
+scale = Vector2(-1, 1)
+animation = &"block"
 
 [node name="collider" type="CollisionShape2D" parent="hurtbox"]
 position = Vector2(-1, -21.75)

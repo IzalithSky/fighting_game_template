@@ -178,13 +178,6 @@ func on_area_entered(area: Area2D) -> void:
 		var is_opponent_blocking = character.opponent.is_blocking()
 		for h in hitboxes:
 			if not h.disabled:
-				character.hit_sparks_effect.global_position = area.global_position
-				character.hit_sparks_effect.visible = true
-				if is_opponent_blocking:
-					character.hit_sparks_effect.play("block")
-				else:
-					character.hit_sparks_effect.play("hit")
-				
 				character.opponent.take_damage(
 					h.damage_block if is_opponent_blocking else h.damage_hit,
 					h.stun_block_duration if is_opponent_blocking else h.stun_hit_duration,
