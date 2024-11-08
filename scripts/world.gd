@@ -90,6 +90,8 @@ func spawn_players() -> void:
 	fsm2 = fsm2_scene.instantiate()
 	add_child(fsm1)
 	add_child(fsm2)
+	fsm1.priority_action.connect(on_player1_priority)
+	fsm2.priority_action.connect(on_player2_priority)
 	player1 = player1_scene.instantiate()
 	player2 = player2_scene.instantiate()
 	player1.fsm = fsm1
@@ -110,6 +112,16 @@ func spawn_players() -> void:
 	fsm2.set_character(player2)
 	add_child(player1)
 	add_child(player2)
+
+
+func on_player1_priority() -> void:
+	player1.z_index = 1
+	player2.z_index = 0
+
+
+func on_player2_priority() -> void:
+	player1.z_index = 0
+	player2.z_index = 1
 
 
 func on_player_1_damaged(amount: Variant) -> void:

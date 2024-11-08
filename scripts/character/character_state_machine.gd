@@ -3,6 +3,9 @@ class_name CharacterStateMachine
 extends StateMachine
 
 
+signal priority_action()
+
+
 func set_character(character: Character):
 	for child in get_children():
 		if child is CharacterState or child is BotParameters:

@@ -15,6 +15,7 @@ func enter() -> void:
 	super()
 	duration = current_attack.duration
 	current_attack.enter()
+	fsm.emit_signal("priority_action")
 
 
 func process_physics(delta: float) -> State:
